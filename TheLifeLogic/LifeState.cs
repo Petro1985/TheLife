@@ -10,5 +10,4 @@ public class LifeState
     {
         Survivors = survivors.ToImmutableList();
     }
-    
 }

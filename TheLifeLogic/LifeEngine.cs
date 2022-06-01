@@ -13,7 +13,7 @@ public class LifeEngine
 
             if (aliveNeighborsCount is not (2 or 3))
             {
-                map.SetState(x, y, false);
+                map.SetCell(x, y, false);
                 continue;
             }
 
@@ -24,7 +24,7 @@ public class LifeEngine
                 var aliveCount = oldMap.GetAliveNeighborsCount(neighbor.x, neighbor.y);
                 if (aliveCount == 3)
                 {
-                    map.SetState(neighbor.x, neighbor.y, true);
+                    map.SetCell(neighbor.x, neighbor.y, true);
                 }
             }
         }

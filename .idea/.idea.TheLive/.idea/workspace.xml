@@ -4,29 +4,14 @@
     <projectFile>ConsoleVersion/ConsoleVersion.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a59092f2-ef71-4841-b7c9-69c044ecaedb" name="Changes" comment="Init commit">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.TheLive/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ConsoleVersion/ConsoleOutput.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TheLifeLogic/IMap.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TheLifeLogic/LifeEngine.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TheLifeLogic/LifeState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TheLifeLogic/Map.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TheLifeLogic/TupleExt.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheLive/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheLive/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheLive/.idea/indexLayout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheLive/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheLive/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TheLive.sln" beforeDir="false" afterPath="$PROJECT_DIR$/TheLife.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TheLiveLogic/Class1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TheLifeLogic/TheLife.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TheLiveLogic/TheLiveLogic.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TheLifeLogic/TheLifeLogic.csproj" afterDir="false" />
-    </list>
+    <list default="true" id="a59092f2-ef71-4841-b7c9-69c044ecaedb" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8fe5b9fa0d07425ba30fafd53baa5a7ea23880/71/cefbb19f/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TheLifeLogic/TheLife.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -74,7 +59,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1654008173432</updated>
-      <workItem from="1654008190066" duration="7986000" />
+      <workItem from="1654008190066" duration="8408000" />
     </task>
     <task id="LOCAL-00001" summary="Init commit">
       <created>1654008280651</created>
@@ -83,7 +68,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654008280651</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="WIP">
+      <created>1654016633659</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1654016633659</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -105,25 +97,7 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Init commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Init commit" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ConsoleVersion/Program.cs</url>
-          <line>18</line>
-          <properties documentPath="C:\Users\Petr\SkillFactoryModule18\TheLive\ConsoleVersion\Program.cs" initialLine="18" containingFunctionPresentation="">
-            <startOffsets>
-              <option value="335" />
-            </startOffsets>
-            <endOffsets>
-              <option value="370" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="WIP" />
+    <option name="LAST_COMMIT_MESSAGE" value="WIP" />
   </component>
 </project>

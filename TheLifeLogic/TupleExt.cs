@@ -11,7 +11,6 @@ public static class TupleExt
             (coord.x + 1, coord.y - 1),
             (coord.x - 1, coord.y),
             (coord.x + 1, coord.y),
-            (coord.x - 1, coord.y),
             (coord.x, coord.y + 1),
             (coord.x + 1, coord.y + 1),
             (coord.x - 1, coord.y + 1),
