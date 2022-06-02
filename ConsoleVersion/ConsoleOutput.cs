@@ -1,6 +1,7 @@
 ﻿using System.Text;
+using TheLiveLogic.Maps;
 
-namespace TheLiveLogic;
+namespace ConsoleVersion;
 
 public class ConsoleOutput
 {

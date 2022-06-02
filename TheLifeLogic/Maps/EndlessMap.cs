@@ -1,4 +1,4 @@
-﻿namespace TheLiveLogic;
+﻿namespace TheLiveLogic.Maps;
 
 public class EndlessMap : IMap
 {
@@ -31,7 +31,8 @@ public class EndlessMap : IMap
 
     public void SetState(LifeState lState)
     {
-        throw new NotImplementedException();
+        _map.Clear();
+        _map.UnionWith(lState.Survivors);
     }
 
     public LifeState GetState()

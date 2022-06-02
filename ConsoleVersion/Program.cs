@@ -1,6 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using ConsoleVersion;
 using TheLiveLogic;
+using TheLiveLogic.Maps;
 
 var map = new EndlessMap();
 var consoleOutput = new ConsoleOutput();

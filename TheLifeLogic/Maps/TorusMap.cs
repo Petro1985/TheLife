@@ -1,39 +1,48 @@
 ﻿using System.Text;
 
-namespace TheLiveLogic;
+namespace TheLiveLogic.Maps;
 
-public class Map : IMap
+public class TorusMap : IMap
 {
     private readonly bool[,] _map;
 
-    public Map(int size)
+    public TorusMap(int size)
     {
         _map = new bool[size, size];
     }
 
     public bool IsAlive(int x, int y)
     {
-        if (OutBox(x, y)) return false;
-        return _map[x, y];
+        var (newX, newY) = CoordNormolizer(x, y);
+        return _map[newX, newY];
     }
 
     public void SetCell(int x, int y, bool state)
     {
-        if (OutBox(x, y)) return;
-        _map[x, y] = state;
+        var (newX, newY) = CoordNormolizer(x, y);
+        _map[newX, newY] = state;
     }
 
-    private bool OutBox(int x, int y)
-        => x >= _map.GetLength(0)
-           || y >= _map.GetLength(1)
-           || x < 0 
-           || y < 0;
-    
+    private (int x, int y) CoordNormolizer(int x, int y)
+    {
+        var arrayLength = _map.GetLength(0);
+        var newX = ((x % arrayLength) + arrayLength) % arrayLength;
+        var newY = ((y % arrayLength) + arrayLength) % arrayLength;
+
+        return (newX, newY);
+    }
+
     public void SetState(LifeState lState)
     {
-        throw new NotImplementedException();
+        var length = _map.GetLength(0);
+        var newMap = lState.Survivors.Aggregate(new bool[length, length], (newMap, cell) =>
+        {
+            var (x, y) = CoordNormolizer(cell.x, cell.y);
+            newMap[x, y] = true;
+            return newMap;
+        });
+        Array.Copy(newMap, _map, _map.Length);
     }
-
     public LifeState GetState()
     {
         List<(int x, int y)> lifes = new ();
@@ -60,7 +69,7 @@ public class Map : IMap
 
     public IMap Clone()
     {
-        var newMap = new Map(_map.GetLength(0));
+        var newMap = new TorusMap(_map.GetLength(0));
         Array.Copy(_map, newMap._map, _map.Length);
         return newMap;
     }

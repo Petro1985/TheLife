@@ -1,4 +1,6 @@
-﻿namespace TheLiveLogic;
+﻿using TheLiveLogic.Maps;
+
+namespace TheLiveLogic;
 
 public class LifeEngine
 {
