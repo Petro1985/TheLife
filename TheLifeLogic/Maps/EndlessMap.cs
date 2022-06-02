@@ -2,7 +2,7 @@
 
 public class EndlessMap : IMap
 {
-    private HashSet<(int, int)> _map;
+    private readonly HashSet<(int, int)> _map;
 
     public EndlessMap()
     {
@@ -51,23 +51,4 @@ public class EndlessMap : IMap
     {
         return new EndlessMap(_map);
     }
-
-    // public override string ToString()
-    // {
-    //     var renderSize = _map.GetLength(0);
-    //     
-    //     StringBuilder result = new (renderSize * (renderSize + 2));
-    //     
-    //     for (var i = 0; i < renderSize; i++)
-    //     {
-    //         for (var j = 0; j < renderSize; j++)
-    //         {
-    //             result.Append(IsAlive(i, j) ? 'O' : '.');   
-    //         }
-    //
-    //         result.Append('\n');
-    //     }
-    //
-    //     return result.ToString();
-    // }
 }
