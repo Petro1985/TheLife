@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    padding-left: 0;
+    box-sizing: border-box;
+}
+
+.flex-container
+{
+    display: flex;
+    flex-flow: row;
+}
+
+.map {
+    margin: 20px auto;
+    padding-top: 3px;
+    max-width: 1000px;
+    width: 90vh;
+    height: 90vh;
+    background-color: coral;
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-evenly;
+}
+
+.dead-cell, .alive-cell {
+    width: 9.5%;
+    height: 9.5%;
+}
+
+.dead-cell {
+    background-color: lightgrey;
+}
+
+.alive-cell {
+    background-color: green;
+}

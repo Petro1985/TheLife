@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleVersion", "ConsoleVe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheLiveLogic.Test", "TheLiveLogic.Test\TheLiveLogic.Test.csproj", "{15DC1211-9DC2-4368-B95B-DF8186B335F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{49760147-EAF1-4A63-89CE-075133034BD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeDataBase", "LifeDataBase\LifeDataBase.csproj", "{C425D279-C4D3-4787-B9D6-659A9907C7C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{15DC1211-9DC2-4368-B95B-DF8186B335F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15DC1211-9DC2-4368-B95B-DF8186B335F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15DC1211-9DC2-4368-B95B-DF8186B335F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49760147-EAF1-4A63-89CE-075133034BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49760147-EAF1-4A63-89CE-075133034BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49760147-EAF1-4A63-89CE-075133034BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49760147-EAF1-4A63-89CE-075133034BD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C425D279-C4D3-4787-B9D6-659A9907C7C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C425D279-C4D3-4787-B9D6-659A9907C7C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C425D279-C4D3-4787-B9D6-659A9907C7C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C425D279-C4D3-4787-B9D6-659A9907C7C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

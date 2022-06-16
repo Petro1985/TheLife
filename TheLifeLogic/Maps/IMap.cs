@@ -2,13 +2,14 @@
 
 public interface IMap
 {
-    public bool IsAlive(int x, int y);
-    public void SetCell(int x, int y, bool state);
+    public bool IsAlive(Coord coord);
+    public void SetCell(Coord coord, bool state);
 
     public void SetState(LifeState lState);
     public LifeState GetState();
 
-    public int GetAliveNeighborsCount(int x, int y);
+    public LifeState GetSquareState(Rect rect);
+    public int GetAliveNeighborsCount(Coord coord);
 
     public IMap Clone();
 }

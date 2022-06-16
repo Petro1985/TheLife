@@ -9,24 +9,24 @@ public class LifeEngine
         var curState = map.GetState();
         var oldMap = map.Clone();
 
-        foreach (var (x, y) in curState.Survivors)
+        foreach (var coord in curState.Survivors)
         {
-            var aliveNeighborsCount = oldMap.GetAliveNeighborsCount(x, y);
+            var aliveNeighborsCount = oldMap.GetAliveNeighborsCount(coord);
 
             if (aliveNeighborsCount is not (2 or 3))
             {
-                map.SetCell(x, y, false);
+                map.SetCell(coord, false);
                 continue;
             }
 
-            var neighbors = (x, y).GetNeighbors();
+            var neighbors = coord.GetNeighbors();
             
-            foreach (var neighbor in neighbors)
+            foreach (var neighborCoord in neighbors)
             {
-                var aliveCount = oldMap.GetAliveNeighborsCount(neighbor.x, neighbor.y);
+                var aliveCount = oldMap.GetAliveNeighborsCount(neighborCoord);
                 if (aliveCount == 3)
                 {
-                    map.SetCell(neighbor.x, neighbor.y, true);
+                    map.SetCell(neighborCoord, true);
                 }
             }
         }

@@ -2,30 +2,30 @@
 
 public class EndlessMap : IMap
 {
-    private readonly HashSet<(int, int)> _map;
+    private readonly HashSet<Coord> _map;
 
     public EndlessMap()
     {
-        _map = new HashSet<(int, int)>();
+        _map = new HashSet<Coord>();
     }
     
-    private EndlessMap(HashSet<(int, int)> map)
+    private EndlessMap(HashSet<Coord> map)
     {
-        _map = new HashSet<(int, int)>(map);
+        _map = new HashSet<Coord>(map);
     }
     
-    public bool IsAlive(int x, int y)
-        => _map.Contains((x, y));
+    public bool IsAlive(Coord coord)
+        => _map.Contains(coord);
 
-    public void SetCell(int x, int y, bool state)
+    public void SetCell(Coord coord, bool state)
     {
         if (state)
         {
-            _map.Add((x, y));
+            _map.Add(coord);
         }
         else
         {
-            _map.Remove((x, y));
+            _map.Remove(coord);
         }
     }
 
@@ -40,11 +40,16 @@ public class EndlessMap : IMap
         return new LifeState(_map.ToArray());
     }
 
-    public int GetAliveNeighborsCount(int x, int y)
+    public LifeState GetSquareState(Rect rect)
     {
-        var neighbors = (x, y).GetNeighbors();
-        
-        return neighbors.Count(neighbor => IsAlive(neighbor.x, neighbor.y));
+        var result = _map.Where(lifeCoord => lifeCoord.InBox(rect)).ToList();
+        return new LifeState(result);
+    }
+    
+    public int GetAliveNeighborsCount(Coord coord)
+    {
+        var neighbors = coord.GetNeighbors();
+        return neighbors.Count(IsAlive);
     }
 
     public IMap Clone()

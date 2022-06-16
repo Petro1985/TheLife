@@ -13,7 +13,7 @@ public class ConsoleOutput
         {
             for (var j = 0; j < renderSize; j++)
             {
-                result.Append(map.IsAlive(i, j) ? 'O' : '.');   
+                result.Append(map.IsAlive(new Coord(i, j)) ? 'O' : '.');   
             }
 
             result.Append('\n');

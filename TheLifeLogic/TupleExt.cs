@@ -1,19 +1,21 @@
-﻿namespace TheLiveLogic;
+﻿using TheLiveLogic.Maps;
+
+namespace TheLiveLogic;
 
 public static class TupleExt
 {
-    public static List<(int x, int y)> GetNeighbors(this (int x, int y) coord)
+    public static List<Coord> GetNeighbors(this Coord coord)
     {
-        var neighbors = new List<(int x, int y)>
+        var neighbors = new List<Coord>
         {
-            (coord.x - 1, coord.y - 1),
-            (coord.x, coord.y - 1),
-            (coord.x + 1, coord.y - 1),
-            (coord.x - 1, coord.y),
-            (coord.x + 1, coord.y),
-            (coord.x, coord.y + 1),
-            (coord.x + 1, coord.y + 1),
-            (coord.x - 1, coord.y + 1),
+            new (coord.X - 1, coord.Y - 1),
+            new (coord.X, coord.Y - 1),
+            new (coord.X + 1, coord.Y - 1),
+            new (coord.X - 1, coord.Y),
+            new (coord.X + 1, coord.Y),
+            new (coord.X, coord.Y + 1),
+            new (coord.X + 1, coord.Y + 1),
+            new (coord.X - 1, coord.Y + 1),
         };
         return neighbors;
     }

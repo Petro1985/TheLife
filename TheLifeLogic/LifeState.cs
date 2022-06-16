@@ -1,13 +1,25 @@
 ﻿using System.Collections.Immutable;
+using TheLiveLogic.Maps;
 
 namespace TheLiveLogic;
 
 public class LifeState
 {
-    public ImmutableList<(int x, int y)> Survivors { get; }
+    
+    public ImmutableList<Coord> Survivors { get; }
 
-    public LifeState(IEnumerable<(int x, int y)> survivors)
+    public LifeState(IEnumerable<Coord> survivors)
     {
+        
         Survivors = survivors.ToImmutableList();
+    }
+
+    private LifeState()
+    {
+    }
+
+    public LifeState(ImmutableList<Coord> survivors)
+    {
+        Survivors = survivors;
     }
 }

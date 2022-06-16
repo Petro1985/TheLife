@@ -11,16 +11,16 @@ public class Map : IMap
         _map = new bool[size, size];
     }
 
-    public bool IsAlive(int x, int y)
+    public bool IsAlive(Coord coord)
     {
-        if (OutBox(x, y)) return false;
-        return _map[x, y];
+        if (OutBox(coord.X, coord.Y)) return false;
+        return _map[coord.X, coord.Y];
     }
 
-    public void SetCell(int x, int y, bool state)
+    public void SetCell(Coord coord, bool state)
     {
-        if (OutBox(x, y)) return;
-        _map[x, y] = state;
+        if (OutBox(coord.X, coord.Y)) return;
+        _map[coord.X, coord.Y] = state;
     }
 
     private bool OutBox(int x, int y)
@@ -34,8 +34,8 @@ public class Map : IMap
         var length = _map.GetLength(0);
         var newMap = lState.Survivors.Aggregate(new bool[length, length], (newMap, cell) =>
         {
-            if (OutBox(cell.x, cell.y)) return newMap;
-            newMap[cell.x, cell.y] = true;
+            if (OutBox(cell.X, cell.Y)) return newMap;
+            newMap[cell.X, cell.Y] = true;
             return newMap;
         });
         Array.Copy(newMap, _map, _map.Length);
@@ -43,7 +43,7 @@ public class Map : IMap
 
     public LifeState GetState()
     {
-        List<(int x, int y)> lifes = new ();
+        List<Coord> lifes = new ();
 
         for (var i = 0; i < _map.GetLongLength(0); i++)
         {
@@ -51,18 +51,38 @@ public class Map : IMap
             {
                 if (_map[i, j])
                 {
-                    lifes.Add((i, j));
+                    lifes.Add(new Coord(i, j));
                 }
             }
         }
         return new LifeState(lifes);
     }
 
-    public int GetAliveNeighborsCount(int x, int y)
+    public LifeState GetSquareState(Rect rect)
     {
-        var neighbors = (x, y).GetNeighbors();
+        List<Coord> lifes = new ();
+
+        var rows = Math.Min(_map.GetLongLength(0), rect.Y + rect.dY);
+        var cols = Math.Min(_map.GetLongLength(0), rect.X + rect.dX);
+        for (var i = rect.X; i < rows; i++)
+        {
+            for (var j = 0; j < cols; j++)
+            {
+                if (_map[i, j])
+                {
+                    lifes.Add(new Coord(i, j));
+                }
+            }
+        }
+
+        return new LifeState(lifes);
+    }
+
+    public int GetAliveNeighborsCount(Coord coord)
+    {
+        var neighbors = coord.GetNeighbors();
         
-        return neighbors.Count(neighbor => IsAlive(neighbor.x, neighbor.y));
+        return neighbors.Count(IsAlive);
     }
 
     public IMap Clone()
@@ -82,7 +102,7 @@ public class Map : IMap
         {
             for (var j = 0; j < renderSize; j++)
             {
-                result.Append(IsAlive(i, j) ? 'O' : '.');   
+                result.Append(IsAlive(new Coord(i, j)) ? 'O' : '.');   
             }
 
             result.Append('\n');

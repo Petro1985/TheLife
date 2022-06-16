@@ -5,7 +5,7 @@ namespace TheLiveLogic;
 public class TheLife
 {
     public IMap Map { set; get; }
-    private LifeEngine _lifeEngine;
+    private readonly LifeEngine _lifeEngine;
 
     public TheLife(IMap map, LifeEngine lifeEngine)
     {
@@ -13,10 +13,9 @@ public class TheLife
         _lifeEngine = lifeEngine;
     }
 
-    public LifeState MakeTurn(LifeState startState = null)
+    public LifeState MakeTurn()
     {
         _lifeEngine.MakeTurn(Map);
-
         return Map.GetState();
     }
 

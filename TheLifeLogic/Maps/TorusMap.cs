@@ -11,25 +11,25 @@ public class TorusMap : IMap
         _map = new bool[size, size];
     }
 
-    public bool IsAlive(int x, int y)
+    public bool IsAlive(Coord coord)
     {
-        var (newX, newY) = CoordNormolizer(x, y);
-        return _map[newX, newY];
+        var newCoord = CoordNormalizer(coord);
+        return _map[newCoord.X, newCoord.Y];
     }
 
-    public void SetCell(int x, int y, bool state)
+    public void SetCell(Coord coord, bool state)
     {
-        var (newX, newY) = CoordNormolizer(x, y);
-        _map[newX, newY] = state;
+        var newCoord = CoordNormalizer(coord);
+        _map[newCoord.X, newCoord.Y] = state;
     }
 
-    private (int x, int y) CoordNormolizer(int x, int y)
+    private Coord CoordNormalizer(Coord coord)
     {
         var arrayLength = _map.GetLength(0);
-        var newX = ((x % arrayLength) + arrayLength) % arrayLength;
-        var newY = ((y % arrayLength) + arrayLength) % arrayLength;
+        var newX = ((coord.X % arrayLength) + arrayLength) % arrayLength;
+        var newY = ((coord.Y % arrayLength) + arrayLength) % arrayLength;
 
-        return (newX, newY);
+        return new Coord(newX, newY);
     }
 
     public void SetState(LifeState lState)
@@ -37,15 +37,15 @@ public class TorusMap : IMap
         var length = _map.GetLength(0);
         var newMap = lState.Survivors.Aggregate(new bool[length, length], (newMap, cell) =>
         {
-            var (x, y) = CoordNormolizer(cell.x, cell.y);
-            newMap[x, y] = true;
+            var newCoord = CoordNormalizer(cell);
+            newMap[newCoord.X, newCoord.Y] = true;
             return newMap;
         });
         Array.Copy(newMap, _map, _map.Length);
     }
     public LifeState GetState()
     {
-        List<(int x, int y)> lifes = new ();
+        List<Coord> lifes = new ();
 
         for (var i = 0; i < _map.GetLongLength(0); i++)
         {
@@ -53,18 +53,38 @@ public class TorusMap : IMap
             {
                 if (_map[i, j])
                 {
-                    lifes.Add((i, j));
+                    lifes.Add(new Coord(i, j));
                 }
             }
         }
         return new LifeState(lifes);
     }
 
-    public int GetAliveNeighborsCount(int x, int y)
+    public LifeState GetSquareState(Rect rect)
     {
-        var neighbors = (x, y).GetNeighbors();
+        List<Coord> lifes = new ();
+
+        var rows = Math.Min(_map.GetLongLength(0), rect.Y + rect.dY);
+        var cols = Math.Min(_map.GetLongLength(0), rect.X + rect.dX);
+        for (var i = rect.X; i < rows; i++)
+        {
+            for (var j = 0; j < cols; j++)
+            {
+                if (_map[i, j])
+                {
+                    lifes.Add(new Coord(i, j));
+                }
+            }
+        }
+
+        return new LifeState(lifes);
+    }
+
+    public int GetAliveNeighborsCount(Coord coord)
+    {
+        var neighbors = coord.GetNeighbors();
         
-        return neighbors.Count(neighbor => IsAlive(neighbor.x, neighbor.y));
+        return neighbors.Count(IsAlive);
     }
 
     public IMap Clone()
@@ -84,7 +104,7 @@ public class TorusMap : IMap
         {
             for (var j = 0; j < renderSize; j++)
             {
-                result.Append(IsAlive(i, j) ? 'O' : '.');   
+                result.Append(IsAlive(new Coord(i, j)) ? 'O' : '.');   
             }
 
             result.Append('\n');
