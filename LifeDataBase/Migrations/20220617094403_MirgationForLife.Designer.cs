@@ -3,6 +3,7 @@ using System;
 using LifeDataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LifeDataBase.Migrations
 {
     [DbContext(typeof(LifeContext))]
-    partial class LifeContextModelSnapshot : ModelSnapshot
+    [Migration("20220617094403_MirgationForLife")]
+    partial class MirgationForLife
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

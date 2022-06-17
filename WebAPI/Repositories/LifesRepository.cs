@@ -34,7 +34,7 @@ public class FieldRepository : IFieldRepository
         var lifeState = new FieldEntity
         {
             Survivors = state.Survivors,
-            User = _userIdAccessor.GetUserId()!.Value,
+            UserID = _userIdAccessor.GetUserId()!.Value,
         };
 
         _db.LifeStates.Add(lifeState);
@@ -45,8 +45,9 @@ public class FieldRepository : IFieldRepository
 
     public async Task<List<LifeState>> LoadAllFields()
     {
+        var userId = _userIdAccessor.GetUserId()!.Value;
         var query = _db.LifeStates.Where(
-            entity => entity.User == _userIdAccessor.GetUserId()!.Value);
+            entity => entity.UserID == userId);
         
         var mappedQuery = _mapper.ProjectTo<LifeState>(query, new {});
 
