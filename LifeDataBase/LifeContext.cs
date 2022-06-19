@@ -17,14 +17,12 @@ public class LifeContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<UserEntity>().HasMany<FieldEntity>(entity => entity.Lifes).WithOne(entity => entity.User);
+        modelBuilder.Entity<UserEntity>().HasMany<FieldEntity>(entity => entity.Lifes).WithOne();
 
         modelBuilder.Entity<FieldEntity>().Property(state => state.Survivors)
             .HasConversion(
                 list => JsonSerializer.Serialize(list, (JsonSerializerOptions?)null), 
                 json => JsonSerializer.Deserialize<ImmutableList<Coord>>(json, (JsonSerializerOptions?)null)!);
-        
-//        modelBuilder.Entity<FieldEntity>().HasOne<UserEntity>(entity => entity.User);
         
         base.OnModelCreating(modelBuilder);
     }

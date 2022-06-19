@@ -19,4 +19,14 @@
       <ProjectReference Include="..\TheLifeLogic\TheLifeLogic.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Migrations\20220617094403_MirgationForLife.cs" />
+      <Compile Remove="Migrations\20220617094403_MirgationForLife.Designer.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Migrations\20220617135033_NewOne.Designer.cs" />
+      <Compile Remove="Migrations\20220617135033_NewOne.cs" />
+    </ItemGroup>
+
 </Project>

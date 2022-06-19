@@ -8,14 +8,14 @@ public class LifeProfile : Profile
 {
     public LifeProfile()
     {
-        CreateMap<LifeState, LifeStateResponse>()
+        CreateMap<Field, LifeStateResponse>()
             .ForMember(
                 response => response.Survivors,
                 option => option.MapFrom(
                     ls => ls.Survivors))
             .ReverseMap();
         
-        CreateMap<LifeState, SetStateRequest>()
+        CreateMap<Field, SetStateRequest>()
             .ForMember(
                 response => response.Survivors,
                 option => option.MapFrom(

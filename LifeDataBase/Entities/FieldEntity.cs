@@ -7,6 +7,5 @@ public class FieldEntity
 {
     public long Id { get; init; }
     public ImmutableList<Coord> Survivors { get; set; }
-    public Guid UserID { get; set; }
-    public UserEntity User { get; set; }
+    public Guid UserEntityId { get; set; }
 }

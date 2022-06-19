@@ -9,10 +9,10 @@ namespace WebAPI.Repositories;
 
 public interface IFieldRepository
 {
-    Task<long> SaveField(LifeState state);
-    Task<List<LifeState>> LoadAllFields();
-    Task<LifeState?> LoadField(int fieldId);
-    Task UpdateField(LifeState state, int fieldId);
+    Task<long> SaveField(Field state);
+    Task<List<Field>> LoadAllFields();
+    Task<Field?> LoadField(int fieldId);
+    Task UpdateField(Field state, int fieldId);
 }
 
 public class FieldRepository : IFieldRepository
@@ -28,13 +28,13 @@ public class FieldRepository : IFieldRepository
         _userIdAccessor = userIdAccessor;
     }
 
-    public async Task<long> SaveField(LifeState state)
+    public async Task<long> SaveField(Field state)
     {
         
         var lifeState = new FieldEntity
         {
             Survivors = state.Survivors,
-            UserID = _userIdAccessor.GetUserId()!.Value,
+            UserEntityId = _userIdAccessor.GetUserId()!.Value,
         };
 
         _db.LifeStates.Add(lifeState);
@@ -43,28 +43,28 @@ public class FieldRepository : IFieldRepository
         return lifeState.Id;
     }
 
-    public async Task<List<LifeState>> LoadAllFields()
+    public async Task<List<Field>> LoadAllFields()
     {
         var userId = _userIdAccessor.GetUserId()!.Value;
         var query = _db.LifeStates.Where(
-            entity => entity.UserID == userId);
+            entity => entity.UserEntityId == userId);
         
-        var mappedQuery = _mapper.ProjectTo<LifeState>(query, new {});
+        var mappedQuery = _mapper.ProjectTo<Field>(query, new {});
 
         var result = await mappedQuery.ToListAsync();
         
         return result;
     }
 
-    public async Task<LifeState?> LoadField(int fieldId)
+    public async Task<Field?> LoadField(int fieldId)
     {
         var field = await _db.LifeStates.FirstOrDefaultAsync(entity => entity.Id == fieldId);
-        var mappedFiled = _mapper.Map<LifeState>(field);
+        var mappedFiled = _mapper.Map<Field>(field);
         
         return mappedFiled;
     }
 
-    public async Task UpdateField(LifeState state, int fieldId)
+    public async Task UpdateField(Field state, int fieldId)
     {
         var field = await _db.LifeStates.FirstOrDefaultAsync(entity => entity.Id == fieldId);
         if (field is null) return;

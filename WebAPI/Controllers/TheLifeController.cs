@@ -61,7 +61,7 @@ public class TheLifeController : ControllerBase
     [HttpPost("Map", Name = "SaveMap")]
     public async Task<IActionResult> SaveNewMap([FromBody] SetStateRequest state)
     {
-        var mappedState = _mapper.Map<LifeState>(state);
+        var mappedState = _mapper.Map<Field>(state);
         var mapId = await _fieldRepository.SaveField(mappedState);
         
         return Ok(mapId);
@@ -70,7 +70,7 @@ public class TheLifeController : ControllerBase
     [HttpPut("Map/{mapId}", Name = "SaveNewMap")]
     public async Task<IActionResult> SaveMap([FromBody] SetStateRequest state, [FromRoute] int mapId)
     {
-        var mappedState = _mapper.Map<LifeState>(state);
+        var mappedState = _mapper.Map<Field>(state);
         await _fieldRepository.UpdateField(mappedState, mapId);
         
         return Ok();
@@ -100,33 +100,33 @@ public class ActiveFieldService
         _activeField = new ConcurrentDictionary<UserId, IMap>();
     }
 
-    public LifeState MakeTurn(UserId userId)
+    public Field MakeTurn(UserId userId)
     {
         var map = _activeField.GetValueOrDefault(userId);
-        if (map is null) return new LifeState(new List<Coord>());
+        if (map is null) return new Field(new List<Coord>());
         _lifeEngine.MakeTurn(map);
         return map.GetState();
     }
 
-    public LifeState GetActiveField(UserId userId)
+    public Field GetActiveField(UserId userId)
     {
         var map = _activeField.GetValueOrDefault(userId);
-        if (map is null) return new LifeState(new List<Coord>());
+        if (map is null) return new Field(new List<Coord>());
         return map.GetState();
     }
 
-    public void SetActiveField(UserId userId, LifeState lifeState)
+    public void SetActiveField(UserId userId, Field field)
     {
         IMap map = new EndlessMap();
-        map.SetState(lifeState);
+        map.SetState(field);
 
         _activeField.AddOrUpdate(userId, map, (_, _) => map);
     }
 
-    public LifeState GetActiveFieldRect(UserId userId, Rect rect)
+    public Field GetActiveFieldRect(UserId userId, Rect rect)
     {
         var map = _activeField.GetValueOrDefault(userId);
-        return map is null ? new LifeState(new List<Coord>()) : map.GetSquareState(rect);
+        return map is null ? new Field(new List<Coord>()) : map.GetSquareState(rect);
     }
 }
 

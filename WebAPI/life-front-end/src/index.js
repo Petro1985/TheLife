@@ -6,8 +6,6 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-
-
 root.render(
   <React.StrictMode>
     <App />
@@ -16,17 +14,24 @@ root.render(
 
 GetUserInfo().then();
 
+// authentication and Registration
 async function GetUserInfo()
 {
-    let data = await fetch('https://localhost:7129/WhoAmI', {mode: "cors", credentials: "include"})
-    console.log("------1------");
-    console.log(data)
+    try {
 
-    if (data.status === 401)
+        let data = await fetch('https://localhost:7129/WhoAmI', {mode: "cors", credentials: "include"})
+
+        if (data.status === 401) {
+            data = await fetch('https://localhost:7129/Registration', {
+                mode: "cors",
+                method: "POST",
+                credentials: "include"
+            })
+        }
+    }
+    catch (e)
     {
-        data = await  fetch('https://localhost:7129/Registration', {mode: "cors", method:"POST", credentials: "include"})
-        console.log("------2-------");
-        console.log(data);
+        console.error(e);
     }
 }
 

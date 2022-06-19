@@ -29,21 +29,21 @@ public class EndlessMap : IMap
         }
     }
 
-    public void SetState(LifeState lState)
+    public void SetState(Field lState)
     {
         _map.Clear();
         _map.UnionWith(lState.Survivors);
     }
 
-    public LifeState GetState()
+    public Field GetState()
     {
-        return new LifeState(_map.ToArray());
+        return new Field(_map.ToArray());
     }
 
-    public LifeState GetSquareState(Rect rect)
+    public Field GetSquareState(Rect rect)
     {
         var result = _map.Where(lifeCoord => lifeCoord.InBox(rect)).ToList();
-        return new LifeState(result);
+        return new Field(result);
     }
     
     public int GetAliveNeighborsCount(Coord coord)

@@ -29,7 +29,7 @@ public class Map : IMap
            || x < 0 
            || y < 0;
     
-    public void SetState(LifeState lState)
+    public void SetState(Field lState)
     {
         var length = _map.GetLength(0);
         var newMap = lState.Survivors.Aggregate(new bool[length, length], (newMap, cell) =>
@@ -41,7 +41,7 @@ public class Map : IMap
         Array.Copy(newMap, _map, _map.Length);
     }
 
-    public LifeState GetState()
+    public Field GetState()
     {
         List<Coord> lifes = new ();
 
@@ -55,10 +55,10 @@ public class Map : IMap
                 }
             }
         }
-        return new LifeState(lifes);
+        return new Field(lifes);
     }
 
-    public LifeState GetSquareState(Rect rect)
+    public Field GetSquareState(Rect rect)
     {
         List<Coord> lifes = new ();
 
@@ -75,7 +75,7 @@ public class Map : IMap
             }
         }
 
-        return new LifeState(lifes);
+        return new Field(lifes);
     }
 
     public int GetAliveNeighborsCount(Coord coord)

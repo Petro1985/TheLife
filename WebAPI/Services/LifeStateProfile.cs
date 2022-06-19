@@ -8,11 +8,12 @@ public class LifeStateProfile : Profile
 {
     public LifeStateProfile()
     {
-        CreateMap<LifeState, FieldEntity>()
+        CreateMap<Field, FieldEntity>()
             .ForMember(i => i.Survivors, op => op.MapFrom(from => from.Survivors))
             .ForMember(i => i.Id, op => op.Ignore())
-            .ForMember(i => i.UserID, op => op.Ignore());
-        CreateMap<FieldEntity, LifeState>()
-            .ForMember(i => i.Survivors, op => op.MapFrom(from => from.Survivors));
+            .ForMember(i => i.UserEntityId, op => op.Ignore());
+        CreateMap<FieldEntity, Field>()
+            .ForMember(i => i.Survivors, op => op.MapFrom(from => from.Survivors))
+            .ForMember(x => x.Id, op => op.MapFrom(x => x.Id));
     }
 }

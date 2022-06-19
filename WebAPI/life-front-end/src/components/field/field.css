@@ -1,3 +1,4 @@
+
 body {
     margin: 0;
     padding-left: 0;
@@ -11,26 +12,54 @@ body {
 }
 
 .map {
+    position: relative;
     margin: 20px auto;
-    padding-top: 3px;
     max-width: 1000px;
     width: 90vh;
     height: 90vh;
-    background-color: coral;
     display: flex;
-    flex-flow: wrap;
-    justify-content: space-evenly;
+    flex-flow: column;
+    justify-content: start;
+    background-color: beige;
+    border-radius: 10px;
+    border: solid 2px #58bd58;
+    padding: 20px;
 }
 
+.row {
+    display: flex;
+    flex-flow: row;
+    background-color: #282c34;
+    height: 100%;
+}
+
+/*.map::before {*/
+/*    position: absolute;*/
+/*    left: -12px;*/
+/*    top: -10px;*/
+/*    max-width: 1020px;*/
+/*    width: calc(90vh + 20px);*/
+/*    height: calc(90vh + 20px);*/
+/*    content: "";*/
+/*    background-color: rgb(166, 215, 166);*/
+/*    border-radius: 10px;*/
+/*    border: solid 2px lawngreen;*/
+/*    z-index: -1;*/
+/*}*/
+
 .dead-cell, .alive-cell {
-    width: 9.5%;
-    height: 9.5%;
+    width: 9%;
+    height: 90%;
+    border-radius: 50%;
+    cursor: pointer;
+    border: solid 2px #019f01;
+    margin: 2px;
 }
 
 .dead-cell {
-    background-color: lightgrey;
+    background-color: rgb(141, 126, 109);
 }
 
 .alive-cell {
-    background-color: green;
+    background-color: #019f01;
 }

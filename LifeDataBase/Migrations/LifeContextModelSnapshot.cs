@@ -34,12 +34,12 @@ namespace LifeDataBase.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("UserEntityId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserEntityId");
 
                     b.ToTable("LifeStates");
                 });
@@ -61,13 +61,11 @@ namespace LifeDataBase.Migrations
 
             modelBuilder.Entity("LifeDataBase.Entities.FieldEntity", b =>
                 {
-                    b.HasOne("LifeDataBase.Entities.UserEntity", "User")
+                    b.HasOne("LifeDataBase.Entities.UserEntity", null)
                         .WithMany("Lifes")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LifeDataBase.Entities.UserEntity", b =>

@@ -32,7 +32,7 @@ public class TorusMap : IMap
         return new Coord(newX, newY);
     }
 
-    public void SetState(LifeState lState)
+    public void SetState(Field lState)
     {
         var length = _map.GetLength(0);
         var newMap = lState.Survivors.Aggregate(new bool[length, length], (newMap, cell) =>
@@ -43,7 +43,7 @@ public class TorusMap : IMap
         });
         Array.Copy(newMap, _map, _map.Length);
     }
-    public LifeState GetState()
+    public Field GetState()
     {
         List<Coord> lifes = new ();
 
@@ -57,10 +57,10 @@ public class TorusMap : IMap
                 }
             }
         }
-        return new LifeState(lifes);
+        return new Field(lifes);
     }
 
-    public LifeState GetSquareState(Rect rect)
+    public Field GetSquareState(Rect rect)
     {
         List<Coord> lifes = new ();
 
@@ -77,7 +77,7 @@ public class TorusMap : IMap
             }
         }
 
-        return new LifeState(lifes);
+        return new Field(lifes);
     }
 
     public int GetAliveNeighborsCount(Coord coord)

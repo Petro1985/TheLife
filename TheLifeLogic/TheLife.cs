@@ -13,7 +13,7 @@ public class TheLife
         _lifeEngine = lifeEngine;
     }
 
-    public LifeState MakeTurn()
+    public Field MakeTurn()
     {
         _lifeEngine.MakeTurn(Map);
         return Map.GetState();
