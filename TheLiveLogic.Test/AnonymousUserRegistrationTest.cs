@@ -3,8 +3,6 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using TheLiveLogic.Maps;
 using WebAPI.APIStruct;
 using Xunit;
 

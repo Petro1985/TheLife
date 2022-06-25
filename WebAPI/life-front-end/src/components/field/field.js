@@ -3,39 +3,26 @@ import './field.css'
 
 export default function Field(props) {
     const Cells = [];
-    const life = props.Survivors.survivors;
+    const mapService = props.mapService;
+    const fetchService = props.fetchService;
+    
+    const life = props.mapService.currentMap.survivors;
+        
     // console.log("-----LIFE in field-------");
     // console.log(props);
 
-    async function ChangeLife(x, y) {
-        const setter = props.setField;
-        
-        console.log(props);
-        setter(prevField => {
-            // console.log("-----------------Prev field--------------");
-            // console.log(prevField)
-            const newField = {}
-            newField.id = prevField.id;
-            
-            newField.survivors = prevField.survivors.filter(life => !(life.x === x && life.y === y));
+    async function ChangeLife(x, y)
+    {
+        const newMap = mapService.ChangeLife(x, y);
+        newMap.id = await fetchService.SetMap(mapService.currentMap);
 
-            // console.log("-----------------new field--------------");
-            // console.log(prevField)
-            
-            if (newField.survivors.length === prevField.survivors.length)
-            {
-                newField.survivors.push({x:x, y:y});
-            }
-            
-            return newField;
-        });
-
+        mapService.SetNewMap(newMap);
     }
     
-    for (let i = 0; i < 10; i++)
+    for (let j = 0; j < 10; j++)
     {
         const row = [];
-        for (let j = 0; j < 10; j++)
+        for (let i = 0; i < 10; i++)
         {
             
             if (
@@ -48,11 +35,10 @@ export default function Field(props) {
                 row.push(<div onClick={() => ChangeLife(i, j)} key={i+j*10} className={"dead-cell"}></div>);
             }
         }
-        Cells.push(<div key={"FieldRow"+i} className={"row"}>{row}</div>)
+        Cells.push(<div key={"FieldRow" + j} className={"row"}>{row}</div>)
 
     }
     
     return <div className={"field"}>{Cells}</div>;
 }
-
 
