@@ -29,12 +29,7 @@ export default function Field(props) {
             
             return newField;
         });
-        // await fetch('https://localhost:7129/Map', fetchOptions)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         setSurvivors(data[0].survivors);
-        //     })
-        //     .catch(e => console.log(e));
+
     }
     
     for (let i = 0; i < 10; i++)
@@ -42,6 +37,7 @@ export default function Field(props) {
         const row = [];
         for (let j = 0; j < 10; j++)
         {
+            
             if (
                 life.find(element => element.x === i && element.y === j)
             ){
@@ -52,10 +48,11 @@ export default function Field(props) {
                 row.push(<div onClick={() => ChangeLife(i, j)} key={i+j*10} className={"dead-cell"}></div>);
             }
         }
-        Cells.push(<div key={"FieldRow"+i} className={"row"}>{row}</div>)        
+        Cells.push(<div key={"FieldRow"+i} className={"row"}>{row}</div>)
+
     }
     
-    return <div className={"map"}>{Cells}</div>;
+    return <div className={"field"}>{Cells}</div>;
 }
 
 

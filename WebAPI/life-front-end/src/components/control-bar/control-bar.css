@@ -1,0 +1,63 @@
+﻿.main-container {
+    box-sizing: border-box;
+    
+    display: flex;
+    flex-flow: column;
+    gap: 30px;
+    
+    width: 250px;
+    height: 100vh;
+    margin-left: 5%;
+    
+    background-color: grey;
+    padding: 30px 10px 10px 10px;
+}
+
+.control-map {
+    display: flex;
+    flex-flow: row;
+    
+    width: 100%;
+    height: 140px;
+    
+}
+
+.control-map > img {
+    width: 140px;
+    height: 140px;
+    
+    background-color: orange;
+}
+
+.vert-container {
+    height: 100%;
+
+    margin-left: 15px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;    
+    
+}
+
+.green-button {
+    align-self: center;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px green; 
+    background-color: darkgreen;
+    color: lawngreen;
+    font-weight: bold;
+    font-size: 2rem;
+    border: solid 2px lawngreen;
+    outline-offset: -5px;
+    outline-color: rgba(245, 245, 220, 0.32);
+    outline-style: solid;
+    cursor: pointer;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: rgba(154, 183, 91, 0.5);
+    user-select: none;
+}
+
+.vert-container > button {
+    width: 100px;
+    height: 60px;
+}

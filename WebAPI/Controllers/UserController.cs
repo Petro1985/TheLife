@@ -8,7 +8,7 @@ namespace WebAPI.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private IUserRepository _userRepository;
+    private readonly IUserRepository _userRepository;
 
     public UserController(IUserRepository userRepository)
     {
@@ -19,7 +19,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> RegisterNewUser()
     {
         var newUserId = await _userRepository.AddUser();
-        //HttpContext.Response.Headers.Append("Access-Control-Allow-Origin", "*");
         HttpContext.Response.Cookies.Append("user", newUserId.ToString(),
             new CookieOptions {
                 HttpOnly = false,
@@ -33,7 +32,7 @@ public class UserController : ControllerBase
 
     
     [HttpGet("WhoAmI")]
-    public async Task<IActionResult> WhoTheyAre()
+    public IActionResult WhoTheyAre()
     {
         if (HttpContext.User.Identity!.IsAuthenticated == false)
         {

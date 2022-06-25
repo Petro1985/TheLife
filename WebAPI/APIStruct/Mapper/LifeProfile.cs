@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LifeDataBase.Entities;
 using TheLiveLogic;
 using WebAPI.Controllers;
 
@@ -8,14 +9,17 @@ public class LifeProfile : Profile
 {
     public LifeProfile()
     {
-        CreateMap<Field, LifeStateResponse>()
+        CreateMap<FieldEntity, FieldResponse>()
+            .ForMember(i => i.Minimap, opt => opt.Ignore());
+        
+        CreateMap<Field, FieldResponse>()
             .ForMember(
                 response => response.Survivors,
                 option => option.MapFrom(
                     ls => ls.Survivors))
             .ReverseMap();
         
-        CreateMap<Field, SetStateRequest>()
+        CreateMap<Field, SetFieldRequest>()
             .ForMember(
                 response => response.Survivors,
                 option => option.MapFrom(

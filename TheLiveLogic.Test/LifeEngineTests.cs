@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using Snapshooter.Xunit;
 using TheLiveLogic.Maps;
+using WebAPI.Repositories;
+using WebAPI.Utils;
 using Xunit;
 
 namespace TheLiveLogic.Test;
@@ -26,6 +30,29 @@ public class LifeEngineTests
         var newTurnState = theLife.MakeTurn();
         Snapshot.Match(newTurnState);
     }
+    
+    [Fact]
+    public void MinimapGenerator_Should_Generate_Minimap()
+    {
+        var map = ImmutableList.Create<Coord>
+        (
+            new Coord(3, 3),
+            new Coord(4, 4),
+            new Coord(4, 5),
+            new Coord(3, 5),
+            new Coord(2, 5),
+            new Coord(-5, -5),
+            new Coord(-4, -4),
+            new Coord(-3, -3)
+        );
+        
+
+        MinimapGenerator mg = new ();
+
+        var img = mg.Generate(map);
+        Snapshot.Match(img);
+    }
+    
 }
 
 

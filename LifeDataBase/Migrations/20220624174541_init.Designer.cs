@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LifeDataBase.Migrations
 {
     [DbContext(typeof(FieldContext))]
-    [Migration("20220613083330_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220624174541_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,33 @@ namespace LifeDataBase.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("LifeDataBase.UserEntity", b =>
+            modelBuilder.Entity("LifeDataBase.Entities.FieldEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Survivors")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserEntityId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserEntityId");
+
+                    b.ToTable("LifeStates");
+                });
+
+            modelBuilder.Entity("LifeDataBase.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,36 +65,16 @@ namespace LifeDataBase.Migrations
                     b.ToTable("LifeUsers");
                 });
 
-            modelBuilder.Entity("TheLiveLogic.LifeState", b =>
+            modelBuilder.Entity("LifeDataBase.Entities.FieldEntity", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Survivors")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("UserEntityId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserEntityId");
-
-                    b.ToTable("LifeStates");
-                });
-
-            modelBuilder.Entity("TheLiveLogic.LifeState", b =>
-                {
-                    b.HasOne("LifeDataBase.UserEntity", null)
+                    b.HasOne("LifeDataBase.Entities.UserEntity", null)
                         .WithMany("Lifes")
-                        .HasForeignKey("UserEntityId");
+                        .HasForeignKey("UserEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("LifeDataBase.UserEntity", b =>
+            modelBuilder.Entity("LifeDataBase.Entities.UserEntity", b =>
                 {
                     b.Navigation("Lifes");
                 });

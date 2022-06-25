@@ -24,6 +24,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TheLifeLogic\TheLifeLogic.csproj" />
+      <ProjectReference Include="..\WebAPI\WebAPI.csproj" />
     </ItemGroup>
 
 </Project>

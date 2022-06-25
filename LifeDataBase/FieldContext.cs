@@ -6,12 +6,12 @@ using TheLiveLogic.Maps;
 
 namespace LifeDataBase;
 
-public class LifeContext : DbContext
+public class FieldContext : DbContext
 {
     public DbSet<FieldEntity> LifeStates { get; set; }
     public DbSet<UserEntity> LifeUsers { get; set; }
 
-    public LifeContext(DbContextOptions options) : base(options)
+    public FieldContext(DbContextOptions options) : base(options)
     {
     }
 

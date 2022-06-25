@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Drawing;
+using System.Drawing.Imaging;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using TheLiveLogic.Maps;
 using WebAPI.APIStruct;
 using WebAPI.Repositories;
 using WebAPI.Services;
+using WebAPI.Utils;
 
 namespace WebAPI.Controllers;
 
@@ -18,13 +20,32 @@ public class TheLifeController : ControllerBase
     private readonly IFieldRepository _fieldRepository;
     private readonly UserIdAccessor _userIdAccessor;
     private readonly ActiveFieldService _activeField;
+    private readonly MinimapGenerator _minimapGenerator;
     
-    public TheLifeController(IFieldRepository fieldRepository, UserIdAccessor userIdAccessor, IMapper mapper, ActiveFieldService activeField)
+    public TheLifeController(IFieldRepository fieldRepository, UserIdAccessor userIdAccessor, IMapper mapper, ActiveFieldService activeField, MinimapGenerator minimapGenerator)
     {
         _mapper = mapper;
         _activeField = activeField;
+        _minimapGenerator = minimapGenerator;
         _fieldRepository = fieldRepository;
         _userIdAccessor = userIdAccessor;
+    }
+
+    [HttpGet("Minimap/{fieldId:int}")]
+    public async Task<IActionResult> GetMinimap(int fieldId)
+    {
+        var field = await _fieldRepository.LoadField(fieldId);
+        if (field is null)
+        {
+            return BadRequest($"There is no field with Id == {fieldId}");
+        }
+
+        var minimap = _minimapGenerator.Generate(field.Survivors);
+        var stream = new MemoryStream();
+        minimap.Save(stream, ImageFormat.Png);
+        stream.Position = 0;
+            
+        return File(stream, "image/png");
     }
 
     [HttpGet("Map/{fieldId:int}", Name = "GetCurrentState")]
@@ -45,7 +66,12 @@ public class TheLifeController : ControllerBase
     public async Task<IActionResult> GetUserFields()
     {
         var fields = await _fieldRepository.LoadAllFields();
-
+        var minimaps = fields.Select(field =>
+        {
+            field.Minimap = _minimapGenerator.Generate(field.Survivors);
+            return field;
+        }).ToList();
+        
         return Ok(fields);
     }
 
@@ -59,18 +85,18 @@ public class TheLifeController : ControllerBase
     }
 
     [HttpPost("Map", Name = "SaveMap")]
-    public async Task<IActionResult> SaveNewMap([FromBody] SetStateRequest state)
+    public async Task<IActionResult> SaveNewMap([FromBody] SetFieldRequest field)
     {
-        var mappedState = _mapper.Map<Field>(state);
+        var mappedState = _mapper.Map<Field>(field);
         var mapId = await _fieldRepository.SaveField(mappedState);
         
         return Ok(mapId);
     }
 
     [HttpPut("Map/{mapId}", Name = "SaveNewMap")]
-    public async Task<IActionResult> SaveMap([FromBody] SetStateRequest state, [FromRoute] int mapId)
+    public async Task<IActionResult> SaveMap([FromBody] SetFieldRequest field, [FromRoute] int mapId)
     {
-        var mappedState = _mapper.Map<Field>(state);
+        var mappedState = _mapper.Map<Field>(field);
         await _fieldRepository.UpdateField(mappedState, mapId);
         
         return Ok();

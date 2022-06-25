@@ -13,20 +13,17 @@ export default function ControlBar(props) {
         </form>
     );
 
-    let qwe = (
+    return (
         <div className={"main-container"}>
             <div className={"control-map"}>
                 <img src={""} alt={"map"}/>
                 <div className={"vert-container"}>
-                    <button className={"map-button"} type={"button"}>Save</button>
-                    <button className={"map-button"} type={"button"}>Load</button>
+                    <button className={"green-button"} type={"button"}>Save</button>
+                    <button className={"green-button"} type={"button"}>Load</button>
                 </div>
             </div>
         </div>
-            
     );
-    
-    return qwe;
     
     function MakeTurn() {
         fetch('https://localhost:7129/Turn/1', {method: "POST"})

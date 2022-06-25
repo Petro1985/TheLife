@@ -6,6 +6,7 @@ using WebAPI.Auth;
 using WebAPI.Controllers;
 using WebAPI.Repositories;
 using WebAPI.Services;
+using WebAPI.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,6 @@ builder.Services.AddCors(options =>
 });
 
 // Aplication services registration
-
 builder.Services.AddTheLife();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFieldRepository, FieldRepository>();
@@ -32,6 +32,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<UserIdAccessor>();
 builder.Services.AddSingleton<ActiveFieldService>();
 builder.Services.AddSingleton<LifeEngine>();
+builder.Services.AddSingleton<MinimapGenerator>();
 
 
 builder.Services.AddAuthentication(opt =>
@@ -42,7 +43,7 @@ builder.Services.AddAuthentication(opt =>
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
 
-builder.Services.AddDbContext<LifeContext>(options =>
+builder.Services.AddDbContext<FieldContext>(options =>
 {
     var connectionString = builder.Configuration["DB_Settings:connectionstring"];
     connectionString += $"password={builder.Configuration["DBPassword"]};";

@@ -12,9 +12,9 @@ public interface IUserRepository
 
 public class UserRepository : IUserRepository
 {
-    private readonly LifeContext _db;
+    private readonly FieldContext _db;
 
-    public UserRepository(LifeContext db)
+    public UserRepository(FieldContext db)
     {
         _db = db;
     }
