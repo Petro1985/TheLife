@@ -1,24 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using WebAPI.Repositories;
-using WebAPI.Services;
+using TheLiveLogic.Interfaces;
+using WebAPI.APIStruct;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
 
-    public UserController(IUserRepository userRepository)
+    public UserController(IUserService userService)
     {
-        _userRepository = userRepository;
+        _userService = userService;
     }
 
     [HttpPost("Registration")]
     public async Task<IActionResult> RegisterNewUser()
     {
-        var newUserId = await _userRepository.AddUser();
+        var newUserId = await _userService.AddUser("anonymous");
+        
         HttpContext.Response.Cookies.Append("user", newUserId.ToString(),
             new CookieOptions {
                 HttpOnly = false,
@@ -40,7 +40,7 @@ public class UserController : ControllerBase
         }
         else
         {
-            return Ok(HttpContext.User.Claims.Select(c => new {Key = c.Type, Value = c.Value}));
+            return Ok(HttpContext.User.Claims.Select(c => new UserClaimResponse {Key = c.Type, Value = c.Value}));
         }
     }
 }

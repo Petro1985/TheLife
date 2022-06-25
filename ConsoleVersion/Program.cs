@@ -13,12 +13,12 @@ map.SetCell(new Coord(4, 5), true);
 map.SetCell(new Coord(3, 5), true);
 map.SetCell(new Coord(2, 5), true);
 
-var theLife = new TheLife(map, new LifeEngine());
+var theEngine = new LifeEngine();
 
 while (true)
 {
-    var textMap = consoleOutput.CreateTextMap(theLife.Map, 50);
-    var turnState = theLife.MakeTurn();
+    var textMap = consoleOutput.CreateTextMap(map, 50);
+    theEngine.MakeTurn(map);
 
     var curPos = Console.GetCursorPosition();
     Console.Write(textMap);

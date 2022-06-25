@@ -18,10 +18,16 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.4" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+        <InternalsVisibleTo Include="TheLiveLogic.Test" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\LifeDataBase\LifeDataBase.csproj" />
       <ProjectReference Include="..\TheLifeLogic\TheLifeLogic.csproj" />
+      <ProjectReference Include="..\TheLifeServices\TheLifeServices.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="APIStruct\Mapper" />
     </ItemGroup>
 </Project>

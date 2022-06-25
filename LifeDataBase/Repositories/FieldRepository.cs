@@ -1,42 +1,28 @@
 ﻿using AutoMapper;
-using LifeDataBase;
 using LifeDataBase.Entities;
 using Microsoft.EntityFrameworkCore;
-using TheLiveLogic;
-using WebAPI.APIStruct;
-using WebAPI.Controllers;
-using WebAPI.Services;
+using TheLiveLogic.DataStruct;
+using TheLiveLogic.Interfaces;
 
-namespace WebAPI.Repositories;
-
-public interface IFieldRepository
-{
-    Task<long> SaveField(Field state);
-    Task<List<FieldResponse>> LoadAllFields();
-    Task<Field?> LoadField(int fieldId);
-    Task UpdateField(Field state, int fieldId);
-}
+namespace LifeDataBase.Repositories;
 
 public class FieldRepository : IFieldRepository
 {
     private readonly FieldContext _db;
-    private readonly IMapper _mapper;
-    private readonly UserIdAccessor _userIdAccessor;
+    private readonly IUserIdAccessor _userIdAccessor;
+    private readonly IMapper _mapper; 
     
-    public FieldRepository(FieldContext db, IMapper mapper, UserIdAccessor userIdAccessor)
+    public FieldRepository(FieldContext db, IUserIdAccessor userIdAccessor, IMapper mapper)
     {
         _db = db;
-        _mapper = mapper;
         _userIdAccessor = userIdAccessor;
+        _mapper = mapper;
     }
 
-    public async Task<long> SaveField(Field state)
+    public async Task<long> SaveField(Field field)
     {
-        var fieldEntity = new FieldEntity
-        {
-            Survivors = state.Survivors,
-            UserEntityId = _userIdAccessor.GetUserId()!.Value,
-        };
+        var fieldEntity = _mapper.Map<FieldEntity>(field);
+        fieldEntity.UserEntityId = _userIdAccessor.GetUserId()!.Value;
 
         _db.LifeStates.Add(fieldEntity);
         await _db.SaveChangesAsync();
@@ -44,17 +30,14 @@ public class FieldRepository : IFieldRepository
         return fieldEntity.Id;
     }
 
-    public async Task<List<FieldResponse>> LoadAllFields()
+    public async Task<List<Field>> LoadAllFields()
     {
         var userId = _userIdAccessor.GetUserId()!.Value;
         var query = _db.LifeStates.Where(
             entity => entity.UserEntityId == userId);
+        var mappedQuery = _mapper.ProjectTo<Field>(query);
         
-        var mappedQuery = _mapper.ProjectTo<FieldResponse>(query, new {});
-
-        var result = await mappedQuery.ToListAsync();
-        
-        return result;
+        return await mappedQuery.ToListAsync();
     }
 
     public async Task<Field?> LoadField(int fieldId)

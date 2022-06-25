@@ -1,12 +1,16 @@
 using System.Reflection;
 using LifeDataBase;
+using LifeDataBase.ExtensionMethods;
+using LifeDataBase.Repositories;
 using Microsoft.EntityFrameworkCore;
+using TheLifeServices.ExtensionMethods;
+using TheLifeServices.Services;
 using TheLiveLogic;
+using TheLiveLogic.ExtensionMethods;
+using TheLiveLogic.Interfaces;
 using WebAPI.Auth;
 using WebAPI.Controllers;
-using WebAPI.Repositories;
-using WebAPI.Services;
-using WebAPI.Utils;
+using WebAPI.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,14 +29,13 @@ builder.Services.AddCors(options =>
 });
 
 // Aplication services registration
-builder.Services.AddTheLife();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IFieldRepository, FieldRepository>();
+builder.Services.AddTheLifeDataBase();
+builder.Services.AddTheLifeLogic();
+builder.Services.AddTheLifeServices();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSingleton<UserIdAccessor>();
-builder.Services.AddSingleton<ActiveFieldService>();
-builder.Services.AddSingleton<LifeEngine>();
-builder.Services.AddSingleton<MinimapGenerator>();
+builder.Services.AddSingleton<IUserIdAccessor, UserIdAccessor>();
+builder.Services.AddSingleton<IActiveFieldService, ActiveFieldService>();
+builder.Services.AddSingleton<IMinimapGenerator, MinimapGenerator>();
 
 
 builder.Services.AddAuthentication(opt =>
@@ -75,3 +78,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

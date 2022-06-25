@@ -22,7 +22,7 @@ public class FieldContext : DbContext
         modelBuilder.Entity<FieldEntity>().Property(state => state.Survivors)
             .HasConversion(
                 list => JsonSerializer.Serialize(list, (JsonSerializerOptions?)null), 
-                json => JsonSerializer.Deserialize<ImmutableList<Coord>>(json, (JsonSerializerOptions?)null)!);
+                json => JsonSerializer.Deserialize<List<Coord>>(json, (JsonSerializerOptions?)null)!);
         
         base.OnModelCreating(modelBuilder);
     }

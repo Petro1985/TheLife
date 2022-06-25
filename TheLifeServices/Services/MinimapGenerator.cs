@@ -2,17 +2,17 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using TheLiveLogic;
+using TheLiveLogic.Interfaces;
 using TheLiveLogic.Maps;
 
-namespace WebAPI.Utils;
+namespace TheLifeServices.Services;
 
-public class MinimapGenerator
+public class MinimapGenerator : IMinimapGenerator
 {
     const int MinimapSize = 140;
-    public Bitmap Generate(ImmutableList<Coord> field)
+    public Bitmap Generate(List<Coord> field)
     {
-        if (field.Count == 0) new Bitmap(MinimapSize, MinimapSize);
+        if (field.Count == 0) return new Bitmap(MinimapSize, MinimapSize);
         
         var maxX = field[0].X;
         var maxY = field[0].Y;

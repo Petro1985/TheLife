@@ -1,4 +1,6 @@
-﻿namespace TheLiveLogic.Maps;
+﻿using TheLiveLogic.DataStruct;
+
+namespace TheLiveLogic.Maps;
 
 public interface IMap
 {

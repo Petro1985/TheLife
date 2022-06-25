@@ -1,8 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Repositories;
-using WebAPI.Services;
+using TheLiveLogic.Interfaces;
 
 namespace WebAPI.Auth;
 

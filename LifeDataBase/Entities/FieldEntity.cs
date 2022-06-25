@@ -6,7 +6,7 @@ namespace LifeDataBase.Entities;
 public class FieldEntity
 {
     public long Id { get; init; }
-    public ImmutableList<Coord> Survivors { get; set; }
+    public List<Coord> Survivors { get; set; }
     public string Name { get; set; }
     public Guid UserEntityId { get; set; }
 }

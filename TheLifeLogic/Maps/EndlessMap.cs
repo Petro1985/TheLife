@@ -1,4 +1,7 @@
-﻿namespace TheLiveLogic.Maps;
+﻿using TheLiveLogic.DataStruct;
+using TheLiveLogic.ExtensionMethods;
+
+namespace TheLiveLogic.Maps;
 
 public class EndlessMap : IMap
 {
