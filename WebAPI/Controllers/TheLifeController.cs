@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.Drawing.Imaging;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;

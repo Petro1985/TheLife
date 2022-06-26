@@ -13,23 +13,22 @@ class MapService
 
     constructor(setMapFunc, map)
     {
-        this.setMap = setMapFunc;
-        this.currentMap = map; 
     }
-
+    
     SetNewMap(map)
     {
-        // console.log("--------new map before set---------");
-        // console.log(this.currentMap);
-        this.setMap(map);
-        // console.log("--------new map set---------");
-        // console.log(map);
+        this.currentMap = map;        
+    }
+
+    ApplyCurrentMap()
+    {
+        this.setMap(this.currentMap);
     }
 
     ChangeLife(x, y)
     {
         const newMap = {};
-        //newMap.id = this.currentMap.id;
+        newMap.id = this.currentMap.id;
         newMap.name = this.currentMap.name;
 
         newMap.survivors = this.currentMap.survivors.filter(life => !(life.x === x && life.y === y));
@@ -38,7 +37,7 @@ class MapService
         {
             newMap.survivors.push({x:x, y:y});
         }
-        return newMap;
+        this.currentMap = newMap;
     }
 }
 
@@ -64,6 +63,8 @@ class FetchService
 
     async SetMap(map)
     {
+        // console.log("-----map to post --------");
+        // console.log(map);
         let currentMapId = map.id;
         try {
             
@@ -77,14 +78,12 @@ class FetchService
                 );
                 
                 currentMapId = await result.json();
-                console.log("got new id=" + currentMapId);
+                // console.log("got new id=" + currentMapId);
             }
             else
             {
                 const result = await fetch('https://localhost:7129/Map/' + map.id, 
                     {...this.fetchOptions, method: "PUT", body: bodyContent, headers: headersContent});
-
-                
             }
 
             return currentMapId;
@@ -129,37 +128,28 @@ class FetchService
         }
     }
 }
+
 const AppStates = {
     Menu: 1,
     SettingField: 2,
     Playing: 3
 };
-
 Object.freeze(AppStates);
+
+const mapService = new MapService();
+const fetchService = new FetchService();
 
 
 function App() {
-    //const [survivors, setSurvivors] = useState({survivors:[]});
     const [AppState, setAppState] = useState(AppStates.Menu);
     const [CurrentMap, setCurrentMap] = useState({"id":-1, "survivors": [], "name":""});
 
-    const mapService = new MapService(setCurrentMap, CurrentMap);
-    
-    const fetchService = new FetchService();
+    mapService.setMap = setCurrentMap;
+    mapService.currentMap = CurrentMap;
+
     fetchService.GetUserInfo()
         .then();
     
-    
-    // useEffect(() => {
-    //         async function fetchData() {
-    //             const map = await fetchService.GetMap(3);
-    //             // console.log(map);
-    //             setSurvivors(map);
-    //         }
-    //         fetchData();
-    //     }, []
-    // )
-
     const MainPart = (AppState === AppStates.Menu) ?
             <Menu 
                 AppStateSetter = {setAppState}

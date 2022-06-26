@@ -14,6 +14,7 @@ export default function Menu(props)
         {        
             const map = await fetchService.GetMap(mapsInfo[number].id);
             mapService.SetNewMap(map);
+            mapService.ApplyCurrentMap();
             // console.log("--------new map set---------");
             // console.log(map);
         }
