@@ -13,6 +13,7 @@ export default function Menu(props)
         if (number > -1) 
         {        
             const map = await fetchService.GetMap(mapsInfo[number].id);
+            map.name = mapsInfo[number].name;
             mapService.SetNewMap(map);
             mapService.ApplyCurrentMap();
             // console.log("--------new map set---------");
@@ -55,7 +56,12 @@ export default function Menu(props)
 
     return (
         <div className={"menu"}>
-            <button key={"MenuEmptyButton"} onClick={() => MenuButtonClicked(-1)} className={"green-button"}>Empty map</button>
+            <button 
+                key={"MenuEmptyButton"} 
+                onClick={() => MenuButtonClicked(-1)}
+                className={"green-button"}>
+                New map
+            </button>
             {maps}
         </div>);
 }

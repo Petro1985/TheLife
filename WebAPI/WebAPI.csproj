@@ -5,7 +5,9 @@
         <Nullable>enable</Nullable>
         <SpaRoot>life-front-end\</SpaRoot>
         <ImplicitUsings>enable</ImplicitUsings>
-      <UserSecretsId>95833df0-9b8c-4355-a7b6-a59633c87733</UserSecretsId>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <UserSecretsId>95833df0-9b8c-4355-a7b6-a59633c87733</UserSecretsId>
   </PropertyGroup>
 
     <ItemGroup>

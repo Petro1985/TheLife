@@ -10,6 +10,7 @@ public static class LifeServicesCollectionExt
     {
         collection.AddScoped<IUserService, UserService>();
         collection.AddScoped<IFieldService, FieldService>();
+        collection.AddSingleton<IMinimapGenerator, MinimapGenerator>();
         return collection;
     }
 }

@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
 using WebAPI.APIStruct;
 using Xunit;
 
@@ -16,7 +17,13 @@ public class AnonymousUserRegistrationTest
     public AnonymousUserRegistrationTest()
     {
         _myWebsite = new MyWebsite();
-        _client = _myWebsite.CreateClient();
+        var clientOptions = new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false,
+            MaxAutomaticRedirections = 0,
+            HandleCookies = true
+        };
+        _client = _myWebsite.CreateClient(clientOptions);
     }
 
     [Fact]

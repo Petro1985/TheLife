@@ -28,8 +28,8 @@ public class FieldService : IFieldService
         return await _fieldRepository.LoadField(fieldId);
     }
 
-    public async Task UpdateField(Field field, int fieldId)
+    public async Task<bool> UpdateField(Field field, int fieldId)
     {
-        await _fieldRepository.UpdateField(field, fieldId);
+        return await _fieldRepository.UpdateField(field, fieldId);
     }
 }

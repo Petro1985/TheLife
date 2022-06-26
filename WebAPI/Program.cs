@@ -11,10 +11,18 @@ using TheLiveLogic.Interfaces;
 using WebAPI.Auth;
 using WebAPI.Controllers;
 using WebAPI.Interfaces;
+using WebAPI.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(opt => 
+{
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    
+});
 
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
@@ -28,14 +36,13 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Aplication services registration
+// Application services registration
 builder.Services.AddTheLifeDataBase();
 builder.Services.AddTheLifeLogic();
 builder.Services.AddTheLifeServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IUserIdAccessor, UserIdAccessor>();
 builder.Services.AddSingleton<IActiveFieldService, ActiveFieldService>();
-builder.Services.AddSingleton<IMinimapGenerator, MinimapGenerator>();
 
 
 builder.Services.AddAuthentication(opt =>

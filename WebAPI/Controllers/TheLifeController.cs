@@ -14,9 +14,7 @@ namespace WebAPI.Controllers;
 public class TheLifeController : ControllerBase
 {
     private readonly IMapper _mapper;
-
     private readonly IFieldService _fieldService;
-    
     private readonly IUserIdAccessor _userIdAccessor;
     private readonly IActiveFieldService _activeField;
     private readonly IMinimapGenerator _minimapGenerator;
@@ -30,8 +28,15 @@ public class TheLifeController : ControllerBase
         _userIdAccessor = userIdAccessor;
     }
 
+    
+    /// <summary>
+    /// Returns minimap of specific field
+    /// </summary>
+    /// <param name="fieldId">Field Id witch minimap you need</param>
     [Authorize]
     [HttpGet("Minimap/{fieldId:int}")]
+    [ProducesResponseType(typeof(MemoryStream), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetMinimap(int fieldId)
     {
         var field = await _fieldService.LoadField(fieldId);
@@ -48,22 +53,30 @@ public class TheLifeController : ControllerBase
         return File(stream, "image/png");
     }
 
+    /// <summary>
+    /// Returns field by id
+    /// </summary>
+    /// <param name="fieldId">Id of field you need</param>
     [Authorize]
-    [HttpGet("Map/{fieldId:int}", Name = "GetCurrentState")]
+    [HttpGet("Map/{fieldId:int}")]
+    [ProducesResponseType(typeof(FieldResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetField(int fieldId)
     {
         var field = await _fieldService.LoadField(fieldId);
-
         if (field is null)
-        {
             return BadRequest($"There is no field with Id == {fieldId}");
-        }
 
-        return Ok(field);
+        var mappedField = _mapper.Map<FieldResponse>(field);
+        return Ok(mappedField);
     }
 
+    /// <summary>
+    /// Return information about all field belongs to authenticated user.
+    /// </summary>
     [Authorize]
-    [HttpGet("Map", Name = "Get user fields")]
+    [HttpGet("Map")]
+    [ProducesResponseType(typeof(List<FieldInfoResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserFields()
     {
         var fields = await _fieldService.LoadAllFields();
@@ -84,17 +97,32 @@ public class TheLifeController : ControllerBase
         return Ok(responseFields);
     }
 
+    /// <summary>
+    /// Returns only "state of life" in specified area
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="dX"></param>
+    /// <param name="dY"></param>
     [Authorize]
     [HttpGet("Map/Area", Name = "GetAreaState")]
+    [ProducesResponseType(typeof(FieldResponse), StatusCodes.Status200OK)]
     public IActionResult GetSquareState([FromQuery]int x, [FromQuery]int y, [FromQuery]int dX, [FromQuery]int dY)
     {
         var user = _userIdAccessor.GetUserId()!;
         var resultLife = _activeField.GetActiveFieldRect(user.Value, new Rect(x, y, dX, dY));
-        return Ok(resultLife);
+        var mappedResult = _mapper.Map<FieldResponse>(resultLife);
+        
+        return Ok(mappedResult);
     }
 
+    /// <summary>
+    /// Saves a new field in database and assigns id
+    /// </summary>
+    /// <param name="field"></param>
     [Authorize]
-    [HttpPost("Map", Name = "SaveMap")]
+    [HttpPost("Map")]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     public async Task<IActionResult> SaveNewMap([FromBody] SetFieldRequest field)
     {
         var mappedState = _mapper.Map<Field>(field);
@@ -103,25 +131,55 @@ public class TheLifeController : ControllerBase
         return Ok(mapId);
     }
 
+    /// <summary>
+    /// Updates field information in database
+    /// </summary>
+    /// <param name="field"></param>
+    /// <param name="fieldId">id of field to update</param>
     [Authorize]
-    [HttpPut("Map/{mapId}", Name = "SaveNewMap")]
-    public async Task<IActionResult> SaveMap([FromBody] SetFieldRequest field, [FromRoute] int mapId)
+    [HttpPut("Map/{fieldId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SaveMap([FromBody] SetFieldRequest field, [FromRoute] int fieldId)
     {
         var mappedState = _mapper.Map<Field>(field);
-        await _fieldService.UpdateField(mappedState, mapId);
+        var result = await _fieldService.UpdateField(mappedState, fieldId);
+        if (!result) return BadRequest($"There is no field with id {fieldId}"); 
         
         return Ok();
     }
 
+    /// <summary>
+    /// Makes one turn on active field and returns changes
+    /// </summary>
     [Authorize]
-    [HttpPost("Turn/{numberOfTurns:int}", Name = "Make_N_Turns")]
-    public IActionResult MakeTurn(int numberOfTurns = 1)
+    [HttpPost("Turn/")]
+    [ProducesResponseType(typeof(FieldResponse), StatusCodes.Status200OK)]
+    public IActionResult MakeTurn()
     {
         var user = _userIdAccessor.GetUserId()!;
         
-        for (var i = 0; i < numberOfTurns; i++)
-            _activeField.MakeTurn(user.Value);
+        var field = _activeField.MakeTurn(user.Value);
+        var mappedField = _mapper.Map<FieldResponse>(field);
         
+        return Ok(mappedField);
+    }
+    
+    /// <summary>
+    /// Set specific field as an active one 
+    /// </summary>
+    [Authorize]
+    [HttpPost("SetFieldForSimulation/{id:int}")]
+    [ProducesResponseType(typeof(FieldResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SetFieldForSimulation(int id)
+    {
+        var user = _userIdAccessor.GetUserId()!.Value;
+
+        var field = await _fieldService.LoadField(id);
+        if (field is null) return BadRequest($"There is no field with id={id}");
+        
+        _activeField.SetActiveField(user, field);
         return Ok();
     }
 }

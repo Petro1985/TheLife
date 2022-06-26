@@ -2,38 +2,24 @@ import React from "react";
 import "./control-bar.css";
 
 export default function ControlBar(props) {
-    
-    // let maps = props.Maps;
 
-    // console.log(maps);
-    
-    // let component = (
-    //     <form>
-    //         <button onClick={MakeTurn} type={"button"}>Press me</button>
-    //     </form>
-    // );
+    const emulationService = props.emulationService;
+
+    async function onPlayClick() {
+        await emulationService.StartEmulation();
+    }
+    async function onPauseClick() {
+        await emulationService.PauseEmulation();
+    }
+    async function onStopClick() {
+        await emulationService.StopEmulation();
+    }
 
     return (
         <div className={"main-container"}>
-            <div className={"control-map"}>
-                <img src={""} alt={"map"}/>
-                <div className={"vert-container"}>
-                    <button className={"green-button"} type={"button"}>Save</button>
-                    <button className={"green-button"} type={"button"}>Load</button>
-                </div>
-            </div>
+            <button onClick={onPlayClick} className={"control--button-play green-button"} type={"button"}>Play</button>
+            <button onClick={onPauseClick} className={"control--button-pause green-button"} type={"button"}>Pause</button>
+            <button onClick={onStopClick} className={"control--button-stop green-button"} type={"button"}>Stop</button>
         </div>
     );
-    
-    // function MakeTurn() {
-    //     fetch('https://localhost:7129/Turn/1', {method: "POST"})
-    //         .then( response => {
-    //                 fetch('https://localhost:7129/Map')
-    //                     .then(response => response.json())
-    //                     .then(data => {
-    //                         props.setSurvivors(data.data);
-    //                     });
-    //             }
-    //         )
-    // }
 }

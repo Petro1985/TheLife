@@ -7,5 +7,5 @@ namespace WebAPI.APIStruct;
 public class FieldResponse
 {
     public long Id { get; init; }
-    public ImmutableList<Coord> Survivors { get; set; }
+    public List<Coord> Survivors { get; set; }
 }

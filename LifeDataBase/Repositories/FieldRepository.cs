@@ -42,19 +42,23 @@ public class FieldRepository : IFieldRepository
 
     public async Task<Field?> LoadField(int fieldId)
     {
-        var field = await _db.LifeStates.FirstOrDefaultAsync(entity => entity.Id == fieldId);
-        var mappedFiled = _mapper.Map<Field>(field);
+        var field = await _db.LifeStates.
+            FirstOrDefaultAsync(
+                entity => entity.Id == fieldId 
+                && entity.UserEntityId == _userIdAccessor.GetUserId());
         
+        var mappedFiled = _mapper.Map<Field>(field);
         return mappedFiled;
     }
 
-    public async Task UpdateField(Field state, int fieldId)
+    public async Task<bool> UpdateField(Field state, int fieldId)
     {
         var field = await _db.LifeStates.FirstOrDefaultAsync(entity => entity.Id == fieldId);
-        if (field is null) return;
+        if (field is null) return false;
         
         field.Survivors = state.Survivors;
         _db.LifeStates.Update(field);
         await _db.SaveChangesAsync();
+        return true;
     }
 }

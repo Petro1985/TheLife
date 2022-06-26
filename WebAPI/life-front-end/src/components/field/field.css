@@ -13,7 +13,7 @@ body {
 
 .field {
     position: relative;
-    margin: 20px auto;
+    margin: 20px auto 0 0;
     max-width: 1000px;
     width: 90vh;
     height: 90vh;
@@ -58,8 +58,10 @@ body {
 
 .dead-cell {
     background-color: rgb(141, 126, 109);
+    transition: all 1s;
 }
 
 .alive-cell {
     background-color: #019f01;
+    transition: all 1s;
 }

@@ -4,7 +4,7 @@ using TheLiveLogic.DataStruct;
 using TheLiveLogic.Maps;
 using WebAPI.Interfaces;
 
-namespace WebAPI.Controllers;
+namespace WebAPI.Utils;
 
 public class ActiveFieldService : IActiveFieldService
 {

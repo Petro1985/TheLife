@@ -5,59 +5,47 @@
     flex-flow: column;
     gap: 30px;
     
-    width: 250px;
+    width: 300px;
+    min-width: 300px;
     height: 100vh;
-    margin-left: 5%;
+    margin-left: auto;
+    margin-right: 10px;
     
-    background-color: grey;
     padding: 30px 10px 10px 10px;
 }
 
-.control-map {
-    display: flex;
-    flex-flow: row;
-    
-    width: 100%;
-    height: 140px;
-    
+
+.control--button-play, .control--button-pause, .control--button-stop 
+{
+    width: 90%;
+    height: 125px;
+    background-repeat: no-repeat;
 }
 
-.control-map > img {
-    width: 140px;
-    height: 140px;
-    
-    background-color: orange;
+.control--button-play
+{
+    text-align: right;
+    padding-right: 20px;
+    font-size: 50px;
+    background-image: url("../../../public/Images/Play-button.png");
+    background-position: 15px 11px;
 }
 
-.vert-container {
-    height: 100%;
-
-    margin-left: 15px;
-    display: flex;
-    flex-flow: column;
-    justify-content: space-between;    
-    
+.control--button-pause
+{
+    text-align: right;
+    background-image: url("../../../public/Images/pause-button.png");
+    background-position: 15px 11px;
+    padding-right: 10px;
+    font-size: 40px;
 }
 
-.green-button {
-    align-self: center;
-    border-radius: 10px;
-    box-shadow: 3px 3px 5px green; 
-    background-color: darkgreen;
-    color: lawngreen;
-    font-weight: bold;
-    font-size: 2rem;
-    border: solid 2px lawngreen;
-    outline-offset: -5px;
-    outline-color: rgba(245, 245, 220, 0.32);
-    outline-style: solid;
-    cursor: pointer;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: rgba(154, 183, 91, 0.5);
-    user-select: none;
-}
 
-.vert-container > button {
-    width: 100px;
-    height: 60px;
+.control--button-stop
+{
+    text-align: right;
+    background-image: url("../../../public/Images/stop-button.png");
+    background-position: 15px 11px;
+    padding-right: 15px;
+    font-size: 50px;
 }
