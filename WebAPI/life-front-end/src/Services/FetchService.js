@@ -6,13 +6,8 @@ export class FetchService
     async GetMap(id)
     {
         try {
-            // console.log("------Map Loaded-------");
-            // console.log(id);
             const result = await fetch('https://localhost:7129/Map/'+id, this.fetchOptions);
-            const map = await result.json();
-            // console.log("------Map Loaded-------");
-            // console.log(map);
-            return map;
+            return await result.json();
         }
         catch (e)
         {
@@ -22,8 +17,6 @@ export class FetchService
 
     async SetMap(map)
     {
-        // console.log("-----map to post --------");
-        // console.log(map);
         let currentMapId = map.id;
         try {
 
@@ -55,62 +48,5 @@ export class FetchService
         }
     }
 
-    async GetAllMapsInfo()
-    {
-        try {
-            const result = await fetch('https://localhost:7129/Map/', {...this.fetchOptions, method: "GET"});
-            // console.log("------------MapsInfo-Result------------");
-            // console.log(result);
-            return result.json();
-        }
-        catch (e)
-        {
-            console.error("func FetchService.GetAllMapsInfo error: " + e);
-        }
-    }
 
-    async GetUserInfo()
-    {
-        try {
-            let data = await fetch('https://localhost:7129/WhoAmI', {mode: "cors", credentials: "include"})
-            if (data.status === 401) {
-                data = await fetch('https://localhost:7129/Registration', {
-                    mode: "cors",
-                    method: "POST",
-                    credentials: "include"
-                })
-            }
-            const userClaims = await data.json();
-            console.log("User logged in id=" + userClaims[0].value);
-        }
-        catch (e)
-        {
-            console.error("func FetchService.GetUserInfo error:" + e);
-        }
-    }
-
-    async SetCurrentMapAsActive(id) {
-        try {
-            await fetch('https://localhost:7129/SetFieldForSimulation/' + id,
-                {...this.fetchOptions, method: "POST"});
-            return true;
-        } catch (e) {
-            console.error("func FetchService.SetCurrentMapAsActive error: " + e);
-            return false;
-        }
-    }
-
-
-    async MakeTurn() {
-        try {
-            const result = await fetch('https://localhost:7129/Turn/',
-                {...this.fetchOptions, method: "POST"});
-            
-            const newMap = await result.json();
-            // console.log(newMap);
-            return newMap;
-        } catch (e) {
-            console.error("Func FetchService.MakeTurn error: " + e);
-        }
-    }
 }

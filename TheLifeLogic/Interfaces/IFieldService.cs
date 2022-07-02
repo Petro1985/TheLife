@@ -8,5 +8,6 @@ public interface IFieldService
     Task<List<Field>> LoadAllFields();
     Task<Field?> LoadField(int fieldId);
     Task<bool> UpdateField(Field field, int fieldId);
+    Task<bool> DeleteField(int fieldId);
 }
 

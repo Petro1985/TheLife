@@ -45,7 +45,7 @@ namespace LifeDataBase.Migrations
 
                     b.HasIndex("UserEntityId");
 
-                    b.ToTable("LifeStates");
+                    b.ToTable("LifeStates", (string)null);
                 });
 
             modelBuilder.Entity("LifeDataBase.Entities.UserEntity", b =>
@@ -60,7 +60,7 @@ namespace LifeDataBase.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LifeUsers");
+                    b.ToTable("LifeUsers", (string)null);
                 });
 
             modelBuilder.Entity("LifeDataBase.Entities.FieldEntity", b =>

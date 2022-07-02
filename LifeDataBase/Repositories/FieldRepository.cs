@@ -61,4 +61,20 @@ public class FieldRepository : IFieldRepository
         await _db.SaveChangesAsync();
         return true;
     }
+    
+    public async Task<bool> DeleteField(int fieldId)
+    {
+        try
+        {
+            var fieldEntity = new FieldEntity() {Id = fieldId};
+            _db.LifeStates.Attach(fieldEntity);
+            _db.LifeStates.Remove(fieldEntity);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

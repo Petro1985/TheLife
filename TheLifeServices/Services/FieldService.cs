@@ -32,4 +32,9 @@ public class FieldService : IFieldService
     {
         return await _fieldRepository.UpdateField(field, fieldId);
     }
+
+    public async Task<bool> DeleteField(int fieldId)
+    {
+        return await _fieldRepository.DeleteField(fieldId);
+    }
 }

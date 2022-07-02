@@ -4,7 +4,7 @@ export class MapService
     currentMap;
     setMap;
 
-    constructor(setMapFunc, map)
+    constructor()
     {
     }
 

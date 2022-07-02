@@ -1,19 +1,23 @@
 import React from 'react' 
 import './field.css'
+import { useDispatch, useSelector } from "react-redux";
+import {changeField, setFieldId} from "../../redux/Actions";
+import updateFieldOnServer from "../../Utilities/UpdateFieldOnServer";
 
 export default function Field(props) {
     const Cells = [];
-    const mapService = props.mapService;
-    const fetchService = props.fetchService;
+    const dispatch = useDispatch();
+
     
-    const life = props.mapService.currentMap.survivors;
-        
-    async function ChangeLife(x, y)
-    {
-        mapService.ChangeLife(x, y);
-        mapService.ApplyCurrentMap();
-        mapService.currentMap.id = await fetchService.SetMap(mapService.currentMap);        
-    }
+    const { field } = useSelector( state => {
+        const {field} = state.fieldReducer;
+        return {field} ;
+    });
+    
+    async function changeCell(coord) {
+        dispatch(changeField(coord));
+        await updateFieldOnServer(field);
+    }    
     
     for (let j = 0; j < 10; j++)
     {
@@ -22,13 +26,13 @@ export default function Field(props) {
         {
             
             if (
-                life.find(element => element.x === i && element.y === j)
+                field.survivors.find(element => element.x === i && element.y === j)
             ){
-                row.push(<div onClick={() => ChangeLife(i, j)} key={i + j * 10} className={"alive-cell"}></div>);
+                row.push(<div onClick={() => changeCell({x:i, y:j})} key={i + j * 10} className={"alive-cell"}></div>);
             }
             else
             {
-                row.push(<div onClick={() => ChangeLife(i, j)} key={i + j * 10} className={"dead-cell"}></div>);
+                row.push(<div onClick={() => changeCell({x:i, y:j})} key={i + j * 10} className={"dead-cell"}></div>);
             }
         }
         Cells.push(<div key={"FieldRow" + j} className={"row"}>{row}</div>)
@@ -37,4 +41,3 @@ export default function Field(props) {
     
     return <div className={"field"}>{Cells}</div>;
 }
-

@@ -182,4 +182,20 @@ public class TheLifeController : ControllerBase
         _activeField.SetActiveField(user, field);
         return Ok();
     }
+    
+    /// <summary>
+    /// Delete specific field from database 
+    /// </summary>
+    [Authorize]
+    [HttpDelete("Map/{fieldId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> DeleteField(int fieldId)
+    {
+        var field = await _fieldService.DeleteField(fieldId);
+        if (!field) return BadRequest($"Couldn't delete field id={field} by some reason");
+        
+        return Ok();
+    }
+    
 }
