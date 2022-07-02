@@ -85,17 +85,16 @@ function App() {
             />
         :
             (
-            <Field
-
-            />
+                <div className="flex-container">
+                    <ControlBar/>
+                    <Field/>
+                </div>                
             );
     
     return (
-        <div className="flex-container">
-            <ControlBar
-            />
+        <>
             {MainPart}
-        </div>
+        </>
     );
 }
 

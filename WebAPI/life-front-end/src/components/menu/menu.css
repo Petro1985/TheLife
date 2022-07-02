@@ -1,20 +1,21 @@
 ﻿
 .menu
 {
-    margin: auto auto;
+    margin: 5vh auto;
+    padding: 25px 5px;
     position: relative;
     max-width: 600px;
     width: 450px;
-    height: 800px;
+    max-height: 90vh;
 
     display: flex;
     flex-flow: column;
     
-    justify-content: space-evenly;
     background-color: beige;
     border-radius: 10px;
     border: solid 2px #58bd58;
     
+    gap: 30px;
 }
 
 .menu > button
@@ -58,7 +59,7 @@
     width: 20%;
     margin-left: auto;
     background-image: url("../../../public/Images/delete-button.png");
-    background-position: center;
+
     background-size: cover;
     border-color: brown;
     border-radius: 10px;
@@ -71,7 +72,25 @@
     width: 75%;
 }
 
-#qwe {
+.menu--field--choose-delete-buttons {
     display: flex;
     margin-top: auto;
 }
+
+.menu--field-rename-button
+{
+    height: 1rem;
+    width: 1rem;
+    margin-left: 5px;
+    background-image: url("../../../public/Images/edit.png");
+    background-size: cover;
+    border: none;
+    border-radius: 10%;
+    cursor: pointer;
+}
+
+.menu--field-rename-input:focus, .menu--field-rename-input
+{
+    border: none;
+    border-radius: 5px;
+ }
