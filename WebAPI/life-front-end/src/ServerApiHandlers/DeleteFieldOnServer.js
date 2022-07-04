@@ -1,9 +1,11 @@
-﻿export async function DeleteFieldOnServer(fieldId)
+﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
+
+export async function DeleteFieldOnServer(fieldId)
 {
     try {
         const fetchOptions = {mode: "cors", credentials: "include", method: "DELETE"};
 
-        await fetch('https://localhost:7129/Map/'+fieldId, fetchOptions)
+        await fetch(SERVER_ADDRESS + '/Map/'+fieldId, fetchOptions)
     }
     catch (e)
     {

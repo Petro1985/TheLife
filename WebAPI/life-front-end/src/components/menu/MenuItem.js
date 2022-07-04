@@ -1,12 +1,16 @@
 ﻿import React, {useEffect, useRef, useState} from "react";
-import {getFieldFromServer, setField} from "../../redux/Actions";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchFieldById} from "../../redux/fieldSlice";
+import {deleteItem, renameField, renameItem} from "../../redux/menuSlice";
+import {DeleteFieldOnServer} from "../../ServerApiHandlers/DeleteFieldOnServer";
 
-export default function MenuItem({ind, fieldInfo, AppStateSetter, ChangeFieldName}){
+export default function MenuItem({ind, AppStateSetter}){
     const EMPTY_EDIT_MODE = {active:false, editedName: ""};
     const [editMode, setEditMode] = useState(EMPTY_EDIT_MODE)
     const dispatch = useDispatch();
     const inputRef = useRef(null);
+    
+    const fieldInfo = useSelector(state => state.menu.menu[ind]);
 
     function onEditFieldNameClick(ind)
     {
@@ -21,13 +25,14 @@ export default function MenuItem({ind, fieldInfo, AppStateSetter, ChangeFieldNam
             }
         );
     }
-    async function MenuButtonClicked(number) {
-        dispatch(getFieldFromServer(fieldInfo.id, fieldInfo.name));
+    async function MenuButtonClicked() {
+        dispatch(fetchFieldById(fieldInfo.id));
         AppStateSetter(oldState => oldState + 1);
     }
 
     async function OnDeleteFieldClicked(ind) {
-        
+        await DeleteFieldOnServer(fieldInfo.id);
+        dispatch(deleteItem(ind));
     }
     
     // effect for focusing input
@@ -37,10 +42,10 @@ export default function MenuItem({ind, fieldInfo, AppStateSetter, ChangeFieldNam
         }
     }, [editMode])
 
-    function onFieldNameInputKeyDown(event, ind) {
+    function onFieldNameInputKeyDown(event) {
         switch (event.key){
             case 'Enter':
-                ChangeFieldName(ind, editMode.editedName);
+                dispatch(renameField({fieldId: fieldInfo.id, ind:ind, newName:editMode.editedName}));
             case 'Escape':
                 setEditMode(EMPTY_EDIT_MODE);
                 break;
@@ -62,13 +67,13 @@ export default function MenuItem({ind, fieldInfo, AppStateSetter, ChangeFieldNam
                                 ref={inputRef}
                                 className={"menu--field-rename-input"}
                                 value={editMode.editedName}
-                                onChange={(event) => onFieldNameInputChange(event, ind)}
-                                onKeyDown={(event) => onFieldNameInputKeyDown(event, ind)}
+                                onChange={(event) => onFieldNameInputChange(event)}
+                                onKeyDown={(event) => onFieldNameInputKeyDown(event)}
                                 onBlur={() => setEditMode(EMPTY_EDIT_MODE)}
                             /> 
                              :
                             (<>{(fieldInfo.name ? fieldInfo.name : "Unnamed")}
-                                        <button onClick={() => onEditFieldNameClick(ind)} className={"menu--field-rename-button"}></button>
+                                        <button onClick={() => onEditFieldNameClick()} className={"menu--field-rename-button"}></button>
                             </>)}
                             </span>
     
