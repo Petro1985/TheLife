@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import ControlBar from "./components/control-bar/control-bar";
 import Menu from "./components/menu/menu"
 import {logDOM} from "@testing-library/react";
-import {GetUserInfoFromServer} from "./Utilities/GetUserInfoFromServer";
+import {GetUserInfoFromServer} from "./ServerApiHandlers/GetUserInfoFromServer";
 
 // class EmulationService
 // {

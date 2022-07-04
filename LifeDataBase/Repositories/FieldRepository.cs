@@ -77,4 +77,27 @@ public class FieldRepository : IFieldRepository
             return false;
         }
     }
+
+    public async Task<bool> UpdateFieldName(int fieldId, string newName)
+    {
+
+        try
+        {
+            var field = new FieldEntity()
+            {
+                Id = fieldId,
+                Name = newName
+            };
+        
+            _db.LifeStates.Attach(field);
+            _db.Entry(field).Property(prop => prop.Name).IsModified = true;
+            await _db.SaveChangesAsync();
+            return true;
+
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 }

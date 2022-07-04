@@ -1,4 +1,5 @@
-﻿using TheLiveLogic.DataStruct;
+﻿using System.Security.Cryptography;
+using TheLiveLogic.DataStruct;
 using TheLiveLogic.Interfaces;
 
 namespace TheLifeServices.Services;
@@ -36,5 +37,10 @@ public class FieldService : IFieldService
     public async Task<bool> DeleteField(int fieldId)
     {
         return await _fieldRepository.DeleteField(fieldId);
+    }
+
+    public async Task<bool> UpdateFieldName(int fieldId, string newName)
+    {
+        return await _fieldRepository.UpdateFieldName(fieldId, newName);
     }
 }

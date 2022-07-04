@@ -9,5 +9,6 @@ public interface IFieldService
     Task<Field?> LoadField(int fieldId);
     Task<bool> UpdateField(Field field, int fieldId);
     Task<bool> DeleteField(int fieldId);
+    Task<bool> UpdateFieldName(int fieldId, string newName);
 }
 

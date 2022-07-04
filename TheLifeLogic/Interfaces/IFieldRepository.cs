@@ -9,4 +9,6 @@ public interface IFieldRepository
     Task<Field?> LoadField(int fieldId);
     Task<bool> UpdateField(Field state, int fieldId);
     Task<bool> DeleteField(int fieldId);
+    Task<bool> UpdateFieldName(int fieldId, string newName);
+    
 }

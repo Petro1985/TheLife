@@ -1,6 +1,4 @@
-﻿import { MapService } from "../Services/MapService";
-import { FetchService } from "../Services/FetchService";
-import {CHANGE_CELL, GET_FIELD_FROM_SERVER, SET_FIELD, SET_FIELD_ID, UPDATE_FIELD_ON_SERVER} from "./types";
+﻿import {CHANGE_CELL, GET_FIELD_FROM_SERVER, SET_FIELD, SET_FIELD_ID, UPDATE_FIELD_ON_SERVER} from "./types";
 
 const initialField = {
     field: {

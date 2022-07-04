@@ -31,5 +31,15 @@
 
     <ItemGroup>
       <Folder Include="APIStruct\Mapper" />
+      <Folder Include="life-front-end\src\Services" />
+      <Folder Include="life-front-end\src\Utilities" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="life-front-end\src\Utilities\DeleteFieldOnServer.js" />
+      <None Remove="life-front-end\src\Services\FetchService.js" />
+      <None Remove="life-front-end\src\Utilities\UpdateFieldOnServer.js" />
+      <None Remove="life-front-end\src\Utilities\GetFieldsInfoFromServer.js" />
+      <None Remove="life-front-end\src\Utilities\GetUserInfoFromServer.js" />
     </ItemGroup>
 </Project>

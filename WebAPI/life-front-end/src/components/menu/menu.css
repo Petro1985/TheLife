@@ -6,7 +6,8 @@
     position: relative;
     max-width: 600px;
     width: 450px;
-    max-height: 90vh;
+    
+    max-height: 650px;
 
     display: flex;
     flex-flow: column;

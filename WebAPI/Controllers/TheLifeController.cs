@@ -198,4 +198,17 @@ public class TheLifeController : ControllerBase
         return Ok();
     }
     
+    /// <summary>
+    /// Rename field 
+    /// </summary>
+    [Authorize]
+    [HttpPut("UpdateFieldName/{fieldId:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ChangeFieldName(int fieldId, [FromQuery]string newName)
+    {
+        var field = await _fieldService.UpdateFieldName(fieldId, newName);
+        if (!field) return BadRequest($"Couldn't rename field id={field} by some reason");
+        return Ok();
+    }
 }
