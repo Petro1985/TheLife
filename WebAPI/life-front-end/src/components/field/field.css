@@ -12,11 +12,9 @@ body {
 }
 
 .field {
-    position: relative;
     margin: 20px auto 0 0;
-    max-width: 1000px;
-    width: 90vh;
-    height: 90vh;
+    width: 700px;
+    height: 700px;
     display: flex;
     flex-flow: column;
     justify-content: start;
@@ -24,6 +22,18 @@ body {
     border-radius: 10px;
     border: solid 2px #58bd58;
     padding: 20px;
+    overflow:hidden;
+}
+
+.field-wrapper
+{
+    position: relative;
+    margin: -92px;
+    padding: 0;
+    width: 884px;
+    height: 884px;
+    display: flex;
+    flex-flow: column;
 }
 
 .row {
