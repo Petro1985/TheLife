@@ -1,5 +1,6 @@
 ﻿import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {SERVER_ADDRESS} from "../Utilities/serverAddress";
+import {createNewFieldOnServer} from "../ServerApiHandlers/UpdateFieldOnServer";
 
 const initialField = {
     field: {
@@ -8,6 +9,20 @@ const initialField = {
         name: "",
     },
 }
+
+export const createNewField = createAsyncThunk('field/createNewField', async (_,{rejectWithValue, dispatch}) => {
+    try {
+        const newField = {"survivors": [], "name": ""};
+        newField.id = await createNewFieldOnServer()
+
+        dispatch(setField(newField));
+    }
+    catch (e)
+    {
+        rejectWithValue(e);
+    }
+
+})
 
 export const updateFieldOnServer = createAsyncThunk('field/updateFieldOnServer', async (_, {getState, rejectedWithValue, dispatch}) => {
     try {

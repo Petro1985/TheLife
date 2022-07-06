@@ -1,17 +1,17 @@
 ﻿using System.Collections.Concurrent;
 using TheLiveLogic;
 using TheLiveLogic.DataStruct;
+using TheLiveLogic.Interfaces;
 using TheLiveLogic.Maps;
-using WebAPI.Interfaces;
 
-namespace WebAPI.Utils;
+namespace TheLifeServices.Services;
 
-public class ActiveFieldService : IActiveFieldService
+public class EmulationService : IActiveFieldService
 {
     private readonly ConcurrentDictionary<Guid, IMap> _activeField;
     private readonly LifeEngine _lifeEngine;
 
-    public ActiveFieldService(LifeEngine lifeEngine)
+    public EmulationService(LifeEngine lifeEngine)
     {
         _lifeEngine = lifeEngine;
         _activeField = new ConcurrentDictionary<Guid, IMap>();

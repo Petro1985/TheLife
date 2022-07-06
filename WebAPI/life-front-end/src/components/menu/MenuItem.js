@@ -51,6 +51,7 @@ export default function MenuItem({ind, AppStateSetter}){
                 break;
         }
     }    
+    
     return (
         <div key={"MenuItemContainer" + fieldInfo.id} className={"menu--item-container"}>
             <img
@@ -60,7 +61,7 @@ export default function MenuItem({ind, AppStateSetter}){
                 alt={"Minimap"} />
             <div className={"menu--vertical-container"}>
                 <div className={"menu--field-name"}>
-                     <span><strong>Name:</strong>
+                     <span><strong>Name: </strong>
                          {editMode.active ?
                              <input
                                 id={"InputField"+ind}
@@ -72,9 +73,9 @@ export default function MenuItem({ind, AppStateSetter}){
                                 onBlur={() => setEditMode(EMPTY_EDIT_MODE)}
                             /> 
                              :
-                            (<>{(fieldInfo.name ? fieldInfo.name : "Unnamed")}
-                                        <button onClick={() => onEditFieldNameClick()} className={"menu--field-rename-button"}></button>
-                            </>)}
+                            (<label htmlFor={"edit"+ind} className={"pointer"}>{(fieldInfo.name ? fieldInfo.name : "Unnamed")}
+                                        <button id={"edit"+ind} onClick={() => onEditFieldNameClick()} className={"menu--field-rename-button"}></button>
+                            </label>)}
                             </span>
     
                 </div>

@@ -1,17 +1,12 @@
 using System.Reflection;
 using LifeDataBase;
 using LifeDataBase.ExtensionMethods;
-using LifeDataBase.Repositories;
 using Microsoft.EntityFrameworkCore;
 using TheLifeServices.ExtensionMethods;
 using TheLifeServices.Services;
-using TheLiveLogic;
 using TheLiveLogic.ExtensionMethods;
 using TheLiveLogic.Interfaces;
 using WebAPI.Auth;
-using WebAPI.Controllers;
-using WebAPI.Interfaces;
-using WebAPI.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +37,7 @@ builder.Services.AddTheLifeLogic();
 builder.Services.AddTheLifeServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IUserIdAccessor, UserIdAccessor>();
-builder.Services.AddSingleton<IActiveFieldService, ActiveFieldService>();
+builder.Services.AddSingleton<IActiveFieldService, EmulationService>();
 
 
 builder.Services.AddAuthentication(opt =>

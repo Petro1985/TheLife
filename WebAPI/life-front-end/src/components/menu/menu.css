@@ -14,9 +14,10 @@
     
     background-color: beige;
     border-radius: 10px;
-    border: solid 2px #58bd58;
-    
-    gap: 30px;
+    border: solid 4px #7cd927;
+    gap: 20px;
+
+    user-select: none;
 }
 
 .menu > button
@@ -26,6 +27,10 @@
     height: 60px;
     font-size: 40px;
 }
+.menu > button:hover
+ {
+    transform: scale(1.05);
+ }
 
 .menu--item-container
 {
@@ -33,6 +38,8 @@
     margin: 0 auto;
     display: flex;
     flex-flow: row;
+    
+        
 }
 
 .menu--button-image
@@ -52,6 +59,7 @@
 {
     margin-top: 5px;
     margin-bottom: 10px;
+    font-size: 1.5rem;
 }
 
 .menu--delete-field-button
@@ -67,10 +75,19 @@
     box-shadow: 3px 3px 5px brown;
     cursor: pointer;
 }
+.menu--delete-field-button:hover
+{
+    transform: scale(1.05);
+}
 
 .menu--choose-button
 {
     width: 75%;
+}
+
+.menu--choose-button:hover
+{
+    transform: scale(1.05);
 }
 
 .menu--field--choose-delete-buttons {
@@ -90,8 +107,49 @@
     cursor: pointer;
 }
 
-.menu--field-rename-input:focus, .menu--field-rename-input
+.menu--field-rename-input:focus
 {
+    width: 60%;
     border: none;
+    font-size: 1.3rem;
     border-radius: 5px;
  }
+
+.menu--arrow-up, .menu--arrow-down
+{
+    width: 200px;
+    height: 20px;
+    min-height: 20px;
+    background-color: brown;
+    display: flex;
+    align-self: center;
+    background-size: contain;
+    cursor: pointer;
+}
+
+.menu--arrow-up
+{
+    background-image: url("../../../public/Images/Arrow-up.png");
+}
+
+.menu--arrow-down
+{
+    background-image: url("../../../public/Images/Arrow-down.png");
+}
+
+.menu--arrow-up:hover, .menu--arrow-down:hover
+{
+    transform: scale(1.05);
+}
+
+
+.menu-invisible-arrow
+{
+    width: 200px;
+    height: 20px;
+}
+
+.pointer
+{
+    cursor: pointer;
+}

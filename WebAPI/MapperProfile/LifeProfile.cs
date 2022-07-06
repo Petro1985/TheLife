@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using TheLiveLogic.DataStruct;
+using WebAPI.APIStruct;
 
-namespace WebAPI.APIStruct.Mapper;
+namespace WebAPI.MapperProfile;
 
 public class LifeProfile : Profile
 {

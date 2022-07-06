@@ -3,16 +3,15 @@ import "./menu.css";
 import {useDispatch, useSelector} from "react-redux";
 import {createNewFieldOnServer} from "../../ServerApiHandlers/UpdateFieldOnServer";
 import MenuItem from "./MenuItem";
-import {setField} from "../../redux/fieldSlice";
+import {createNewField, setField} from "../../redux/fieldSlice";
 import {fetchFieldsInfo} from "../../redux/menuSlice";
 
 export default function Menu(props)
 {
     const dispatch = useDispatch();
     const fieldsInfo = useSelector(state => state.menu.menu);
-    console.log("fieldInfo ->" , fieldsInfo)
-    // const [fieldsInfo, setFieldsInfo] = useState([])
-
+    const [topField, setTopField] = useState(0);
+    
     // effect for loading fieldsInfo from server
     useEffect(() => {
         dispatch(fetchFieldsInfo());
@@ -27,15 +26,15 @@ export default function Menu(props)
                 ind = {ind}
             />
         );
-    });
+    }).slice(topField,topField + 3);
 
     async function MenuNewFieldClicked() {
-        const fieldId = await createNewFieldOnServer();
-        const field = {id: fieldId, name: "", survivors: []}
-        dispatch(setField(field));
+        dispatch(createNewField());
         props.AppStateSetter(oldState => oldState + 1);
     }
-
+    console.log(topField && "up arrow")
+    console.log((topField + 3 < fieldsInfo.length) && "down arrow")
+    
     return (
         <div className={"menu"}>
             <button 
@@ -44,6 +43,14 @@ export default function Menu(props)
                 className={"green-button"}>
                 New field
             </button>
+            {topField ? 
+                <div onClick={() => {setTopField(x => x - 1)}} className={"menu--arrow-up"}></div> 
+                : <div className={"menu-invisible-arrow"}></div>}
+            
             {fields}
+            
+            {(topField + 3 < fieldsInfo.length) ?
+                <div onClick={() => {setTopField(x => x + 1)}} className={"menu--arrow-down"}></div>
+                : <div className={"menu-invisible-arrow"}></div>}
         </div>);
 }

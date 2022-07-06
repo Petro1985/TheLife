@@ -1,7 +1,6 @@
-﻿using TheLiveLogic;
-using TheLiveLogic.DataStruct;
+﻿using TheLiveLogic.DataStruct;
 
-namespace WebAPI.Interfaces;
+namespace TheLiveLogic.Interfaces;
 
 public interface IActiveFieldService
 {

@@ -31,7 +31,9 @@
 
     <ItemGroup>
       <Folder Include="APIStruct\Mapper" />
+      <Folder Include="Interfaces" />
       <Folder Include="life-front-end\src\Services" />
+      <Folder Include="Utils" />
     </ItemGroup>
 
     <ItemGroup>
