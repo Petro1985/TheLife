@@ -13,65 +13,37 @@ body {
 
 .field {
     margin: 20px auto 0 0;
-    width: 700px;
-    height: 700px;
+    padding: 0;
+    
+    width: calc(min(50%, 90vh));
+    height: calc(90vh);
     display: flex;
-    flex-flow: column;
-    justify-content: start;
     background-color: beige;
     border-radius: 10px;
     border: solid 2px #58bd58;
-    padding: 20px;
     overflow:hidden;
 }
 
-.field-wrapper
-{
+.field-grid {
     position: relative;
-    margin: -92px;
-    padding: 0;
-    width: 884px;
-    height: 884px;
-    display: flex;
-    flex-flow: column;
-}
-
-.row {
-    display: flex;
-    flex-flow: row;
+    display: grid;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
     background-color: #282c34;
-    height: 100%;
 }
-
-/*.map::before {*/
-/*    position: absolute;*/
-/*    left: -12px;*/
-/*    top: -10px;*/
-/*    max-width: 1020px;*/
-/*    width: calc(90vh + 20px);*/
-/*    height: calc(90vh + 20px);*/
-/*    content: "";*/
-/*    background-color: rgb(166, 215, 166);*/
-/*    border-radius: 10px;*/
-/*    border: solid 2px lawngreen;*/
-/*    z-index: -1;*/
-/*}*/
 
 .dead-cell, .alive-cell {
-    width: 9%;
-    height: 90%;
-    border-radius: 50%;
+    display: inline-block;
+    border-radius: 10%;
     cursor: pointer;
     border: solid 2px #019f01;
-    margin: 2px;
+    box-sizing: border-box;
 }
 
 .dead-cell {
     background-color: rgb(141, 126, 109);
-    transition: all 1s;
 }
 
 .alive-cell {
     background-color: #019f01;
-    transition: all 1s;
 }

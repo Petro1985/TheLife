@@ -30,6 +30,8 @@ export const updateFieldOnServer = createAsyncThunk('field/updateFieldOnServer',
         const baseFetchOptions = {mode: "cors", credentials: "include", headers: {'Content-Type': 'application/json'}};
         const bodyContent =  JSON.stringify({"survivors": field.survivors, "name": field.name});
 
+        console.log(bodyContent);
+        
         await fetch(SERVER_ADDRESS + '/Map/' + field.id,
             {...baseFetchOptions, method: "PUT", body: bodyContent});
     }
