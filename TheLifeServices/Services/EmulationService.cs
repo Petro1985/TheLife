@@ -1,48 +1,78 @@
 ﻿using System.Collections.Concurrent;
 using TheLiveLogic;
-using TheLiveLogic.DataStruct;
+using TheLiveLogic.Fields;
 using TheLiveLogic.Interfaces;
-using TheLiveLogic.Maps;
+using Field = TheLiveLogic.DataStruct.Field;
 
 namespace TheLifeServices.Services;
 
-public class EmulationService : IActiveFieldService
+public class EmulationService : ISimulatedFieldService
 {
-    private readonly ConcurrentDictionary<Guid, IMap> _activeField;
+    private readonly ConcurrentDictionary<Guid, Dictionary<int, IField>> _activeField;
     private readonly LifeEngine _lifeEngine;
 
     public EmulationService(LifeEngine lifeEngine)
     {
         _lifeEngine = lifeEngine;
-        _activeField = new ConcurrentDictionary<Guid, IMap>();
+        _activeField = new ConcurrentDictionary<Guid, Dictionary<int, IField>>();
     }
 
-    public Field MakeTurn(Guid userId)
+    public Field MakeTurn(Guid userId, int simulatedFieldId)
     {
-        var map = _activeField.GetValueOrDefault(userId);
-        if (map is null) return new Field(new List<Coord>());
-        _lifeEngine.MakeTurn(map);
-        return map.GetState();
+        var userSimulatedFields = _activeField.GetValueOrDefault(userId);
+        if (userSimulatedFields is null) return new Field(new List<Coord>());
+        var simulatedField = userSimulatedFields.GetValueOrDefault(simulatedFieldId);
+        if (simulatedField is null) return new Field(new List<Coord>());
+        
+        _lifeEngine.MakeTurn(simulatedField);
+        var newSimulatedField = simulatedField.GetState();
+        newSimulatedField.Id = simulatedFieldId;
+        
+        return newSimulatedField;
     }
 
-    public Field GetActiveField(Guid userId)
+    public Field GetSimulatedField(Guid userId, int simulatedFieldId)
     {
-        var map = _activeField.GetValueOrDefault(userId);
-        if (map is null) return new Field(new List<Coord>());
-        return map.GetState();
+        var userSimulatedFields = _activeField.GetValueOrDefault(userId);
+        if (userSimulatedFields is null) return new Field(new List<Coord>());
+        var simulatedField = userSimulatedFields.GetValueOrDefault(simulatedFieldId);
+        if (simulatedField is null) return new Field(new List<Coord>());
+        
+        return simulatedField.GetState();
     }
 
-    public void SetActiveField(Guid userId, Field field)
+    public int CreateSimulatedField(Guid userId, Field simulatedField)
     {
-        IMap map = new EndlessMap();
-        map.SetState(field);
+        IField newSimulatedField = new EndlessField();
+        var lastId = 0;
+        
+        newSimulatedField.SetState(simulatedField);
 
-        _activeField.AddOrUpdate(userId, map, (_, _) => map);
+        var userSimulatedFields = _activeField.GetValueOrDefault(userId);
+        if (userSimulatedFields is null)
+        {
+            userSimulatedFields = new Dictionary<int, IField>();
+            _activeField.TryAdd(userId, userSimulatedFields);
+        }
+        else
+        {
+            if (userSimulatedFields.Count > 0)
+            {
+                lastId = userSimulatedFields.Keys.Max();
+            }
+        }
+        
+        userSimulatedFields.Add(lastId + 1, newSimulatedField);
+        
+        return lastId + 1;
     }
 
-    public Field GetActiveFieldRect(Guid userId, Rect rect)
+    public void DeleteSimulatedField(Guid userId, int simulatedFieldId)
     {
-        var map = _activeField.GetValueOrDefault(userId);
-        return map is null ? new Field(new List<Coord>()) : map.GetSquareState(rect);
+        var userSimulatedFields = _activeField.GetValueOrDefault(userId);
+        var simulatedField = userSimulatedFields?.GetValueOrDefault(simulatedFieldId);
+        if (simulatedField is null) return;
+
+        userSimulatedFields!.Remove(simulatedFieldId);
     }
 }

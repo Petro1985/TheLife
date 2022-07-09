@@ -1,11 +1,9 @@
 ﻿import ControlBar from "./control-bar/control-bar";
 import Field from "./field/field";
 import {Navigate, useLocation} from "react-router-dom";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {fetchFieldById} from "../../redux/fieldSlice";
-
-
 
 export default function PlayGround(props) 
 {   
@@ -14,7 +12,7 @@ export default function PlayGround(props)
     const dispatch = useDispatch();
     
     const [currentMode, setCurrentMode] = useState({state:"EDIT_MODE"});
-
+ 
     // getting field id from query
     const params = new URLSearchParams(location.search);
     const fieldId = params.get('id');

@@ -1,40 +1,52 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "./control-bar.css";
 import {
     setSimulationMode,
     setSimulatedField,
-    clearIntervalTimer,
     EDIT_MODE, SIMULATION_PAUSE_MODE, SIMULATION_MODE, setIntervalId
 } from "../../../redux/playGroundSlice";
 
 import {useDispatch, useSelector} from "react-redux";
-import {setFieldSimulation} from "../../../ServerApiHandlers/setSimulationField";
-import {makeSimulationTurn} from "../../../ServerApiHandlers/makeSimulationTurn";
+import {StartNewFieldSimulation} from "../../../ServerApiHandlers/StartFieldSimulation";
+import {MakeSimulationTurn} from "../../../ServerApiHandlers/MakeSimulationTurn";
+import {StopFieldSimulation} from "../../../ServerApiHandlers/StopFieldSimulation";
 
-export default function ControlBar(props) {
-    async function makeTurn() {
-        const newSimulatedFiled = await makeSimulationTurn();
-        dispatch(setSimulatedField(newSimulatedFiled))
-    }
-
+let deleteLastSimulationFunction = () => 0; 
+    
+export default function ControlBar(props) 
+{
     const dispatch = useDispatch();
-    const playGroundMode = useSelector((state) => state.playGround.mode);
-
+    
     const fieldId = useSelector(state => state.field.field.id);
     const intervalId = useSelector(state => state.playGround.intervalId);
     const currentMode = useSelector(state => state.playGround.mode);
+    const simulatedFieldId = useSelector(state => state.playGround.simulatedField.simulatedFieldId);
+    console.log('simulatedFieldId -> ', simulatedFieldId)
+
+    
+    async function makeTurn(simFieldId) {
+        const newSimulatedFiled = await MakeSimulationTurn(simFieldId);
+        console.log('newSimulatedFiled -> ',newSimulatedFiled)
+        dispatch(setSimulatedField(newSimulatedFiled))
+    }
+
     
     async function onPlayClick()
     {
         if (currentMode === EDIT_MODE){
-            const simulatedFiled = await setFieldSimulation(fieldId);
+            const simulatedFiled = await StartNewFieldSimulation(fieldId);
             dispatch(setSimulatedField(simulatedFiled));
             dispatch(setSimulationMode(SIMULATION_MODE));
 
-            const newIntervalId = setInterval(makeTurn, 1000);
+            console.log(`simulation with ID=${simulatedFiled.simulatedFieldId} started`);
+            const newIntervalId = setInterval(() => makeTurn(simulatedFiled.simulatedFieldId), 1000);
             dispatch(setIntervalId(newIntervalId));
-        }
 
+            deleteLastSimulationFunction = async () => {
+                await StopFieldSimulation(simulatedFiled.simulatedFieldId)
+            }
+            window.addEventListener("beforeunload", deleteLastSimulationFunction);
+        }
     }
     
     async function onPauseClick() {
@@ -46,7 +58,7 @@ export default function ControlBar(props) {
                 break;
             case SIMULATION_PAUSE_MODE:
                 dispatch(setSimulationMode(SIMULATION_MODE));
-                const newIntervalId = setInterval(makeTurn, 1000);
+                const newIntervalId = setInterval(() => makeTurn(simulatedFieldId), 1000);
                 dispatch(setIntervalId(newIntervalId));
                 break;
         }
@@ -57,6 +69,9 @@ export default function ControlBar(props) {
         clearInterval(intervalId);
         dispatch(setIntervalId(null));
         dispatch(setSimulationMode(EDIT_MODE));
+        console.log('simulatedFieldId', simulatedFieldId);
+        await StopFieldSimulation(simulatedFieldId);
+        window.removeEventListener("beforeunload", deleteLastSimulationFunction);
     }
 
     return (
@@ -66,14 +81,14 @@ export default function ControlBar(props) {
                 onClick={onPlayClick} 
                 className={"control--button-play green-button"} 
                 type={"button"}>
-                Play
+                Start
             </button>
             <button
                 disabled={currentMode === EDIT_MODE}
                 onClick={onPauseClick} 
                 className={"control--button-pause green-button"} 
                 type={"button"}>
-                Pause
+                {currentMode === SIMULATION_PAUSE_MODE ?"Play" : "Pause"}
             </button>
             <button
                 disabled={currentMode === EDIT_MODE}

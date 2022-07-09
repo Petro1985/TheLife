@@ -9,7 +9,11 @@ public class LifeProfile : Profile
     public LifeProfile()
     {
         CreateMap<Field, FieldResponse>();
-
+        
+        CreateMap<Field, SimulatedFieldResponse>()
+            .ForMember(prop => prop.SimulatedFieldId, 
+                opt => opt.MapFrom(propFrom => propFrom.Id));
+        
         CreateMap<Field, FieldInfoResponse>()
             .ForMember(
                 response => response.MinimapBase64,
@@ -19,6 +23,5 @@ public class LifeProfile : Profile
             .ForMember(
                 response => response.Id,
                 option => option.Ignore());
-
     }
 }

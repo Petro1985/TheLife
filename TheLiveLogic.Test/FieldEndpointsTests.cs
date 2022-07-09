@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
-using TheLiveLogic.Maps;
+using TheLiveLogic.Fields;
 using WebAPI.APIStruct;
 using Xunit;
 

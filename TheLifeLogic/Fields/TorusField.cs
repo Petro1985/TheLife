@@ -1,14 +1,13 @@
 ﻿using System.Text;
-using TheLiveLogic.DataStruct;
 using TheLiveLogic.ExtensionMethods;
 
-namespace TheLiveLogic.Maps;
+namespace TheLiveLogic.Fields;
 
-public class TorusMap : IMap
+public class TorusField : IField
 {
     private readonly bool[,] _map;
 
-    public TorusMap(int size)
+    public TorusField(int size)
     {
         _map = new bool[size, size];
     }
@@ -34,7 +33,7 @@ public class TorusMap : IMap
         return new Coord(newX, newY);
     }
 
-    public void SetState(Field lState)
+    public void SetState(DataStruct.Field lState)
     {
         var length = _map.GetLength(0);
         var newMap = lState.Survivors.Aggregate(new bool[length, length], (newMap, cell) =>
@@ -45,7 +44,7 @@ public class TorusMap : IMap
         });
         Array.Copy(newMap, _map, _map.Length);
     }
-    public Field GetState()
+    public DataStruct.Field GetState()
     {
         List<Coord> lifes = new ();
 
@@ -59,10 +58,10 @@ public class TorusMap : IMap
                 }
             }
         }
-        return new Field(lifes);
+        return new DataStruct.Field(lifes);
     }
 
-    public Field GetSquareState(Rect rect)
+    public DataStruct.Field GetSquareState(Rect rect)
     {
         List<Coord> lifes = new ();
 
@@ -79,7 +78,7 @@ public class TorusMap : IMap
             }
         }
 
-        return new Field(lifes);
+        return new DataStruct.Field(lifes);
     }
 
     public int GetAliveNeighborsCount(Coord coord)
@@ -89,9 +88,9 @@ public class TorusMap : IMap
         return neighbors.Count(IsAlive);
     }
 
-    public IMap Clone()
+    public IField Clone()
     {
-        var newMap = new TorusMap(_map.GetLength(0));
+        var newMap = new TorusField(_map.GetLength(0));
         Array.Copy(_map, newMap._map, _map.Length);
         return newMap;
     }

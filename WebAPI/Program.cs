@@ -37,7 +37,7 @@ builder.Services.AddTheLifeLogic();
 builder.Services.AddTheLifeServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IUserIdAccessor, UserIdAccessor>();
-builder.Services.AddSingleton<IActiveFieldService, EmulationService>();
+builder.Services.AddSingleton<ISimulatedFieldService, EmulationService>();
 
 
 builder.Services.AddAuthentication(opt =>

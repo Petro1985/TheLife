@@ -15,13 +15,13 @@ public class TheLifeController : ControllerBase
     private readonly IMapper _mapper;
     private readonly IFieldService _fieldService;
     private readonly IUserIdAccessor _userIdAccessor;
-    private readonly IActiveFieldService _activeField;
+    private readonly ISimulatedFieldService _simulatedField;
     private readonly IMinimapGenerator _minimapGenerator;
     
-    public TheLifeController(IFieldService fieldService, IUserIdAccessor userIdAccessor, IMapper mapper, IActiveFieldService activeField, IMinimapGenerator minimapGenerator)
+    public TheLifeController(IFieldService fieldService, IUserIdAccessor userIdAccessor, IMapper mapper, ISimulatedFieldService simulatedField, IMinimapGenerator minimapGenerator)
     {
         _mapper = mapper;
-        _activeField = activeField;
+        _simulatedField = simulatedField;
         _minimapGenerator = minimapGenerator;
         _fieldService = fieldService;
         _userIdAccessor = userIdAccessor;
@@ -97,25 +97,6 @@ public class TheLifeController : ControllerBase
     }
 
     /// <summary>
-    /// Returns only "state of life" in specified area
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <param name="dX"></param>
-    /// <param name="dY"></param>
-    [Authorize]
-    [HttpGet("Map/Area", Name = "GetAreaState")]
-    [ProducesResponseType(typeof(FieldResponse), StatusCodes.Status200OK)]
-    public IActionResult GetSquareState([FromQuery]int x, [FromQuery]int y, [FromQuery]int dX, [FromQuery]int dY)
-    {
-        var user = _userIdAccessor.GetUserId()!;
-        var resultLife = _activeField.GetActiveFieldRect(user.Value, new Rect(x, y, dX, dY));
-        var mappedResult = _mapper.Map<FieldResponse>(resultLife);
-        
-        return Ok(mappedResult);
-    }
-
-    /// <summary>
     /// Saves a new field in database and assigns id
     /// </summary>
     /// <param name="field"></param>
@@ -149,37 +130,53 @@ public class TheLifeController : ControllerBase
     }
 
     /// <summary>
-    /// Makes one turn on active field and returns changes
+    /// Makes one turn on the simulated field and returns changes
     /// </summary>
     [Authorize]
-    [HttpPost("Turn/")]
-    [ProducesResponseType(typeof(FieldResponse), StatusCodes.Status200OK)]
-    public IActionResult MakeTurn()
+    [HttpPost("Turn/{simulatedFieldId}")]
+    [ProducesResponseType(typeof(SimulatedFieldResponse), StatusCodes.Status200OK)]
+    public IActionResult MakeTurn(int simulatedFieldId)
     {
         var user = _userIdAccessor.GetUserId()!;
         
-        var field = _activeField.MakeTurn(user.Value);
-        var mappedField = _mapper.Map<FieldResponse>(field);
+        var field = _simulatedField.MakeTurn(user.Value, simulatedFieldId);
+        var mappedField = _mapper.Map<SimulatedFieldResponse>(field);
         
         return Ok(mappedField);
     }
     
     /// <summary>
-    /// Set specific field as an active one 
+    /// Set specific field as an simulated one 
     /// </summary>
     [Authorize]
-    [HttpPost("SetFieldForSimulation/{id:int}")]
-    [ProducesResponseType(typeof(FieldResponse), StatusCodes.Status200OK)]
+    [HttpPost("StartNewFieldSimulation/{fieldId:int}")]
+    [ProducesResponseType(typeof(SimulatedFieldResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SetFieldForSimulation(int id)
+    public async Task<IActionResult> StartNewFieldSimulation(int fieldId)
     {
         var user = _userIdAccessor.GetUserId()!.Value;
 
-        var field = await _fieldService.LoadField(id);
-        if (field is null) return BadRequest($"There is no field with id={id}");
+        var field = await _fieldService.LoadField(fieldId);
+        if (field is null) return BadRequest($"There is no field with id={fieldId}");
         
-        _activeField.SetActiveField(user, field);
-        return Ok(_mapper.Map<FieldResponse>(field));
+        field.Id = _simulatedField.CreateSimulatedField(user, field); 
+        
+        return Ok(_mapper.Map<SimulatedFieldResponse>(field));
+    }
+
+    /// <summary>
+    /// Delete specific simulation by its id 
+    /// </summary>
+    [Authorize]
+    [HttpDelete("StopFieldSimulation/{simulatedFieldId:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public IActionResult StopFieldSimulation(int simulatedFieldId)
+    {
+        var user = _userIdAccessor.GetUserId()!.Value;
+        _simulatedField.DeleteSimulatedField(user, simulatedFieldId); 
+        
+        return Ok();
     }
     
     /// <summary>

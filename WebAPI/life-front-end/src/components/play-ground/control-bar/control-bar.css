@@ -33,10 +33,10 @@
 
 .control--button-pause
 {
-    text-align: right;
     background-image: url("../../../../public/Images/pause-button.png");
     background-position: 15px 11px;
-    padding-right: 10px;
+    padding-left: 122px;
+    text-align: left;
     font-size: 40px;
 }
 

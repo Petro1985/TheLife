@@ -30,7 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="APIStruct\Mapper" />
       <Folder Include="Interfaces" />
       <Folder Include="Utils" />
     </ItemGroup>

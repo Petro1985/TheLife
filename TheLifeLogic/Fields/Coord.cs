@@ -1,4 +1,4 @@
-namespace TheLiveLogic.Maps;
+namespace TheLiveLogic.Fields;
 
 public struct Coord
 {

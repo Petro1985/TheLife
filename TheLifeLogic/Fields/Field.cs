@@ -2,13 +2,13 @@
 using TheLiveLogic.DataStruct;
 using TheLiveLogic.ExtensionMethods;
 
-namespace TheLiveLogic.Maps;
+namespace TheLiveLogic.Fields;
 
-public class Map : IMap
+public class ArrayField : IField
 {
     private readonly bool[,] _map;
 
-    public Map(int size)
+    public ArrayField(int size)
     {
         _map = new bool[size, size];
     }
@@ -31,7 +31,7 @@ public class Map : IMap
            || x < 0 
            || y < 0;
     
-    public void SetState(Field lState)
+    public void SetState(DataStruct.Field lState)
     {
         var length = _map.GetLength(0);
         var newMap = lState.Survivors.Aggregate(new bool[length, length], (newMap, cell) =>
@@ -43,7 +43,7 @@ public class Map : IMap
         Array.Copy(newMap, _map, _map.Length);
     }
 
-    public Field GetState()
+    public DataStruct.Field GetState()
     {
         List<Coord> lifes = new ();
 
@@ -57,10 +57,10 @@ public class Map : IMap
                 }
             }
         }
-        return new Field(lifes);
+        return new DataStruct.Field(lifes);
     }
 
-    public Field GetSquareState(Rect rect)
+    public DataStruct.Field GetSquareState(Rect rect)
     {
         List<Coord> lifes = new ();
 
@@ -77,7 +77,7 @@ public class Map : IMap
             }
         }
 
-        return new Field(lifes);
+        return new DataStruct.Field(lifes);
     }
 
     public int GetAliveNeighborsCount(Coord coord)
@@ -87,11 +87,11 @@ public class Map : IMap
         return neighbors.Count(IsAlive);
     }
 
-    public IMap Clone()
+    public IField Clone()
     {
-        var newMap = new Map(_map.GetLength(0));
-        Array.Copy(_map, newMap._map, _map.Length);
-        return newMap;
+        var newField = new ArrayField(_map.GetLength(0));
+        Array.Copy(_map, newField._map, _map.Length);
+        return newField;
     }
 
     public override string ToString()

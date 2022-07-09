@@ -1,6 +1,4 @@
-﻿import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {setFieldSimulation} from "../ServerApiHandlers/setSimulationField";
-import {makeSimulationTurn} from "../ServerApiHandlers/makeSimulationTurn";
+﻿import {createSlice} from "@reduxjs/toolkit";
 export const EDIT_MODE = "EDIT_MODE";
 export const SIMULATION_MODE = "SIMULATION_MODE";
 export const SIMULATION_PAUSE_MODE = "SIMULATION_PAUSE_MODE";
@@ -10,8 +8,7 @@ const initialState = {
     intervalId: 0,
     interval: 1000,
     simulatedField: {
-        id: -1,
-        name: "",
+        simulatedFieldId: -1,
         survivors: []
     }
 };
@@ -39,5 +36,5 @@ export const playGroundSlice = createSlice({
     }
 });
 
-export const {setIntervalId, setIntervalTimer, setSimulationMode, clearIntervalTimer, setSimulatedField} = playGroundSlice.actions;
+export const {setIntervalId, setSimulationMode, setSimulatedField} = playGroundSlice.actions;
 export default playGroundSlice.reducer;

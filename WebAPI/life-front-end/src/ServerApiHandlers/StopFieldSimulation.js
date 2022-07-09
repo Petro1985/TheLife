@@ -1,22 +1,20 @@
 ﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
 
-
-export async function setFieldSimulation(fieldId)
+export async function StopFieldSimulation(simulatedFieldId)
 {
     try {
         const fetchOptions = {
             mode: "cors",
             credentials: "include",
-            method: "POST"
+            method: "DELETE"
         };
-        
-        const response = await fetch(SERVER_ADDRESS + '/SetFieldForSimulation/' + fieldId, fetchOptions);
-        
-        return await response.json();        
+
+        await fetch(SERVER_ADDRESS + '/StopFieldSimulation/' + simulatedFieldId, fetchOptions);
+
+        console.log(`simulation with ID=${simulatedFieldId} deleted`);
     }
     catch (e)
     {
         console.error("func setFieldSimulation error: ", e);
     }
-
 }

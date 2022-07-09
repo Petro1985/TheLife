@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Snapshooter.Xunit;
-using TheLiveLogic.Maps;
+using TheLiveLogic.Fields;
 using Xunit;
 
 namespace TheLiveLogic.Test;
@@ -11,7 +11,7 @@ public class LifeEngineTests
     [Fact]
     public void LifeLogicTenTurnCheck()
     {
-        var map = new EndlessMap();
+        var map = new EndlessField();
         map.SetCell(new Coord(3, 3), true);
         map.SetCell(new Coord(4, 4), true);
         map.SetCell(new Coord(4, 5), true);

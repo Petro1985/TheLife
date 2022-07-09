@@ -1,18 +1,17 @@
-﻿using TheLiveLogic.DataStruct;
-using TheLiveLogic.ExtensionMethods;
+﻿using TheLiveLogic.ExtensionMethods;
 
-namespace TheLiveLogic.Maps;
+namespace TheLiveLogic.Fields;
 
-public class EndlessMap : IMap
+public class EndlessField : IField
 {
     private readonly HashSet<Coord> _map;
 
-    public EndlessMap()
+    public EndlessField()
     {
         _map = new HashSet<Coord>();
     }
     
-    private EndlessMap(HashSet<Coord> map)
+    private EndlessField(HashSet<Coord> map)
     {
         _map = new HashSet<Coord>(map);
     }
@@ -32,21 +31,21 @@ public class EndlessMap : IMap
         }
     }
 
-    public void SetState(Field lState)
+    public void SetState(DataStruct.Field lState)
     {
         _map.Clear();
         _map.UnionWith(lState.Survivors);
     }
 
-    public Field GetState()
+    public DataStruct.Field GetState()
     {
-        return new Field(_map.ToArray());
+        return new DataStruct.Field(_map.ToList());
     }
 
-    public Field GetSquareState(Rect rect)
+    public DataStruct.Field GetSquareState(Rect rect)
     {
         var result = _map.Where(lifeCoord => lifeCoord.InBox(rect)).ToList();
-        return new Field(result);
+        return new DataStruct.Field(result);
     }
     
     public int GetAliveNeighborsCount(Coord coord)
@@ -55,8 +54,8 @@ public class EndlessMap : IMap
         return neighbors.Count(IsAlive);
     }
 
-    public IMap Clone()
+    public IField Clone()
     {
-        return new EndlessMap(_map);
+        return new EndlessField(_map);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using TheLiveLogic.DataStruct;
 
-namespace TheLiveLogic.Maps;
+namespace TheLiveLogic.Fields;
 
-public interface IMap
+public interface IField
 {
     public bool IsAlive(Coord coord);
     public void SetCell(Coord coord, bool state);
@@ -13,5 +13,5 @@ public interface IMap
     public Field GetSquareState(Rect rect);
     public int GetAliveNeighborsCount(Coord coord);
 
-    public IMap Clone();
+    public IField Clone();
 }

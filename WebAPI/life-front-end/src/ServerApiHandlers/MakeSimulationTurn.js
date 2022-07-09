@@ -1,7 +1,7 @@
 ﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
 
 
-export async function makeSimulationTurn()
+export async function MakeSimulationTurn(simulationFieldId)
 {
     try {
         const fetchOptions = {
@@ -10,7 +10,7 @@ export async function makeSimulationTurn()
             method: "POST"
         };
 
-        const response = await fetch(SERVER_ADDRESS + '/Turn', fetchOptions);
+        const response = await fetch(SERVER_ADDRESS + '/Turn/' + simulationFieldId, fetchOptions);
 
         return await response.json();
     }

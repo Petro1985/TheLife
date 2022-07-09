@@ -2,9 +2,9 @@
 
 using ConsoleVersion;
 using TheLiveLogic;
-using TheLiveLogic.Maps;
+using TheLiveLogic.Fields;
 
-var map = new EndlessMap();
+var map = new EndlessField();
 var consoleOutput = new ConsoleOutput();
 
 map.SetCell(new Coord(3, 3), true);

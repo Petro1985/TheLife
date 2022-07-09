@@ -26,6 +26,11 @@ body
   position: relative;
 }
 
+.green-button:hover
+{
+  transform: scale(1.05);
+}
+
 .green-button:disabled::after
 {
   content: "";
@@ -36,3 +41,9 @@ body
   left: 0;
   top: 0;
 }
+
+.green-button:disabled
+{
+  transform: scale(1.0);
+}
+

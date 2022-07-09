@@ -1,14 +1,14 @@
 ﻿using TheLiveLogic.ExtensionMethods;
-using TheLiveLogic.Maps;
+using TheLiveLogic.Fields;
 
 namespace TheLiveLogic;
 
 public class LifeEngine
 {
-    public void MakeTurn(IMap map)
+    public void MakeTurn(IField field)
     {
-        var curState = map.GetState();
-        var oldMap = map.Clone();
+        var curState = field.GetState();
+        var oldMap = field.Clone();
 
         foreach (var coord in curState.Survivors)
         {
@@ -16,7 +16,7 @@ public class LifeEngine
 
             if (aliveNeighborsCount is not (2 or 3))
             {
-                map.SetCell(coord, false);
+                field.SetCell(coord, false);
                 continue;
             }
 
@@ -27,7 +27,7 @@ public class LifeEngine
                 var aliveCount = oldMap.GetAliveNeighborsCount(neighborCoord);
                 if (aliveCount == 3)
                 {
-                    map.SetCell(neighborCoord, true);
+                    field.SetCell(neighborCoord, true);
                 }
             }
         }
