@@ -6,7 +6,8 @@ body
   margin: 0;
 }
 
-.green-button {
+.green-button 
+{
   align-self: center;
   border-radius: 10px;
   box-shadow: 3px 3px 5px green;
@@ -22,4 +23,16 @@ body
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: rgba(154, 183, 91, 0.5);
   user-select: none;
+  position: relative;
+}
+
+.green-button:disabled::after
+{
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgba(155,155,155,0.7);
+  position: absolute;
+  left: 0;
+  top: 0;
 }

@@ -7,8 +7,6 @@
     max-width: 600px;
     width: 450px;
     
-    max-height: 650px;
-
     display: flex;
     flex-flow: column;
     
@@ -140,13 +138,6 @@
 .menu--arrow-up:hover, .menu--arrow-down:hover
 {
     transform: scale(1.05);
-}
-
-
-.menu-invisible-arrow
-{
-    width: 200px;
-    height: 20px;
 }
 
 .pointer

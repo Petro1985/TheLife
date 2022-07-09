@@ -27,24 +27,23 @@
     text-align: right;
     padding-right: 20px;
     font-size: 50px;
-    background-image: url("../../../public/Images/Play-button.png");
+    background-image: url("../../../../public/Images/Play-button.png");
     background-position: 15px 11px;
 }
 
 .control--button-pause
 {
     text-align: right;
-    background-image: url("../../../public/Images/pause-button.png");
+    background-image: url("../../../../public/Images/pause-button.png");
     background-position: 15px 11px;
     padding-right: 10px;
     font-size: 40px;
 }
 
-
 .control--button-stop
 {
     text-align: right;
-    background-image: url("../../../public/Images/stop-button.png");
+    background-image: url("../../../../public/Images/stop-button.png");
     background-position: 15px 11px;
     padding-right: 15px;
     font-size: 50px;

@@ -1,21 +1,27 @@
-﻿import React, {useEffect, useState} from "react";
+﻿import React, {useEffect, useRef, useState} from "react";
 import "./menu.css";
 import {useDispatch, useSelector} from "react-redux";
-import {createNewFieldOnServer} from "../../ServerApiHandlers/UpdateFieldOnServer";
 import MenuItem from "./MenuItem";
 import {createNewField, setField} from "../../redux/fieldSlice";
 import {fetchFieldsInfo} from "../../redux/menuSlice";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 export default function Menu(props)
 {
     const dispatch = useDispatch();
     const fieldsInfo = useSelector(state => state.menu.menu);
     const [topField, setTopField] = useState(0);
-    
+    const menuElement = useRef(null);
+    const navigate = useNavigate();
+
+    let [searchParams, setSearchParams] = useSearchParams();
+
     // effect for loading fieldsInfo from server
     useEffect(() => {
         dispatch(fetchFieldsInfo());
     }, []);
+    
+    //const menuItemsCount = window.innerHeight*0.9;
     
     const fields = fieldsInfo.map((mapInfo, ind) => 
     {
@@ -29,28 +35,36 @@ export default function Menu(props)
     }).slice(topField,topField + 3);
 
     async function MenuNewFieldClicked() {
-        dispatch(createNewField());
-        props.AppStateSetter(oldState => oldState + 1);
+        dispatch(createNewField()).unwrap().then((arg) => {
+            navigate('/field?id='+arg.id);
+        });
     }
-    console.log(topField && "up arrow")
-    console.log((topField + 3 < fieldsInfo.length) && "down arrow")
-    
+
     return (
-        <div className={"menu"}>
+        <div 
+            className={"menu"}
+            ref={menuElement}
+        >
             <button 
                 key={"Menu_NewButton"}
                 onClick={() => MenuNewFieldClicked()}
                 className={"green-button"}>
                 New field
             </button>
-            {topField ? 
-                <div onClick={() => {setTopField(x => x - 1)}} className={"menu--arrow-up"}></div> 
-                : <div className={"menu-invisible-arrow"}></div>}
+            <div 
+                onClick={() => {setTopField(x => x - 1)}} 
+                className={"menu--arrow-up"} 
+                style={{visibility: topField ? "visible" : "hidden"}}>                
+            </div>            
             
             {fields}
             
-            {(topField + 3 < fieldsInfo.length) ?
-                <div onClick={() => {setTopField(x => x + 1)}} className={"menu--arrow-down"}></div>
-                : <div className={"menu-invisible-arrow"}></div>}
+            <div
+                onClick={() => {setTopField(x => x + 1)}}
+                className={"menu--arrow-down"}
+                style={{visibility: (topField + 3 < fieldsInfo.length) ? "visible" : "hidden"}}
+            >                
+            </div>
+            
         </div>);
 }

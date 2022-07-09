@@ -3,12 +3,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchFieldById} from "../../redux/fieldSlice";
 import {deleteItem, renameField, renameItem} from "../../redux/menuSlice";
 import {DeleteFieldOnServer} from "../../ServerApiHandlers/DeleteFieldOnServer";
+import {useNavigate} from 'react-router-dom';
 
 export default function MenuItem({ind, AppStateSetter}){
     const EMPTY_EDIT_MODE = {active:false, editedName: ""};
     const [editMode, setEditMode] = useState(EMPTY_EDIT_MODE)
     const dispatch = useDispatch();
     const inputRef = useRef(null);
+    const navigate = useNavigate();
     
     const fieldInfo = useSelector(state => state.menu.menu[ind]);
 
@@ -20,14 +22,14 @@ export default function MenuItem({ind, AppStateSetter}){
     function onFieldNameInputChange(event, ind) {
         setEditMode(old => {
                 const newValue = {...old};
-                old.editedName = event.target.value;
+                newValue.editedName = event.target.value;
                 return newValue;
             }
         );
     }
     async function MenuButtonClicked() {
-        dispatch(fetchFieldById(fieldInfo.id));
-        AppStateSetter(oldState => oldState + 1);
+        dispatch(fetchFieldById(fieldInfo.id))
+            .then(() => navigate('/field?id='+fieldInfo.id));
     }
 
     async function OnDeleteFieldClicked(ind) {

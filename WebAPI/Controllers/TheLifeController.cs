@@ -179,7 +179,7 @@ public class TheLifeController : ControllerBase
         if (field is null) return BadRequest($"There is no field with id={id}");
         
         _activeField.SetActiveField(user, field);
-        return Ok();
+        return Ok(_mapper.Map<FieldResponse>(field));
     }
     
     /// <summary>

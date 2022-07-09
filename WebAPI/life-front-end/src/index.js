@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import {store} from "./redux/Store";
 import {Provider} from 'react-redux';
+import {BrowserRouter} from "react-router-dom";
 
 // const store = createStore(rootReducer, compose(
 //     applyMiddleware(
@@ -17,9 +18,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   // <React.StrictMode>
+    <BrowserRouter>
       <Provider store={store}>
         <App />
       </Provider>
+    </BrowserRouter>
   // </React.StrictMode>
 );
 

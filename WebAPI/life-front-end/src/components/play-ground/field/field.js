@@ -1,7 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react'
 import './field.css'
 import {useDispatch, useSelector} from "react-redux";
-import {changeCell, updateFieldOnServer} from "../../redux/fieldSlice";
+import {changeCell, updateFieldOnServer} from "../../../redux/fieldSlice";
+import {EDIT_MODE, SIMULATION_MODE, SIMULATION_PAUSE_MODE} from "../../../redux/playGroundSlice";
 
 let isMouseButton2Down = false;
 const FIELD_OUTSIDE_VIEW = 0.15;
@@ -9,6 +10,7 @@ const CELL_PADDING = 2;
 const MIN_CELL_SIZE = 20;
 const MAX_CELL_SIZE = 150;
 const ZOOM_STEP = 0.2;
+const INITIAL_CELL_SIZE = 70;
 
 export default function Field(props) {
     const Cells = [];
@@ -18,16 +20,29 @@ export default function Field(props) {
     const [fieldPositionStyle, setFieldPositionStyle] = useState({left: 0 , top:0});
     const [rerender, setRerender] = useState(0)
 
-    // -3 is used because there is an additional row and col outside the field view
     const [startCellX, setStartCellX] = useState(0);
     const [startCellY, setStartCellY] = useState(0);
 
-    const [cellSize, setCellSize] = useState(70);
+    const [cellSize, setCellSize] = useState(INITIAL_CELL_SIZE);
 
     const dispatch = useDispatch();
-    const field = useSelector( state => state.field.field);
 
-    const fieldGridStyle = {}
+    const currentMode = useSelector( state => state.playGround.mode);
+
+    const simulatedField = useSelector( state => state.playGround.simulatedField);
+    const activeField = useSelector( state => state.field.field);
+
+    let field = {};
+    if (currentMode === SIMULATION_MODE || currentMode === SIMULATION_PAUSE_MODE)
+    {
+        field = simulatedField;
+    }
+    else
+    {
+        field = activeField;
+    }    
+
+    const fieldGridStyle = {};
     
     let cellsInRow = 0;
     let cellsInCol = 0;
@@ -62,7 +77,6 @@ export default function Field(props) {
         dispatch(updateFieldOnServer());
     }
     
-    
     for (let j = startCellY; j < cellsInCol + startCellY; j++)
     {
         for (let i = startCellX; i < cellsInRow + startCellX; i++)
@@ -70,7 +84,7 @@ export default function Field(props) {
             const isAlive =  field.survivors.find(element => element.x === i && element.y === j);
             Cells.push(
                 <div 
-                    onClick={() => onChangeCell({x:i, y:j})} 
+                    onClick={currentMode === EDIT_MODE ? () => onChangeCell({x:i, y:j}) : () => 0} 
                     key={i + j * cellsInRow} 
                     className={isAlive ? "alive-cell" : "dead-cell"}
                     style={{height: cellSize - CELL_PADDING, width: cellSize - CELL_PADDING}}
@@ -106,6 +120,7 @@ export default function Field(props) {
             })
         }        
     }
+    
     
     function normalizeFieldPosition(newX, newY) {
         const fieldShiftX = Math.max(fieldElement.current.clientWidth * FIELD_OUTSIDE_VIEW, cellSize);

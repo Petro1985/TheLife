@@ -34,9 +34,9 @@ body {
 
 .dead-cell, .alive-cell {
     display: inline-block;
-    border-radius: 10%;
+    /*border-radius: 10%;*/
     cursor: pointer;
-    border: solid 2px #019f01;
+    /*border: solid 2px #019f01;*/
     box-sizing: border-box;
 }
 
