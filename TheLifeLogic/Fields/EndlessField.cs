@@ -2,49 +2,54 @@
 
 namespace TheLiveLogic.Fields;
 
-public class EndlessField : IField
+public class EndlessField : IFieldLogic
 {
-    private readonly HashSet<Coord> _map;
+    private readonly HashSet<Coord> _survivors;
 
     public EndlessField()
     {
-        _map = new HashSet<Coord>();
+        _survivors = new HashSet<Coord>();
     }
     
     private EndlessField(HashSet<Coord> map)
     {
-        _map = new HashSet<Coord>(map);
+        _survivors = new HashSet<Coord>(map);
     }
     
     public bool IsAlive(Coord coord)
-        => _map.Contains(coord);
+        => _survivors.Contains(coord);
 
     public void SetCell(Coord coord, bool state)
     {
         if (state)
         {
-            _map.Add(coord);
+            _survivors.Add(coord);
         }
         else
         {
-            _map.Remove(coord);
+            _survivors.Remove(coord);
         }
     }
 
     public void SetState(DataStruct.Field lState)
     {
-        _map.Clear();
-        _map.UnionWith(lState.Survivors);
+        _survivors.Clear();
+        _survivors.UnionWith(lState.Survivors);
     }
 
-    public DataStruct.Field GetState()
+    public DataStruct.Field GetField()
     {
-        return new DataStruct.Field(_map.ToList());
+        return new DataStruct.Field {Survivors = _survivors.ToList()};
+    }
+
+    public List<Coord> GetSurvivors()
+    {
+        return _survivors.ToList();
     }
 
     public DataStruct.Field GetSquareState(Rect rect)
     {
-        var result = _map.Where(lifeCoord => lifeCoord.InBox(rect)).ToList();
+        var result = _survivors.Where(lifeCoord => lifeCoord.InBox(rect)).ToList();
         return new DataStruct.Field(result);
     }
     
@@ -54,8 +59,8 @@ public class EndlessField : IField
         return neighbors.Count(IsAlive);
     }
 
-    public IField Clone()
+    public IFieldLogic Clone()
     {
-        return new EndlessField(_map);
+        return new EndlessField(_survivors);
     }
 }

@@ -5,7 +5,7 @@ namespace ConsoleVersion;
 
 public class ConsoleOutput
 {
-    public string CreateTextMap(IField field, int renderSize)
+    public string CreateTextMap(IFieldLogic field, int renderSize)
     {
         StringBuilder result = new (renderSize * (renderSize + 2));
         

@@ -30,6 +30,9 @@ namespace LifeDataBase.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<DateTime>("LastChange")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -45,7 +48,7 @@ namespace LifeDataBase.Migrations
 
                     b.HasIndex("UserEntityId");
 
-                    b.ToTable("LifeStates", (string)null);
+                    b.ToTable("LifeStates");
                 });
 
             modelBuilder.Entity("LifeDataBase.Entities.UserEntity", b =>
@@ -60,7 +63,7 @@ namespace LifeDataBase.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LifeUsers", (string)null);
+                    b.ToTable("LifeUsers");
                 });
 
             modelBuilder.Entity("LifeDataBase.Entities.FieldEntity", b =>

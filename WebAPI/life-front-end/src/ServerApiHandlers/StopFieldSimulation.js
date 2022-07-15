@@ -6,10 +6,12 @@ export async function StopFieldSimulation(simulatedFieldId)
         const fetchOptions = {
             mode: "cors",
             credentials: "include",
-            method: "DELETE"
+            method: "DELETE",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(simulatedFieldId),
         };
-
-        await fetch(SERVER_ADDRESS + '/StopFieldSimulation/' + simulatedFieldId, fetchOptions);
+        
+        await fetch(SERVER_ADDRESS + '/StopFieldSimulation/', fetchOptions);
 
         console.log(`simulation with ID=${simulatedFieldId} deleted`);
     }

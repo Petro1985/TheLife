@@ -15,8 +15,27 @@ public class FieldContext : DbContext
     {
     }
 
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        // auto-filling LastChange column with DateTime.UtcNow
+        var objectStateEntries = ChangeTracker.Entries()
+            .Where(e => e.Entity is FieldEntity && e.State is EntityState.Modified or EntityState.Added).ToList();
+        
+        var currentTime = DateTime.UtcNow;
+        
+        foreach (var entry in objectStateEntries)
+        {
+            var entityBase = entry.Entity as FieldEntity;
+            if (entityBase == null) continue;
+            entityBase.LastChange = currentTime;
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
         modelBuilder.Entity<UserEntity>().HasMany<FieldEntity>(entity => entity.Lifes).WithOne();
 
         modelBuilder.Entity<FieldEntity>().Property(state => state.Survivors)

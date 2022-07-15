@@ -9,10 +9,10 @@ public class LifeProfile : Profile
     public LifeProfile()
     {
         CreateMap<Field, FieldResponse>();
-        
-        CreateMap<Field, SimulatedFieldResponse>()
-            .ForMember(prop => prop.SimulatedFieldId, 
-                opt => opt.MapFrom(propFrom => propFrom.Id));
+
+        CreateMap<Field, SimulatedFieldResponse>();
+
+        CreateMap<SimulatedField, SimulatedFieldResponse>();
         
         CreateMap<Field, FieldInfoResponse>()
             .ForMember(

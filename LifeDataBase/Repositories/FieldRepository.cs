@@ -34,7 +34,7 @@ public class FieldRepository : IFieldRepository
     {
         var userId = _userIdAccessor.GetUserId()!.Value;
         var query = _db.LifeStates.Where(
-            entity => entity.UserEntityId == userId);
+            entity => entity.UserEntityId == userId).OrderByDescending(prop => prop.LastChange);
         var mappedQuery = _mapper.ProjectTo<Field>(query);
         
         return await mappedQuery.ToListAsync();

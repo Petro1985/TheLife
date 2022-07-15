@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import './field.css'
 import {useDispatch, useSelector} from "react-redux";
 import {changeCell, updateFieldOnServer} from "../../../redux/fieldSlice";
@@ -12,8 +12,10 @@ const MAX_CELL_SIZE = 150;
 const ZOOM_STEP = 0.2;
 const INITIAL_CELL_SIZE = 70;
 
+let Cells = [];
+
 export default function Field(props) {
-    const Cells = [];
+
  
     const fieldElement = useRef(null);
     
@@ -77,21 +79,24 @@ export default function Field(props) {
         dispatch(updateFieldOnServer());
     }
     
-    for (let j = startCellY; j < cellsInCol + startCellY; j++)
-    {
-        for (let i = startCellX; i < cellsInRow + startCellX; i++)
-        {
-            const isAlive =  field.survivors.find(element => element.x === i && element.y === j);
-            Cells.push(
-                <div 
-                    onClick={currentMode === EDIT_MODE ? () => onChangeCell({x:i, y:j}) : () => 0} 
-                    key={i + j * cellsInRow} 
-                    className={isAlive ? "alive-cell" : "dead-cell"}
-                    style={{height: cellSize - CELL_PADDING, width: cellSize - CELL_PADDING}}
-                >                        
-                </div>);
-        }        
-    }   
+    
+    useMemo(() => {
+        Cells = [];
+        for (let j = startCellY; j < cellsInCol + startCellY; j++) {
+            for (let i = startCellX; i < cellsInRow + startCellX; i++) {
+                const isAlive = field.survivors.find(element => element.x === i && element.y === j);
+                Cells.push(
+                    <div
+                        onClick={currentMode === EDIT_MODE ? () => onChangeCell({x: i, y: j}) : () => 0}
+                        key={i + j * cellsInRow}
+                        className={isAlive ? "alive-cell" : "dead-cell"}
+                        style={{height: cellSize - CELL_PADDING, width: cellSize - CELL_PADDING}}
+                    >
+                    </div>);
+            }
+        }
+        console.log("computed");
+    }, [activeField, simulatedField, startCellX, startCellY, cellSize, rerender]);
 
     function onMouseDownHandler(event) {
         if (event.button === 2)
@@ -126,6 +131,11 @@ export default function Field(props) {
         const fieldShiftX = Math.max(fieldElement.current.clientWidth * FIELD_OUTSIDE_VIEW, cellSize);
         const fieldShiftY = Math.max(fieldElement.current.clientHeight * FIELD_OUTSIDE_VIEW, cellSize);
 
+        // console.log('fieldShiftX -> ',fieldShiftX)
+        // console.log('fieldShiftY -> ',fieldShiftY)
+        console.log('newX -> ', newX)
+        console.log('newY -> ', newY)
+         
         while (newX + fieldShiftX < -cellSize) {
             newX = newX + cellSize;
             setStartCellX(old => {

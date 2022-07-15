@@ -15,13 +15,11 @@ public class TheLifeController : ControllerBase
     private readonly IMapper _mapper;
     private readonly IFieldService _fieldService;
     private readonly IUserIdAccessor _userIdAccessor;
-    private readonly ISimulatedFieldService _simulatedField;
     private readonly IMinimapGenerator _minimapGenerator;
     
-    public TheLifeController(IFieldService fieldService, IUserIdAccessor userIdAccessor, IMapper mapper, ISimulatedFieldService simulatedField, IMinimapGenerator minimapGenerator)
+    public TheLifeController(IFieldService fieldService, IUserIdAccessor userIdAccessor, IMapper mapper,IMinimapGenerator minimapGenerator)
     {
         _mapper = mapper;
-        _simulatedField = simulatedField;
         _minimapGenerator = minimapGenerator;
         _fieldService = fieldService;
         _userIdAccessor = userIdAccessor;
@@ -71,7 +69,7 @@ public class TheLifeController : ControllerBase
     }
 
     /// <summary>
-    /// Return information about all field belongs to authenticated user.
+    /// Return information about all fields belong to authenticated user.
     /// </summary>
     [Authorize]
     [HttpGet("Map")]
@@ -129,56 +127,6 @@ public class TheLifeController : ControllerBase
         return Ok();
     }
 
-    /// <summary>
-    /// Makes one turn on the simulated field and returns changes
-    /// </summary>
-    [Authorize]
-    [HttpPost("Turn/{simulatedFieldId}")]
-    [ProducesResponseType(typeof(SimulatedFieldResponse), StatusCodes.Status200OK)]
-    public IActionResult MakeTurn(int simulatedFieldId)
-    {
-        var user = _userIdAccessor.GetUserId()!;
-        
-        var field = _simulatedField.MakeTurn(user.Value, simulatedFieldId);
-        var mappedField = _mapper.Map<SimulatedFieldResponse>(field);
-        
-        return Ok(mappedField);
-    }
-    
-    /// <summary>
-    /// Set specific field as an simulated one 
-    /// </summary>
-    [Authorize]
-    [HttpPost("StartNewFieldSimulation/{fieldId:int}")]
-    [ProducesResponseType(typeof(SimulatedFieldResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> StartNewFieldSimulation(int fieldId)
-    {
-        var user = _userIdAccessor.GetUserId()!.Value;
-
-        var field = await _fieldService.LoadField(fieldId);
-        if (field is null) return BadRequest($"There is no field with id={fieldId}");
-        
-        field.Id = _simulatedField.CreateSimulatedField(user, field); 
-        
-        return Ok(_mapper.Map<SimulatedFieldResponse>(field));
-    }
-
-    /// <summary>
-    /// Delete specific simulation by its id 
-    /// </summary>
-    [Authorize]
-    [HttpDelete("StopFieldSimulation/{simulatedFieldId:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public IActionResult StopFieldSimulation(int simulatedFieldId)
-    {
-        var user = _userIdAccessor.GetUserId()!.Value;
-        _simulatedField.DeleteSimulatedField(user, simulatedFieldId); 
-        
-        return Ok();
-    }
-    
     /// <summary>
     /// Delete specific field from database 
     /// </summary>

@@ -4,5 +4,8 @@ public class FieldInfoResponse
 {
     public long Id { get; init; }
     public string Name { get; set; }
+    public DateTime LastChange { get; set; }
+    
     public string MinimapBase64 { get; set; }
+    
 }

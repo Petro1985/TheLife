@@ -20,7 +20,7 @@ export default function ControlBar(props)
     const fieldId = useSelector(state => state.field.field.id);
     const intervalId = useSelector(state => state.playGround.intervalId);
     const currentMode = useSelector(state => state.playGround.mode);
-    const simulatedFieldId = useSelector(state => state.playGround.simulatedField.simulatedFieldId);
+    const simulatedFieldId = useSelector(state => state.playGround.simulatedField.id);
     console.log('simulatedFieldId -> ', simulatedFieldId)
 
     
@@ -38,14 +38,15 @@ export default function ControlBar(props)
             dispatch(setSimulatedField(simulatedFiled));
             dispatch(setSimulationMode(SIMULATION_MODE));
 
-            console.log(`simulation with ID=${simulatedFiled.simulatedFieldId} started`);
-            const newIntervalId = setInterval(() => makeTurn(simulatedFiled.simulatedFieldId), 1000);
+            console.log(`simulation with ID=${simulatedFiled.id} started`);
+            console.log(simulatedFiled);
+            const newIntervalId = setInterval(() => makeTurn(simulatedFiled.id), 1000);
             dispatch(setIntervalId(newIntervalId));
 
             deleteLastSimulationFunction = async () => {
-                await StopFieldSimulation(simulatedFiled.simulatedFieldId)
+                await StopFieldSimulation(simulatedFiled.id)
             }
-            window.addEventListener("beforeunload", deleteLastSimulationFunction);
+            window.addEventListener("beforeunload", deleteLastSimulationFunction, true);
         }
     }
     
@@ -71,7 +72,7 @@ export default function ControlBar(props)
         dispatch(setSimulationMode(EDIT_MODE));
         console.log('simulatedFieldId', simulatedFieldId);
         await StopFieldSimulation(simulatedFieldId);
-        window.removeEventListener("beforeunload", deleteLastSimulationFunction);
+        window.removeEventListener("beforeunload", deleteLastSimulationFunction, true);
     }
 
     return (

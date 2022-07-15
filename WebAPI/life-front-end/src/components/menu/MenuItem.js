@@ -13,6 +13,7 @@ export default function MenuItem({ind, AppStateSetter}){
     const navigate = useNavigate();
     
     const fieldInfo = useSelector(state => state.menu.menu[ind]);
+    const fieldLastChange = new Date(fieldInfo.lastChange);
 
     function onEditFieldNameClick(ind)
     {
@@ -81,7 +82,7 @@ export default function MenuItem({ind, AppStateSetter}){
                             </span>
     
                 </div>
-                <div><strong>Last change: </strong>01.07.2022 at 16:50</div>
+                <div><strong>Last change: </strong>{fieldLastChange.toLocaleDateString() + ' at '+fieldLastChange.getHours()+':'+fieldLastChange.getMinutes()}</div>
     
                 <div className={"menu--field--choose-delete-buttons"}>
                     <button

@@ -11,6 +11,7 @@ public static class LifeServicesCollectionExt
         collection.AddScoped<IUserService, UserService>();
         collection.AddScoped<IFieldService, FieldService>();
         collection.AddSingleton<IMinimapGenerator, MinimapGenerator>();
+        collection.AddSingleton<ISimulationService, SimulationService>();
         return collection;
     }
 }

@@ -26,7 +26,7 @@ public class LifeEngineTests
         }
 
         theEngine.MakeTurn(map);
-        var newTurnState = map.GetState();
+        var newTurnState = map.GetField();
         Snapshot.Match(newTurnState);
     }
 }

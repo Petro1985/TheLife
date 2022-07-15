@@ -2,6 +2,7 @@ using System.Reflection;
 using LifeDataBase;
 using LifeDataBase.ExtensionMethods;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using TheLifeServices.ExtensionMethods;
 using TheLifeServices.Services;
 using TheLiveLogic.ExtensionMethods;
@@ -32,12 +33,12 @@ builder.Services.AddCors(options =>
 });
 
 // Application services registration
+builder.Services.AddMemoryCache();
 builder.Services.AddTheLifeDataBase();
 builder.Services.AddTheLifeLogic();
 builder.Services.AddTheLifeServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IUserIdAccessor, UserIdAccessor>();
-builder.Services.AddSingleton<ISimulatedFieldService, EmulationService>();
 
 
 builder.Services.AddAuthentication(opt =>

@@ -2,9 +2,8 @@
 
 namespace WebAPI.APIStruct;
 
-public class FieldResponse
+public class SimulatedFieldResponse
 {
-    public long Id { get; init; }
-    public string Name { get; set; }
+    public Guid Id { get; set; }
     public List<Coord> Survivors { get; set; }
 }

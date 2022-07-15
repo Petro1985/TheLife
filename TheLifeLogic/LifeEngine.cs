@@ -5,9 +5,9 @@ namespace TheLiveLogic;
 
 public class LifeEngine
 {
-    public void MakeTurn(IField field)
+    public void MakeTurn(IFieldLogic field)
     {
-        var curState = field.GetState();
+        var curState = field.GetField();
         var oldMap = field.Clone();
 
         foreach (var coord in curState.Survivors)

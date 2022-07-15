@@ -2,12 +2,15 @@
 
 namespace TheLiveLogic.DataStruct;
 
-public class Field
+
+public class Field 
 {
     public long Id { get; set; }
     public List<Coord> Survivors { get; set; }
 
     public string Name { get; set; }
+
+    public DateTime LastChange;
 
     public Field(IEnumerable<Coord> survivors)
     {
@@ -15,7 +18,7 @@ public class Field
         Survivors = survivors.ToList();
     }
 
-    private Field()
+    public Field()
     {
     }
 

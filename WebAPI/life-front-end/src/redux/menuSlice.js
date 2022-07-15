@@ -1,5 +1,6 @@
 ﻿import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {SERVER_ADDRESS} from "../Utilities/serverAddress";
+import Field from "../components/play-ground/field/field";
 
 
 export const fetchFieldsInfo = createAsyncThunk('menu/fetchFieldsInfo', async (_, {rejectWithValue, dispatch}) => {
@@ -31,9 +32,7 @@ export const menuSlice = createSlice({
     initialState: {menu:[]},
     reducers: {
         setMenu: (state, action) => {
-            console.log("state before",state);
             state.menu = action.payload;
-            console.log("state after",state);
         },
         deleteItem: (state, action) => {
             const indToDelete = action.payload;

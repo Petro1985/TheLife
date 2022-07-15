@@ -8,7 +8,7 @@ const initialState = {
     intervalId: 0,
     interval: 1000,
     simulatedField: {
-        simulatedFieldId: -1,
+        id: -1,
         survivors: []
     }
 };
