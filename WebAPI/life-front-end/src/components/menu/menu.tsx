@@ -1,42 +1,44 @@
 ﻿import React, {useEffect, useRef, useState} from "react";
 import "./menu.css";
-import {useDispatch, useSelector} from "react-redux";
 import MenuItem from "./MenuItem";
-import {createNewField, setField} from "../../redux/fieldSlice";
+import {createNewField} from "../../redux/fieldSlice";
 import {fetchFieldsInfo} from "../../redux/menuSlice";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
 
-export default function Menu(props)
+const Menu: React.FC = () => 
 {
-    const dispatch = useDispatch();
-    const fieldsInfo = useSelector(state => state.menu.menu);
+    const dispatch = useAppDispatch();
+    const fieldsInfo = useAppSelector(state => state.menu.menu);
     const [topField, setTopField] = useState(0);
     const menuElement = useRef(null);
     const navigate = useNavigate();
-
-    let [searchParams, setSearchParams] = useSearchParams();
 
     // effect for loading fieldsInfo from server
     useEffect(() => {
         dispatch(fetchFieldsInfo());
     }, []);
     
-    //const menuItemsCount = window.innerHeight*0.9;
-    
     const fields = fieldsInfo.map((mapInfo, ind) => 
     {
         return (
             <MenuItem
                 key={"MenuItem"+ind}
-                AppStateSetter = {props.AppStateSetter}
                 ind = {ind}
             />
         );
     }).slice(topField,topField + 3);
 
     async function MenuNewFieldClicked() {
-        dispatch(createNewField()).unwrap().then((arg) => {
-            navigate('/field?id='+arg.id);
+        dispatch(createNewField()).unwrap().then((field) => {
+            if (field)
+            {
+                navigate('/field?id='+field.id);
+            }
+            else
+            {
+                // ToDo: Need to add some message for user, that couldn't create a field
+            }
         });
     }
 
@@ -68,3 +70,5 @@ export default function Menu(props)
             
         </div>);
 }
+
+export default Menu;

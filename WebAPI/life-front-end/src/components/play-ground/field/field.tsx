@@ -1,8 +1,11 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import './field.css'
-import {useDispatch, useSelector} from "react-redux";
 import {changeCell, updateFieldOnServer} from "../../../redux/fieldSlice";
 import {EDIT_MODE, SIMULATION_MODE, SIMULATION_PAUSE_MODE} from "../../../redux/playGroundSlice";
+import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
+import {SimulatedField} from "../../../Types/SimulatedField";
+import {Field} from "../../../Types/Field";
+import {Coord} from "../../../Types/Coord";
 
 let isMouseButton2Down = false;
 const FIELD_OUTSIDE_VIEW = 0.15;
@@ -12,29 +15,30 @@ const MAX_CELL_SIZE = 150;
 const ZOOM_STEP = 0.2;
 const INITIAL_CELL_SIZE = 70;
 
-let Cells = [];
+let Cells:JSX.Element[] = [];
 
-export default function Field(props) {
 
- 
-    const fieldElement = useRef(null);
+const FieldComponent: React.FC = () => 
+{
+    const fieldElement = useRef<HTMLDivElement>(null);
     
     const [fieldPositionStyle, setFieldPositionStyle] = useState({left: 0 , top:0});
+    
+    
     const [rerender, setRerender] = useState(0)
 
-    const [startCellX, setStartCellX] = useState(0);
-    const [startCellY, setStartCellY] = useState(0);
+    const [startCellX, setStartCellX] = useState<number>(0);
+    const [startCellY, setStartCellY] = useState<number>(0);
 
-    const [cellSize, setCellSize] = useState(INITIAL_CELL_SIZE);
+    const [cellSize, setCellSize] = useState<number>(INITIAL_CELL_SIZE);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const currentMode = useSelector( state => state.playGround.mode);
-
-    const simulatedField = useSelector( state => state.playGround.simulatedField);
-    const activeField = useSelector( state => state.field.field);
-
-    let field = {};
+    const currentMode = useAppSelector( state => state.playGround.mode);
+    const simulatedField = useAppSelector( state => state.playGround.simulatedField);
+    const activeField = useAppSelector( state => state.field.field);
+    
+    let field: SimulatedField | Field;
     if (currentMode === SIMULATION_MODE || currentMode === SIMULATION_PAUSE_MODE)
     {
         field = simulatedField;
@@ -44,7 +48,12 @@ export default function Field(props) {
         field = activeField;
     }    
 
-    const fieldGridStyle = {};
+    const fieldGridStyle:{
+        height: number,
+        width: number,
+        gridTemplateColumns: string
+        gridTemplateRows: string
+    }  = {height:0, width:0, gridTemplateColumns:'', gridTemplateRows:''};
     
     let cellsInRow = 0;
     let cellsInCol = 0;
@@ -54,15 +63,14 @@ export default function Field(props) {
     }, []);
     
     if (fieldElement.current) {
-        const fieldWidth = fieldElement.current.clientWidth;
-        const fieldHeight =  fieldElement.current.clientHeight;
+        const fieldWidth = fieldElement.current.clientWidth * (1 + FIELD_OUTSIDE_VIEW * 2);
+        const fieldHeight =  fieldElement.current.clientHeight * (1 + FIELD_OUTSIDE_VIEW * 2);
 
-        cellsInRow = Math.ceil(fieldWidth * (1 + FIELD_OUTSIDE_VIEW * 2) / cellSize); 
-        cellsInCol = Math.ceil(fieldHeight * (1 + FIELD_OUTSIDE_VIEW * 2)  / cellSize);
+        cellsInRow = Math.ceil(fieldWidth / cellSize); 
+        cellsInCol = Math.ceil(fieldHeight / cellSize);
 
-        fieldGridStyle.height = cellsInCol * cellSize;
-        fieldGridStyle.width = cellsInRow * cellSize;
-        
+        fieldGridStyle.height = fieldHeight;
+        fieldGridStyle.width = fieldWidth;
         fieldGridStyle.gridTemplateColumns = "repeat(" + cellsInRow + "," + (cellSize) +"px)";
         fieldGridStyle.gridTemplateRows = "repeat(" + cellsInCol + ", " + (cellSize) + "px)";
     }
@@ -74,12 +82,11 @@ export default function Field(props) {
     }
     window.onresize = Rerender;
         
-    async function onChangeCell(coord) {
-        dispatch(changeCell({...coord, updateOnServer: true}));
+    async function onChangeCell(coord: Coord) {
+        dispatch(changeCell(coord));
         dispatch(updateFieldOnServer());
     }
-    
-    
+        
     useMemo(() => {
         Cells = [];
         for (let j = startCellY; j < cellsInCol + startCellY; j++) {
@@ -96,16 +103,16 @@ export default function Field(props) {
             }
         }
         console.log("computed");
-    }, [activeField, simulatedField, startCellX, startCellY, cellSize, rerender]);
+    }, [activeField, simulatedField, startCellX, startCellY, cellSize, currentMode, rerender]);
 
-    function onMouseDownHandler(event) {
+    function onMouseDownHandler(event: React.MouseEvent) {
         if (event.button === 2)
         {
             isMouseButton2Down = true;
         }        
     }
 
-    function onMouseUpHandler(event) {
+    function onMouseUpHandler(event: React.MouseEvent) {
         if (event.button === 2) {
             isMouseButton2Down = false;
         }
@@ -115,7 +122,7 @@ export default function Field(props) {
         isMouseButton2Down = false;
     }
 
-    function onMouseMoveHandler(event) {
+    function onMouseMoveHandler(event: React.MouseEvent) {
         if (isMouseButton2Down) {
             setFieldPositionStyle(oldPositionStyle =>
             {
@@ -127,15 +134,12 @@ export default function Field(props) {
     }
     
     
-    function normalizeFieldPosition(newX, newY) {
+    function normalizeFieldPosition(newX: number, newY: number) {
+        if (!fieldElement.current) return {left: 0, top: 0};
+        
         const fieldShiftX = Math.max(fieldElement.current.clientWidth * FIELD_OUTSIDE_VIEW, cellSize);
         const fieldShiftY = Math.max(fieldElement.current.clientHeight * FIELD_OUTSIDE_VIEW, cellSize);
-
-        // console.log('fieldShiftX -> ',fieldShiftX)
-        // console.log('fieldShiftY -> ',fieldShiftY)
-        console.log('newX -> ', newX)
-        console.log('newY -> ', newY)
-         
+        
         while (newX + fieldShiftX < -cellSize) {
             newX = newX + cellSize;
             setStartCellX(old => {
@@ -163,7 +167,7 @@ export default function Field(props) {
         return {left: newX, top: newY};
     }
 
-    function onScrollHandler(event) {
+    function onScrollHandler(event: React.WheelEvent) {
         if (event.deltaY > 0) {
             if (cellSize > MIN_CELL_SIZE * (1 + ZOOM_STEP)) {
                 setCellSize(old => {
@@ -219,3 +223,5 @@ export default function Field(props) {
                 </div>
             </div>);
 }
+
+export default FieldComponent;

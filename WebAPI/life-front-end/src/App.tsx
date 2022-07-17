@@ -6,7 +6,8 @@ import {GetUserInfoFromServer} from "./ServerApiHandlers/GetUserInfoFromServer";
 import {Routes, Route, Navigate, useLocation, useNavigate} from "react-router-dom";
 import PlayGround from "./components/play-ground/play-ground";
 
-function App() {
+const App: React.FC = () => 
+{
     useEffect(() => {            // TODO: refactor this later
         GetUserInfoFromServer()
             .then();
@@ -35,13 +36,17 @@ function App() {
     return (
         <>
             <Routes>
-                <Route path={"/menu"} element={<Menu/>} />
+                <Route path={"/menu"} element={
+                    <Menu />
+                } />
 
                 <Route path={"/field"} element={
-                        <PlayGround />
+                    <PlayGround />
                 }/>
 
-                <Route path={"/"} element={<Navigate replace to={"/menu"}></Navigate>}/>
+                <Route path={"/"} element={
+                    <Navigate replace to={"/menu"}></Navigate>
+                }/>
             </Routes>
         </>
     )

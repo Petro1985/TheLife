@@ -1,23 +1,25 @@
 ﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
+import {SimulatedField} from "../Types/SimulatedField";
 
 
-export async function MakeSimulationTurn(simulatedFieldId)
+export async function MakeSimulationTurn(simulatedFieldId: string) : Promise<SimulatedField>
 {
     try {
-        const fetchOptions = {
+
+        const response = await fetch(SERVER_ADDRESS + '/Turn/', 
+            {
             mode: "cors",
             credentials: "include",
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(simulatedFieldId),
-        };
-
-        const response = await fetch(SERVER_ADDRESS + '/Turn/', fetchOptions);
+        });
 
         return await response.json();
     }
     catch (e)
     {
         console.error("func setFieldSimulation error: ", e);
+        return {id:"", survivors:[]};
     }
 }

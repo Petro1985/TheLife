@@ -1,26 +1,40 @@
 ﻿import React, {useEffect, useRef, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {fetchFieldById} from "../../redux/fieldSlice";
-import {deleteItem, renameField, renameItem} from "../../redux/menuSlice";
+import {deleteItem, renameField} from "../../redux/menuSlice";
 import {DeleteFieldOnServer} from "../../ServerApiHandlers/DeleteFieldOnServer";
 import {useNavigate} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
 
-export default function MenuItem({ind, AppStateSetter}){
-    const EMPTY_EDIT_MODE = {active:false, editedName: ""};
-    const [editMode, setEditMode] = useState(EMPTY_EDIT_MODE)
-    const dispatch = useDispatch();
-    const inputRef = useRef(null);
+type Props = {
+    ind: number,
+}
+
+type EditMode = {
+    active: boolean,
+    editedFieldId: number,
+    editedName: string
+}
+
+const MenuItem: React.FC<Props> = function ({ind}) 
+{
+    const EMPTY_EDIT_MODE: EditMode = {active:false, editedName: "", editedFieldId: 0};
+    
+    const [editMode, setEditMode] = useState<EditMode>(EMPTY_EDIT_MODE)
+    
+    const dispatch = useAppDispatch();
+    
+    const inputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
     
-    const fieldInfo = useSelector(state => state.menu.menu[ind]);
+    const fieldInfo = useAppSelector(state => state.menu.menu[ind]);
     const fieldLastChange = new Date(fieldInfo.lastChange);
 
-    function onEditFieldNameClick(ind)
+    function onEditFieldNameClick()
     {
         setEditMode({active: true, editedFieldId: ind, editedName: fieldInfo.name});
     }
 
-    function onFieldNameInputChange(event, ind) {
+    function onFieldNameInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         setEditMode(old => {
                 const newValue = {...old};
                 newValue.editedName = event.target.value;
@@ -29,11 +43,11 @@ export default function MenuItem({ind, AppStateSetter}){
         );
     }
     async function MenuButtonClicked() {
-        dispatch(fetchFieldById(fieldInfo.id))
-            .then(() => navigate('/field?id='+fieldInfo.id));
+        dispatch(fetchFieldById(fieldInfo.id)).unwrap()
+            .then((_) => navigate('/field?id=' + fieldInfo.id));
     }
 
-    async function OnDeleteFieldClicked(ind) {
+    async function OnDeleteFieldClicked(ind: number) {
         await DeleteFieldOnServer(fieldInfo.id);
         dispatch(deleteItem(ind));
     }
@@ -41,11 +55,13 @@ export default function MenuItem({ind, AppStateSetter}){
     // effect for focusing input
     useEffect(() => {
         if (editMode.active) {
-            inputRef.current.focus();
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
         }
     }, [editMode])
 
-    function onFieldNameInputKeyDown(event) {
+    function onFieldNameInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
         switch (event.key){
             case 'Enter':
                 dispatch(renameField({fieldId: fieldInfo.id, ind:ind, newName:editMode.editedName}));
@@ -71,8 +87,8 @@ export default function MenuItem({ind, AppStateSetter}){
                                 ref={inputRef}
                                 className={"menu--field-rename-input"}
                                 value={editMode.editedName}
-                                onChange={(event) => onFieldNameInputChange(event)}
-                                onKeyDown={(event) => onFieldNameInputKeyDown(event)}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => onFieldNameInputChange(event)}
+                                onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => onFieldNameInputKeyDown(event)}
                                 onBlur={() => setEditMode(EMPTY_EDIT_MODE)}
                             /> 
                              :
@@ -86,7 +102,7 @@ export default function MenuItem({ind, AppStateSetter}){
     
                 <div className={"menu--field--choose-delete-buttons"}>
                     <button
-                        onClick={() => MenuButtonClicked(ind)}
+                        onClick={() => MenuButtonClicked()}
                         key={"MenuButton" + ind}
                         className={"green-button menu--choose-button"}>
                         Choose
@@ -102,4 +118,6 @@ export default function MenuItem({ind, AppStateSetter}){
     
         </div>
     );
-} 
+}
+
+export default MenuItem;
