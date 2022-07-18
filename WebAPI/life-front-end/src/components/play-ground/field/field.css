@@ -47,3 +47,9 @@ body {
 .alive-cell {
     background-color: #019f01;
 }
+
+.field-canvas 
+{
+    position: relative;
+    background-color: chocolate;
+}

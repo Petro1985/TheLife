@@ -1,35 +1,38 @@
-import React, {useEffect} from "react";
+import React from "react";
 import "./control-bar.css";
 import {
     setSimulationMode,
     setSimulatedField,
-    EDIT_MODE, SIMULATION_PAUSE_MODE, SIMULATION_MODE, setIntervalId
+    EDIT_MODE, SIMULATION_PAUSE_MODE, SIMULATION_MODE, setIntervalId, makeSimulationTurn, setSimulationInterval
 } from "../../../redux/playGroundSlice";
 
 import {StartNewFieldSimulation} from "../../../ServerApiHandlers/StartFieldSimulation";
-import {MakeSimulationTurn} from "../../../ServerApiHandlers/MakeSimulationTurn";
 import {StopFieldSimulation} from "../../../ServerApiHandlers/StopFieldSimulation";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
+import {log} from "util";
 
-let deleteLastSimulationFunction = () => {}; 
-    
-const ControlBar: React.FC = (props) =>
+  
+const ControlBar: React.FC = () =>
 {
     const dispatch = useAppDispatch();
     
     const fieldId = useAppSelector(state => state.field.field.id);
-    const intervalId = useAppSelector(state => state.playGround.intervalId);
+    const simulationInterval = useAppSelector(state => state.playGround.interval);
+    const simulationIntervalId = useAppSelector(state => state.playGround.intervalId);
     const currentMode = useAppSelector(state => state.playGround.mode);
     const simulatedFieldId = useAppSelector(state => state.playGround.simulatedField.id);
-    console.log('simulatedFieldId -> ', simulatedFieldId)
-
     
-    async function makeTurn(simFieldId: string) {
-        const newSimulatedFiled = await MakeSimulationTurn(simFieldId);
-        console.log('newSimulatedFiled -> ',newSimulatedFiled)
-        dispatch(setSimulatedField(newSimulatedFiled))
+    async function makeTurn() {
+        dispatch(makeSimulationTurn())
+        console.log('turn was made');
     }
 
+    function setSimulationTimer(interval: number)
+    {
+        if (simulationIntervalId) clearInterval(simulationIntervalId);
+        const newIntervalId = window.setInterval(() => makeTurn(), interval);
+        dispatch(setIntervalId(newIntervalId));
+    }
     
     async function onPlayClick()
     {
@@ -37,16 +40,7 @@ const ControlBar: React.FC = (props) =>
             const simulatedFiled = await StartNewFieldSimulation(fieldId);
             dispatch(setSimulatedField(simulatedFiled));
             dispatch(setSimulationMode(SIMULATION_MODE));
-
-            console.log(`simulation with ID=${simulatedFiled.id} started`);
-            console.log(simulatedFiled);
-            const newIntervalId = window.setInterval(() => makeTurn(simulatedFiled.id), 1000);
-            dispatch(setIntervalId(newIntervalId));
-
-            deleteLastSimulationFunction = async () => {
-                await StopFieldSimulation(simulatedFiled.id)
-            }
-            window.addEventListener("beforeunload", deleteLastSimulationFunction, true);
+            setSimulationTimer(simulationInterval);
         }
     }
     
@@ -55,24 +49,21 @@ const ControlBar: React.FC = (props) =>
         {
             case SIMULATION_MODE:
                 dispatch(setSimulationMode(SIMULATION_PAUSE_MODE));
-                clearInterval(intervalId);
+                clearInterval(simulationIntervalId);
                 break;
             case SIMULATION_PAUSE_MODE:
                 dispatch(setSimulationMode(SIMULATION_MODE));
-                const newIntervalId = window.setInterval(() => makeTurn(simulatedFieldId), 1000);
-                dispatch(setIntervalId(newIntervalId));
+                setSimulationTimer(simulationInterval);
                 break;
         }
     }
     
     async function onStopClick()
     {
-        clearInterval(intervalId);
+        clearInterval(simulationIntervalId);
         dispatch(setIntervalId(0));
         dispatch(setSimulationMode(EDIT_MODE));
-        console.log('simulatedFieldId', simulatedFieldId);
         await StopFieldSimulation(simulatedFieldId);
-        window.removeEventListener("beforeunload", deleteLastSimulationFunction, true);
     }
 
     return (
@@ -98,6 +89,44 @@ const ControlBar: React.FC = (props) =>
                 type={"button"}>
                 Stop
             </button>
+            <span className={'intervalControl'}>
+                <button 
+                    className={'intervalControl--button'}
+                    onClick={() => {
+                        const newInterval = simulationInterval - 50;
+                        dispatch(setSimulationInterval(newInterval));
+                        if (currentMode === SIMULATION_MODE)
+                        {
+                            setSimulationTimer(newInterval);
+                        }
+                    }}
+                >
+                    -
+                </button>
+                
+                <input 
+                    className={'simulationIntervalInput'}
+                    value={simulationInterval}
+                    readOnly={true}
+                >
+                    
+                </input>
+                
+                <button 
+                    className={'intervalControl--button'}
+                    onClick={() => {
+                        const newInterval = simulationInterval + 50;
+                        dispatch(setSimulationInterval(newInterval));
+                        if (currentMode === SIMULATION_MODE)
+                        {
+                            setSimulationTimer(newInterval);
+                        }
+                    }}
+                >
+                    +
+                </button>
+            </span>
+            
         </div>
     );
 }

@@ -2,7 +2,6 @@
 import {SERVER_ADDRESS} from "../Utilities/serverAddress";
 import {AppDispatch, RootState} from "./Store";
 import {FieldInfo} from "../Types/FieldInfo";
-import {Field} from "../Types/Field";
 
 export const fetchFieldsInfo = createAsyncThunk<
         void,

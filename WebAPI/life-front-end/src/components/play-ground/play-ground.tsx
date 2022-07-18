@@ -4,6 +4,7 @@ import {Navigate, useLocation} from "react-router-dom";
 import React from "react";
 import {fetchFieldById, setField} from "../../redux/fieldSlice";
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
+import {CanvasField} from "./CanvasField/CanvasField";
 
 const PlayGround: React.FC = () =>  
 {   
@@ -25,7 +26,6 @@ const PlayGround: React.FC = () =>
             dispatch(fetchFieldById(fieldId)).unwrap()
                 .then((field) => {
                     dispatch(setField(field))
-                    console.log('field -<', field)
                 });
         }
         else
@@ -37,7 +37,8 @@ const PlayGround: React.FC = () =>
     return (
         <div className="flex-container">
             <ControlBar/>
-            <FieldComponent/>
+            {/*<FieldComponent/>*/}
+            <CanvasField/>
         </div>
     );
 }

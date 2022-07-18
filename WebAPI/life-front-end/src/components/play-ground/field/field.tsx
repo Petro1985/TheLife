@@ -24,7 +24,6 @@ const FieldComponent: React.FC = () =>
     
     const [fieldPositionStyle, setFieldPositionStyle] = useState({left: 0 , top:0});
     
-    
     const [rerender, setRerender] = useState(0)
 
     const [startCellX, setStartCellX] = useState<number>(0);
@@ -35,9 +34,9 @@ const FieldComponent: React.FC = () =>
     const dispatch = useAppDispatch();
 
     const currentMode = useAppSelector( state => state.playGround.mode);
+    
     const simulatedField = useAppSelector( state => state.playGround.simulatedField);
     const activeField = useAppSelector( state => state.field.field);
-    
     let field: SimulatedField | Field;
     if (currentMode === SIMULATION_MODE || currentMode === SIMULATION_PAUSE_MODE)
     {
@@ -55,8 +54,8 @@ const FieldComponent: React.FC = () =>
         gridTemplateRows: string
     }  = {height:0, width:0, gridTemplateColumns:'', gridTemplateRows:''};
     
-    let cellsInRow = 0;
-    let cellsInCol = 0;
+    let cellsInRow: number;
+    let cellsInCol: number;
 
     useEffect(() => {
         Rerender();

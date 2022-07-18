@@ -5,7 +5,7 @@ import {AppDispatch, RootState} from "./Store";
 //import {Field} from "../Types/Field";
 import {Coord} from "../Types/Coord";
 import {Field} from "../Types/Field";
-import field from "../components/play-ground/field/field";
+import {log} from "util";
 
 interface IField
 {
@@ -81,7 +81,6 @@ export const fetchFieldById = createAsyncThunk<
         const result = await fetch(SERVER_ADDRESS + '/Map/'+fieldId, {mode: "cors", credentials: "include"});
 
         const newField = await result.json();
-        console.log("what we fetched -> ",newField);
         
         fulfillWithValue(newField);
         return newField;
@@ -98,15 +97,14 @@ export const fieldSlice = createSlice({
     reducers: {
         setFieldId: (state, action : PayloadAction<number>) => {
             state.field.id = action.payload;
-            console.log("setFieldID -> ", state)
         },
         setField: (state, action : PayloadAction<Field>) => {
             state.field = action.payload;
-            console.log("setField ->", state)
         },
         changeCell: (state, action : PayloadAction<Coord>) => {
-            const newSurvivors = state.field.survivors.filter(life => life !== action.payload);
+            const newSurvivors = state.field.survivors.filter(life => !(life.x === action.payload.x && life.y === action.payload.y));
 
+            console.log('action.payload', action.payload)
             if (newSurvivors.length === state.field.survivors.length)
             {
                 newSurvivors.push(action.payload);
@@ -141,5 +139,5 @@ export const fieldSlice = createSlice({
     }
 })
 
-export const {setField, setFieldId, changeCell} = fieldSlice.actions;
+export const {setField, changeCell} = fieldSlice.actions;
 export default fieldSlice.reducer;
