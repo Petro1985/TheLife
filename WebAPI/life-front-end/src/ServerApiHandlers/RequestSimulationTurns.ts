@@ -1,12 +1,13 @@
 ﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
 import {SimulatedField} from "../Types/SimulatedField";
+import {SimulationFieldResponse} from "../Types/SimulationFieldResponse";
 
 
-export async function MakeSimulationTurn(simulatedFieldId: string) : Promise<SimulatedField>
+export async function RequestSimulationTurns(simulatedFieldId: string, count: number) : Promise<SimulationFieldResponse>
 {
     try {
 
-        const response = await fetch(SERVER_ADDRESS + '/Turn/', 
+        const response = await fetch(SERVER_ADDRESS + '/Turn/' + count, 
             {
             mode: "cors",
             credentials: "include",
@@ -20,6 +21,6 @@ export async function MakeSimulationTurn(simulatedFieldId: string) : Promise<Sim
     catch (e)
     {
         console.error("func setFieldSimulation error: ", e);
-        return {id:"", survivors:[]};
+        return {id:"",field:[]};
     }
 }

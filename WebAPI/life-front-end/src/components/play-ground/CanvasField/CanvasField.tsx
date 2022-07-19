@@ -1,20 +1,16 @@
 ﻿import React, {useEffect, useMemo, useRef, useState} from "react";
-import {Text, Circle, Layer, Line, Rect, Stage} from "react-konva";
 import '../field/field.css';
 import {EDIT_MODE, SIMULATION_MODE, SIMULATION_PAUSE_MODE} from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
-import {SimulatedField} from "../../../Types/SimulatedField";
-import {Field} from "../../../Types/Field";
 import {Coord} from "../../../Types/Coord";
 import {changeCell, updateFieldOnServer} from "../../../redux/fieldSlice";
-import {log} from "util";
 
 let isMouseButton2Down = false;
 const FIELD_OUTSIDE_VIEW = 0.15;
 const CELL_PADDING = 1;
 const MIN_CELL_SIZE = 2;
 const MAX_CELL_SIZE = 90;
-const ZOOM_STEP = 0.2;
+const ZOOM_STEP = 0.1;
 const INITIAL_CELL_SIZE = 70;
 
 type FieldPositionStyle =
@@ -41,9 +37,10 @@ export const CanvasField: React.FC = () =>
 
     const currentMode = useAppSelector( state => state.playGround.mode);
 
-    const simulatedField = useAppSelector( state => state.playGround.simulatedField);
-    const activeField = useAppSelector( state => state.field.field);
-    let field: SimulatedField | Field;
+    const simulatedField = useAppSelector( state => state.playGround.simulatedField.field.survivors);
+    const activeField = useAppSelector( state => state.field.field.survivors);
+    let field: Coord[];
+    
     if (currentMode === SIMULATION_MODE || currentMode === SIMULATION_PAUSE_MODE)
     {
         field = simulatedField;
@@ -82,16 +79,13 @@ export const CanvasField: React.FC = () =>
         {
             isMouseButton2Down = true;
         }
-        else if (event.button === 0)
+        else if (currentMode === EDIT_MODE && event.button === 0)
         {
-            
-            console.log(event)
             const coord: Coord = {
                 x: Math.floor(startCellX + (event.clientX - canvasElement.current!.offsetLeft) / cellSize),
                 y: Math.floor(startCellY + (event.clientY - (canvasElement.current!.offsetTop)) / cellSize)};
             dispatch(changeCell(coord));
             dispatch(updateFieldOnServer());
-            console.log('canvas', canvasElement.current!.offsetTop);
         }
     }
 
@@ -225,7 +219,7 @@ export const CanvasField: React.FC = () =>
                 context.stroke();
             }
             
-            field.survivors.forEach(({x, y}) =>
+            field.forEach(({x, y}) =>
             {
                 if (x > startCellX || x < startCellX + cellsInCol || y > startCellY || y < startCellY + cellsInRow) 
                 context.fillRect(
@@ -259,15 +253,6 @@ export const CanvasField: React.FC = () =>
                 >
                     Field is supposed to be here
                 </canvas>
-                {/*<Stage*/}
-                {/*    style={canvasPositionStyle} className={'field-canvas'}    */}
-                {/*    width={canvasSize.width}*/}
-                {/*    height={canvasSize.height}*/}
-                {/*>*/}
-                {/*    <Layer>*/}
-                {/*        {Cells}*/}
-                {/*    </Layer>*/}
-                {/*</Stage>*/}
             </div>
         </div>);
 };

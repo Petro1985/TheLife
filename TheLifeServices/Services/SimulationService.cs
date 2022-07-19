@@ -12,6 +12,7 @@ public class SimulationService : ISimulationService
     private readonly IMemoryCache _simulatedFields;
     private readonly LifeEngine _lifeEngine;
     private readonly MemoryCacheEntryOptions _simulatedFieldsCacheOptions;
+    private readonly Object _lockMark = new ();
 
     public SimulationService(LifeEngine lifeEngine, IMemoryCache simulatedFields)
     {
@@ -23,18 +24,24 @@ public class SimulationService : ISimulationService
         };
     }
 
-    public SimulatedField? MakeTurn(Guid simulatedFieldId)
+    public List<SimulatedFieldWithOutId>? MakeTurn(Guid simulatedFieldId, int count)
     {
-        var newSimulatedField = new SimulatedField {Id = simulatedFieldId};
-        
         var isFieldInCache = _simulatedFields.TryGetValue(simulatedFieldId, out IFieldLogic simulatedField);
         if (isFieldInCache == false) return null;
 
-        _lifeEngine.MakeTurn(simulatedField);
+        var result = new List<SimulatedFieldWithOutId>();
 
-        newSimulatedField.Survivors = simulatedField.GetSurvivors();
+        lock (_lockMark)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                _lifeEngine.MakeTurn(simulatedField);
+                result.Add(new SimulatedFieldWithOutId {Survivors = simulatedField.GetSurvivors()});
+            }            
+        }
 
-        return newSimulatedField;
+        
+        return result;
     }
 
     public SimulatedField? GetSimulatedField(Guid simulatedFieldId)

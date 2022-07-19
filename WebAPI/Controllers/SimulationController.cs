@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TheLiveLogic.DataStruct;
 using TheLiveLogic.Interfaces;
 using WebAPI.APIStruct;
 
@@ -24,16 +25,20 @@ public class SimulationController : ControllerBase
     /// Makes one turn on the simulated field and returns changes
     /// </summary>
     [Authorize]
-    [HttpPost("Turn/")]         // TODO: change to GET and add several fields in return
+    [HttpPost("Turn/{count:int}")]         // TODO: change to GET and add several fields in return
     [ProducesResponseType(typeof(SimulatedFieldResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public IActionResult MakeTurn([FromBody]Guid simulatedFieldId)
+    public IActionResult MakeTurn([FromBody]Guid simulatedFieldId, [FromRoute]int count)
     {
-        var field = _simulation.MakeTurn(simulatedFieldId);
-        var mappedField = _mapper.Map<SimulatedFieldResponse>(field);
-        if (mappedField is null) return BadRequest("Simulated field expired");
+        var field = _simulation.MakeTurn(simulatedFieldId, count);
+
+        var response = new SimulatedFieldResponse
+        {
+            Id = simulatedFieldId,
+            Field = field!,
+        };
         
-        return Ok(mappedField);
+        return Ok(response);
     }
     
     /// <summary>
@@ -49,11 +54,16 @@ public class SimulationController : ControllerBase
         if (field is null) return BadRequest($"There is no field with id={fieldId}");
         
         var newSimulatedFieldId = _simulation.CreateSimulatedField(field);
+        var newField = new List<SimulatedFieldWithOutId>
+        {
+            new SimulatedFieldWithOutId {Survivors = field.Survivors},
+            new SimulatedFieldWithOutId {Survivors = _simulation.MakeTurn(newSimulatedFieldId, 1)!.First().Survivors},
+        };
 
         var newSimulatedField = new SimulatedFieldResponse 
         {
             Id = newSimulatedFieldId,
-            Survivors = field.Survivors
+            Field = newField!
         };
 
         return Ok(newSimulatedField);

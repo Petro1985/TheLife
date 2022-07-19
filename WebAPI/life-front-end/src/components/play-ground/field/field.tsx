@@ -35,9 +35,9 @@ const FieldComponent: React.FC = () =>
 
     const currentMode = useAppSelector( state => state.playGround.mode);
     
-    const simulatedField = useAppSelector( state => state.playGround.simulatedField);
-    const activeField = useAppSelector( state => state.field.field);
-    let field: SimulatedField | Field;
+    const simulatedField = useAppSelector( state => state.playGround.simulatedField.field.survivors);
+    const activeField = useAppSelector( state => state.field.field.survivors);
+    let field: Coord[];
     if (currentMode === SIMULATION_MODE || currentMode === SIMULATION_PAUSE_MODE)
     {
         field = simulatedField;
@@ -90,7 +90,7 @@ const FieldComponent: React.FC = () =>
         Cells = [];
         for (let j = startCellY; j < cellsInCol + startCellY; j++) {
             for (let i = startCellX; i < cellsInRow + startCellX; i++) {
-                const isAlive = field.survivors.find(element => element.x === i && element.y === j);
+                const isAlive = field.find(element => element.x === i && element.y === j);
                 Cells.push(
                     <div
                         onClick={currentMode === EDIT_MODE ? () => onChangeCell({x: i, y: j}) : () => 0}

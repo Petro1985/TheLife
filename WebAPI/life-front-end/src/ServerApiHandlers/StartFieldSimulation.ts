@@ -1,8 +1,8 @@
 ﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
-import {SimulatedField} from "../Types/SimulatedField";
+import {SimulationFieldResponse} from "../Types/SimulationFieldResponse";
 
 
-export async function StartNewFieldSimulation(fieldId: number) : Promise<SimulatedField>
+export async function StartNewFieldSimulation(fieldId: number) : Promise<SimulationFieldResponse>
 {
     try {
         const response = await fetch(SERVER_ADDRESS + '/StartNewFieldSimulation/' + fieldId, 
@@ -17,6 +17,6 @@ export async function StartNewFieldSimulation(fieldId: number) : Promise<Simulat
     catch (e)
     {
         console.error("func setFieldSimulation error: ", e);
-        return {id:"", survivors:[]};
+        return {id:"", field: [{survivors:[]}]};
     }
 }

@@ -3,7 +3,13 @@ import "./control-bar.css";
 import {
     setSimulationMode,
     setSimulatedField,
-    EDIT_MODE, SIMULATION_PAUSE_MODE, SIMULATION_MODE, setIntervalId, makeSimulationTurn, setSimulationInterval
+    EDIT_MODE,
+    SIMULATION_PAUSE_MODE,
+    SIMULATION_MODE,
+    setIntervalId,
+    makeSimulationTurn,
+    setSimulationInterval,
+    requestSimulationTurns
 } from "../../../redux/playGroundSlice";
 
 import {StartNewFieldSimulation} from "../../../ServerApiHandlers/StartFieldSimulation";
@@ -23,7 +29,8 @@ const ControlBar: React.FC = () =>
     const simulatedFieldId = useAppSelector(state => state.playGround.simulatedField.id);
     
     async function makeTurn() {
-        dispatch(makeSimulationTurn())
+        dispatch(makeSimulationTurn());
+        dispatch(requestSimulationTurns());
         console.log('turn was made');
     }
 

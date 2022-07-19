@@ -4,7 +4,7 @@ namespace TheLiveLogic.Interfaces;
 
 public interface ISimulationService
 {
-    SimulatedField? MakeTurn(Guid simulatedFieldId);
+    List<SimulatedFieldWithOutId>? MakeTurn(Guid simulatedFieldId, int count);
     SimulatedField? GetSimulatedField(Guid simulatedFieldId);
     Guid CreateSimulatedField(Field simulatedField);
     void DeleteSimulatedField(Guid simulatedFieldId);
