@@ -11,7 +11,7 @@ export const SIMULATION_PAUSE_MODE = "SIMULATION_PAUSE_MODE";
 const initialState: PlayGround = {
     mode: EDIT_MODE,
     intervalId: 0,
-    interval: 1000,
+    interval: 50,
     simulatedField: {
         id: "",
         survivors: []

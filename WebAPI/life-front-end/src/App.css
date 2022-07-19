@@ -9,7 +9,7 @@ body
 .green-button 
 {
   align-self: center;
-  border-radius: 10px;
+  /*border-radius: 10px;*/
   box-shadow: 3px 3px 5px green;
   background-color: darkgreen;
   color: lawngreen;

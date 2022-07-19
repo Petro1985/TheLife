@@ -10,9 +10,11 @@
     display: flex;
     flex-flow: column;
     
-    background-color: beige;
-    border-radius: 10px;
+    background-color: #789653;
+    /*border-radius: 10px;*/
     border: solid 4px #7cd927;
+    outline: solid 4px #9ed927 ;
+    outline-offset: -7px;
     gap: 20px;
 
     user-select: none;

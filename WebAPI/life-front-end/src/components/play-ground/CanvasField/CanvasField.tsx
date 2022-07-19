@@ -7,12 +7,13 @@ import {SimulatedField} from "../../../Types/SimulatedField";
 import {Field} from "../../../Types/Field";
 import {Coord} from "../../../Types/Coord";
 import {changeCell, updateFieldOnServer} from "../../../redux/fieldSlice";
+import {log} from "util";
 
 let isMouseButton2Down = false;
 const FIELD_OUTSIDE_VIEW = 0.15;
 const CELL_PADDING = 1;
 const MIN_CELL_SIZE = 2;
-const MAX_CELL_SIZE = 150;
+const MAX_CELL_SIZE = 90;
 const ZOOM_STEP = 0.2;
 const INITIAL_CELL_SIZE = 70;
 
@@ -25,6 +26,7 @@ type FieldPositionStyle =
 export const CanvasField: React.FC = () =>
 {
     const fieldElement = useRef<HTMLDivElement>(null);
+    const canvasElement = useRef<HTMLCanvasElement>(null);
 
     const [canvasPositionStyle, setCanvasPositionStyle] = useState<FieldPositionStyle>({left: 0 , top:0});
 
@@ -65,12 +67,6 @@ export const CanvasField: React.FC = () =>
 
         cellsInRow = Math.ceil(canvasSize.width / cellSize);
         cellsInCol = Math.ceil(canvasSize.height / cellSize);
-
-
-        console.log('cellsInRow', cellsInRow)
-        console.log('cellsInCol', cellsInCol)
-        console.log('StartX', startCellX)
-        console.log('StartY', startCellY)
     }
 
     function Rerender()
@@ -79,17 +75,23 @@ export const CanvasField: React.FC = () =>
         console.log("Re rendered");
     }
     window.onresize = Rerender;
-
-    async function onChangeCell(coord: Coord) {
-        dispatch(changeCell(coord));
-        dispatch(updateFieldOnServer());
-    }    
-    
+   
 
     function onMouseDownHandler(event: React.MouseEvent) {
         if (event.button === 2)
         {
             isMouseButton2Down = true;
+        }
+        else if (event.button === 0)
+        {
+            
+            console.log(event)
+            const coord: Coord = {
+                x: Math.floor(startCellX + (event.clientX - canvasElement.current!.offsetLeft) / cellSize),
+                y: Math.floor(startCellY + (event.clientY - (canvasElement.current!.offsetTop)) / cellSize)};
+            dispatch(changeCell(coord));
+            dispatch(updateFieldOnServer());
+            console.log('canvas', canvasElement.current!.offsetTop);
         }
     }
 
@@ -119,13 +121,13 @@ export const CanvasField: React.FC = () =>
                 setCellSize(old => {
                     return old * (1 - ZOOM_STEP);
                 });
-                // setStartCellX(old => {
-                //     return old - Math.round(cellsInRow * (ZOOM_STEP / 2));
-                // })
-                // setStartCellY(old => {
-                //     return old - Math.round(cellsInCol * (ZOOM_STEP / 2));
-                // })
-                //setCanvasPositionStyle(old => normalizeFieldPosition(old));
+                setStartCellX(old => {
+                    return old - Math.round(cellsInRow * (ZOOM_STEP / 2));
+                })
+                setStartCellY(old => {
+                    return old - Math.round(cellsInCol * (ZOOM_STEP / 2));
+                })
+                setCanvasPositionStyle(old => normalizeFieldPosition(old));
             }
             else
             {
@@ -136,13 +138,13 @@ export const CanvasField: React.FC = () =>
                 setCellSize(old => {
                     return old * (1 + ZOOM_STEP);
                 });
-                // setStartCellX(old => {
-                //     return old + Math.round(cellsInRow * (ZOOM_STEP / 2));
-                // })
-                // setStartCellY(old => {
-                //     return old + Math.round(cellsInCol * (ZOOM_STEP / 2));
-                // })
-                //setCanvasPositionStyle(old => normalizeFieldPosition(old));
+                setStartCellX(old => {
+                    return old + Math.round(cellsInRow * (ZOOM_STEP / 2));
+                })
+                setStartCellY(old => {
+                    return old + Math.round(cellsInCol * (ZOOM_STEP / 2));
+                })
+                setCanvasPositionStyle(old => normalizeFieldPosition(old));
             }
             else
             {
@@ -154,56 +156,88 @@ export const CanvasField: React.FC = () =>
     function normalizeFieldPosition(fieldStyles: FieldPositionStyle) : FieldPositionStyle  {
         if (!fieldElement.current) return {left: 0, top: 0};
         
-        const fieldShiftX = Math.max(fieldElement.current.clientWidth * FIELD_OUTSIDE_VIEW, cellSize);
-        const fieldShiftY = Math.max(fieldElement.current.clientHeight * FIELD_OUTSIDE_VIEW, cellSize);
+        const fieldShiftX = fieldElement.current.clientWidth * FIELD_OUTSIDE_VIEW;
+        const fieldShiftY = fieldElement.current.clientHeight * FIELD_OUTSIDE_VIEW;
         
         let newX = fieldStyles.left;
         let newY = fieldStyles.top;
 
-        while (newX + fieldShiftX < -cellSize) {
-            newX = newX + cellSize;
-            setStartCellX(old => {
-                return old + 1;
-            });
+        if (newX < -2*fieldShiftX) {
+            while (newX  < fieldShiftX) {
+                newX = newX + cellSize;
+                setStartCellX(old => {
+                    return old + 1;
+                });
+            }
         }
-        while (newX + fieldShiftX > cellSize) {
-            newX = newX - cellSize;
-            setStartCellX(old => {
-                return old - 1;
-            });
+        if (newX > 0){
+            while (newX > -fieldShiftX) {
+                newX = newX - cellSize;
+                setStartCellX(old => {
+                    return old - 1;
+                });
+            }
         }
-        while (newY + fieldShiftY < -cellSize) {
-            newY = newY + cellSize;
-            setStartCellY(old => {
-                return old + 1;
-            });
+        if (newY < -2*fieldShiftY) {
+            while (newY  < fieldShiftY) {
+                newY = newY + cellSize;
+                setStartCellY(old => {
+                    return old + 1;
+                });
+            }
         }
-        while (newY + fieldShiftY > cellSize) {
-            newY = newY - cellSize;
-            setStartCellY(old => {
-                return old - 1;
-            });
+        if (newY > 0){
+            while (newY > -fieldShiftY) {
+                newY = newY - cellSize;
+                setStartCellY(old => {
+                    return old - 1;
+                });
+            }
         }
+
         return {left: newX, top: newY};
     }
 
-    const Cells = [];
-    for (let j = startCellY; j < cellsInCol + startCellY; j++) {
-        for (let i = startCellX; i < cellsInRow + startCellX; i++) {
-            const isAlive = field.survivors.find(element => element.x === i && element.y === j);
-            Cells.push(
-                <Rect
-                    key={i + j * cellsInRow}
-                    onClick={currentMode === EDIT_MODE ? () => onChangeCell({x: i, y: j}) : () => 0}
-                    x={(i - startCellX) * cellSize + CELL_PADDING}
-                    y={(j - startCellY) * cellSize + CELL_PADDING}
-                    width={(cellSize - CELL_PADDING*2)}
-                    height={(cellSize - CELL_PADDING*2)}
-                    fill={isAlive? "green" : "#aaaaaa"}
-                    // shadowBlur={10}
-                />);
+    // const Cells = [];
+    
+    useMemo(() =>
+    {
+        if (canvasElement.current)
+        {
+            const context = canvasElement.current.getContext('2d')!;
+            context.strokeStyle = 'black';
+            context.fillStyle = "green";
+            context.clearRect(0,0,canvasSize.width,canvasSize.height)
+            const cellPadding = cellSize / 20;
+
+            if (cellSize > 5) {
+                context.lineWidth = cellPadding;
+                context.beginPath();
+                for (let i = 1; i < cellsInCol; i++) {
+                    context.moveTo(0, cellSize * i)
+                    context.lineTo(canvasSize.width, cellSize * i)
+                }
+                for (let i = 1; i < cellsInRow; i++) {
+                    context.moveTo(cellSize * i, 0)
+                    context.lineTo(cellSize * i, canvasSize.height)
+                }
+                context.closePath();
+                context.stroke();
+            }
+            
+            field.survivors.forEach(({x, y}) =>
+            {
+                if (x > startCellX || x < startCellX + cellsInCol || y > startCellY || y < startCellY + cellsInRow) 
+                context.fillRect(
+                    (x - startCellX) * cellSize + cellPadding,
+                    (y - startCellY) * cellSize + cellPadding,
+                    cellSize - cellPadding * 2,
+                    cellSize - cellPadding * 2);                
+            })
+            console.log('field redrawn')
+            
         }
-    }
+    }, [field, rerender, startCellX, startCellY, cellSize]);
 
     return (
         <div 
@@ -217,15 +251,23 @@ export const CanvasField: React.FC = () =>
             onContextMenu={(e) => e.preventDefault()}
         >
             <div>
-                <Stage
+                <canvas
+                    ref={canvasElement}
                     style={canvasPositionStyle} className={'field-canvas'}    
                     width={canvasSize.width}
                     height={canvasSize.height}
                 >
-                    <Layer>
-                        {Cells}
-                    </Layer>
-                </Stage>
+                    Field is supposed to be here
+                </canvas>
+                {/*<Stage*/}
+                {/*    style={canvasPositionStyle} className={'field-canvas'}    */}
+                {/*    width={canvasSize.width}*/}
+                {/*    height={canvasSize.height}*/}
+                {/*>*/}
+                {/*    <Layer>*/}
+                {/*        {Cells}*/}
+                {/*    </Layer>*/}
+                {/*</Stage>*/}
             </div>
         </div>);
 };
