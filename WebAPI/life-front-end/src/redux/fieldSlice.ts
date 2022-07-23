@@ -2,16 +2,14 @@
 import {SERVER_ADDRESS} from "../Utilities/serverAddress";
 import {createNewFieldOnServer} from "../ServerApiHandlers/UpdateFieldOnServer";
 import {AppDispatch, RootState} from "./Store";
-//import {Field} from "../Types/Field";
 import {Coord} from "../Types/Coord";
 import {Field} from "../Types/Field";
-import {log} from "util";
 
 interface IField
 {
     field: Field
 }
-   
+
 const initialState : IField = {
     field: {id:-1, name:'', survivors: []}
 }

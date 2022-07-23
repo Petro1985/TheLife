@@ -1,19 +1,18 @@
 ﻿import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppDispatch, RootState} from "./Store";
-import {RequestSimulationTurns} from "../ServerApiHandlers/RequestSimulationTurns";
-import {FieldWithoutId, SimulationFieldResponse} from "../Types/SimulationFieldResponse";
+import {FieldWithoutId} from "../Types/SimulationFieldResponse";
+import {StartNewFieldSimulationServerAPI} from "../ServerApiHandlers/StartFieldSimulation";
 export const EDIT_MODE = "EDIT_MODE";
 export const SIMULATION_MODE = "SIMULATION_MODE";
 export const SIMULATION_PAUSE_MODE = "SIMULATION_PAUSE_MODE";
 
-
-const SIMULATION_FIELD_BUFFER_SIZE = 20;
-const COUNT_OF_TURNS_FOR_ONE_REQUEST = 2;
+// size of buffer for simulation in seconds
+export const SIMULATION_FIELD_BUFFER_SIZE = 5;
 
 const initialState: PlayGround = {
     mode: EDIT_MODE,
     intervalId: 0,
-    interval: 1000,
+    interval: 500,
     simulatedField: {
         id: "",
         field: {survivors: []},
@@ -29,49 +28,46 @@ interface PlayGround
     simulatedField: {id: string, field: FieldWithoutId, fieldBuffer: FieldWithoutId[]},
 }
 
-export const requestSimulationTurns = createAsyncThunk<
-    FieldWithoutId[],
-    void,
+export const startNewFieldSimulation = createAsyncThunk<
+    {id: string, field: FieldWithoutId[]},
+    number,
     {
         state: RootState,
         dispatch: AppDispatch,
-    }>(
-    'playGround/makeTurn',
-    async (_, {getState, fulfillWithValue}) => {
-        const state = getState().playGround;
-
-        let countTurns: number = 1;
-        
-        if (state.simulatedField.fieldBuffer.length < SIMULATION_FIELD_BUFFER_SIZE)
-        {
-            countTurns = 2;
-        } else if (state.simulatedField.fieldBuffer.length > SIMULATION_FIELD_BUFFER_SIZE * 1.2)
-        {
-            countTurns = 0;
-        }
-        if (countTurns) 
-        {
-            const simulatedField: SimulationFieldResponse = await RequestSimulationTurns(state.simulatedField.id, countTurns);
-            console.log('->',simulatedField);
-            return simulatedField.field;
-        }
-        else
-        {
-            return [];
-        }
-
     }
-)
+    >('playground/StartNewFieldSimulation', async (fieldId, {dispatch, getState}) =>
+{
+    try {
+        return await StartNewFieldSimulationServerAPI(fieldId);
+    }
+    catch (e)
+    {
+        console.error("func setFieldSimulation error: ", e);
+        return {id:"", field: [{survivors:[]}]};
+    }    
+});
 
 export const playGroundSlice = createSlice({
     name: 'playGround',
     initialState,
     reducers: {
+        addTurnsToBuffer: (state, {payload}) =>
+        {
+            if (state.simulatedField.fieldBuffer.length){
+                state.simulatedField.fieldBuffer = state.simulatedField.fieldBuffer.concat(payload);
+            }
+            else
+            {
+                state.simulatedField.fieldBuffer = payload;
+            }
+        },
         makeSimulationTurn: (state) =>
         {
-            const newField = state.simulatedField.fieldBuffer.shift()
-            if (newField)
+            const newField = state.simulatedField.fieldBuffer.shift();
+            if (newField) 
+            {
                 state.simulatedField.field = newField;
+            }
         },
         setSimulationMode: (state, action: PayloadAction<string>) =>
         {
@@ -85,34 +81,22 @@ export const playGroundSlice = createSlice({
         {
             state.intervalId = 0;
         },
-        setSimulatedField: (state, action:PayloadAction<SimulationFieldResponse>) =>
-        {
-            state.simulatedField.id = action.payload.id;
-            state.simulatedField.field.survivors = action.payload.field[0].survivors;
-            state.simulatedField.fieldBuffer = [{survivors: action.payload.field[1].survivors}];
-        },
         setSimulationInterval: (state, action: PayloadAction<number>) =>
         {
             state.interval = action.payload;
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(requestSimulationTurns.fulfilled, (state, {payload}) => {
-            console.log('payload -> ', payload)
-            console.log('state buffer ->', state.simulatedField.fieldBuffer.length)
-
-            if (state.simulatedField.fieldBuffer.length){
-                state.simulatedField.fieldBuffer = state.simulatedField.fieldBuffer.concat(payload);
-            }
-            else
+        builder.addCase(startNewFieldSimulation.fulfilled, (state, {payload}) =>
             {
-                state.simulatedField.fieldBuffer = payload;
+                state.mode = SIMULATION_MODE;
+                state.simulatedField.id = payload.id;
+                state.simulatedField.field.survivors = payload.field[0].survivors;
+                state.simulatedField.fieldBuffer = [{survivors: payload.field[1].survivors}];
             }
-            
-            console.log(`Request has been fulfilled count=${payload.length}`, state.simulatedField);
-        });
+        )        
     }
 });
 
-export const {setIntervalId, setSimulationMode, setSimulatedField, setSimulationInterval, makeSimulationTurn} = playGroundSlice.actions;
+export const {setIntervalId, setSimulationMode, setSimulationInterval, makeSimulationTurn, addTurnsToBuffer} = playGroundSlice.actions;
 export default playGroundSlice.reducer;

@@ -24,7 +24,7 @@ public class SimulationService : ISimulationService
         };
     }
 
-    public List<SimulatedFieldWithOutId>? MakeTurn(Guid simulatedFieldId, int count)
+    public List<SimulatedFieldWithOutId>? MakeTurn(Guid simulatedFieldId, int count = 1)
     {
         var isFieldInCache = _simulatedFields.TryGetValue(simulatedFieldId, out IFieldLogic simulatedField);
         if (isFieldInCache == false) return null;

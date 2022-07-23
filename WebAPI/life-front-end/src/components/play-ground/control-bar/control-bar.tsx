@@ -1,141 +1,94 @@
-import React from "react";
+import React, {useCallback, useEffect} from "react";
 import "./control-bar.css";
 import {
-    setSimulationMode,
-    setSimulatedField,
-    EDIT_MODE,
-    SIMULATION_PAUSE_MODE,
-    SIMULATION_MODE,
-    setIntervalId,
-    makeSimulationTurn,
-    setSimulationInterval,
-    requestSimulationTurns
+    addTurnsToBuffer, EDIT_MODE,
+    makeSimulationTurn, setIntervalId,
+    SIMULATION_FIELD_BUFFER_SIZE
 } from "../../../redux/playGroundSlice";
-
-import {StartNewFieldSimulation} from "../../../ServerApiHandlers/StartFieldSimulation";
-import {StopFieldSimulation} from "../../../ServerApiHandlers/StopFieldSimulation";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
-import {log} from "util";
+import {StartButton} from "./StartButton";
+import {PauseButton} from "./PauseButton";
+import {StopButton} from "./StopButton";
+import {HubConnection} from "@microsoft/signalr";
+import {SimulationHubConnectionService} from "../../../Services/WebSocketConnectionService";
+import {TurnTimeControl} from "./TurnTimeControl";
 
-  
+const simulationHubConnectionService = new SimulationHubConnectionService();
+let currentTurn = 0;
+
 const ControlBar: React.FC = () =>
 {
     const dispatch = useAppDispatch();
-    
-    const fieldId = useAppSelector(state => state.field.field.id);
-    const simulationInterval = useAppSelector(state => state.playGround.interval);
-    const simulationIntervalId = useAppSelector(state => state.playGround.intervalId);
-    const currentMode = useAppSelector(state => state.playGround.mode);
-    const simulatedFieldId = useAppSelector(state => state.playGround.simulatedField.id);
-    
-    async function makeTurn() {
-        dispatch(makeSimulationTurn());
-        dispatch(requestSimulationTurns());
-        console.log('turn was made');
-    }
+    const currentSimulationMode = useAppSelector(state => state.playGround.mode);
+    const intervalId = useAppSelector(state => state.playGround.intervalId);
+    const simulationFiledId = useAppSelector(state => state.playGround.simulatedField.id);
 
-    function setSimulationTimer(interval: number)
+    const resetInterval = useCallback((turnTime: number) =>
     {
-        if (simulationIntervalId) clearInterval(simulationIntervalId);
-        const newIntervalId = window.setInterval(() => makeTurn(), interval);
-        dispatch(setIntervalId(newIntervalId));
-    }
-    
-    async function onPlayClick()
-    {
-        if (currentMode === EDIT_MODE){
-            const simulatedFiled = await StartNewFieldSimulation(fieldId);
-            dispatch(setSimulatedField(simulatedFiled));
-            dispatch(setSimulationMode(SIMULATION_MODE));
-            setSimulationTimer(simulationInterval);
-        }
-    }
-    
-    async function onPauseClick() {
-        switch (currentMode)
+        if (intervalId)
         {
-            case SIMULATION_MODE:
-                dispatch(setSimulationMode(SIMULATION_PAUSE_MODE));
-                clearInterval(simulationIntervalId);
-                break;
-            case SIMULATION_PAUSE_MODE:
-                dispatch(setSimulationMode(SIMULATION_MODE));
-                setSimulationTimer(simulationInterval);
-                break;
+            window.clearInterval(intervalId);
+            const newIntervalId = window.setInterval(() => intervalHandler(simulationHubConnectionService.getConnection()!, simulationFiledId), turnTime);
+            dispatch(setIntervalId(newIntervalId));
+        }
+    }, [intervalId, simulationFiledId])
+
+    useEffect(() =>
+    {
+        simulationHubConnectionService.setMessageHandler('ReceiveMessage', serverAnswer => {
+            console.log('Received:', serverAnswer);
+            dispatch(addTurnsToBuffer(serverAnswer));
+        });
+    }, []);
+    
+    useEffect(() =>
+    {
+        if (currentSimulationMode === EDIT_MODE)
+        {
+            currentTurn = 0;
+        }
+    }, [currentSimulationMode])
+    
+
+    
+    const intervalHandler = async (con: HubConnection, simulatedFieldId: string) =>
+    {
+        dispatch(makeSimulationTurn());
+        currentTurn++;
+        console.log('currentTurn', currentTurn)
+        
+        if (!con) return;
+
+        try {
+            const simulationFieldRequest = {Id: simulatedFieldId, toTurn: currentTurn + SIMULATION_FIELD_BUFFER_SIZE}
+            await con.send('SendMessage', simulationFieldRequest);
+            console.log('sent: ', simulationFieldRequest);
+        } catch (e) {
+            console.log(e);
         }
     }
-    
-    async function onStopClick()
-    {
-        clearInterval(simulationIntervalId);
-        dispatch(setIntervalId(0));
-        dispatch(setSimulationMode(EDIT_MODE));
-        await StopFieldSimulation(simulatedFieldId);
-    }
-
+      
     return (
         <div className={"main-container"}>
-            <button
-                disabled={currentMode !== EDIT_MODE}
-                onClick={onPlayClick} 
-                className={"control--button-play green-button"} 
-                type={"button"}>
-                Start
-            </button>
-            <button
-                disabled={currentMode === EDIT_MODE}
-                onClick={onPauseClick} 
-                className={"control--button-pause green-button"} 
-                type={"button"}>
-                {currentMode === SIMULATION_PAUSE_MODE ?"Play" : "Pause"}
-            </button>
-            <button
-                disabled={currentMode === EDIT_MODE}
-                onClick={onStopClick} 
-                className={"control--button-stop green-button"} 
-                type={"button"}>
-                Stop
-            </button>
-            <span className={'intervalControl'}>
-                <button 
-                    className={'intervalControl--button'}
-                    onClick={() => {
-                        const newInterval = simulationInterval - 50;
-                        dispatch(setSimulationInterval(newInterval));
-                        if (currentMode === SIMULATION_MODE)
-                        {
-                            setSimulationTimer(newInterval);
-                        }
-                    }}
-                >
-                    -
-                </button>
-                
-                <input 
-                    className={'simulationIntervalInput'}
-                    value={simulationInterval}
-                    readOnly={true}
-                >
-                    
-                </input>
-                
-                <button 
-                    className={'intervalControl--button'}
-                    onClick={() => {
-                        const newInterval = simulationInterval + 50;
-                        dispatch(setSimulationInterval(newInterval));
-                        if (currentMode === SIMULATION_MODE)
-                        {
-                            setSimulationTimer(newInterval);
-                        }
-                    }}
-                >
-                    +
-                </button>
-            </span>
-            
+            <StartButton
+                intervalHandler={intervalHandler}
+                connectionService={simulationHubConnectionService}
+            />
+            <PauseButton
+                intervalHandler={intervalHandler}
+                connectionService={simulationHubConnectionService}
+            />
+            <StopButton
+                connectionService={simulationHubConnectionService}
+            />
+
+            <TurnTimeControl
+                resetInterval={resetInterval}
+            />
         </div>
     );
 }
 
 export default ControlBar;
+
+

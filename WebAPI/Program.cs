@@ -2,12 +2,12 @@ using System.Reflection;
 using LifeDataBase;
 using LifeDataBase.ExtensionMethods;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using TheLifeServices.ExtensionMethods;
 using TheLifeServices.Services;
 using TheLiveLogic.ExtensionMethods;
 using TheLiveLogic.Interfaces;
 using WebAPI.Auth;
+using WebAPI.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +60,8 @@ builder.Services.AddDbContext<FieldContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSignalR();
+
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
 
 var app = builder.Build();
@@ -77,7 +79,8 @@ app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+//app.UseWebSockets();
+app.MapHub<TheLifeSimulationHub>("/SimulationHub");
 app.MapControllers();
 
 app.Run();

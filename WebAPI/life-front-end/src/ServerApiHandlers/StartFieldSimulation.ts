@@ -2,7 +2,7 @@
 import {SimulationFieldResponse} from "../Types/SimulationFieldResponse";
 
 
-export async function StartNewFieldSimulation(fieldId: number) : Promise<SimulationFieldResponse>
+export async function StartNewFieldSimulationServerAPI(fieldId: number) : Promise<SimulationFieldResponse>
 {
     try {
         const response = await fetch(SERVER_ADDRESS + '/StartNewFieldSimulation/' + fieldId, 
