@@ -1,5 +1,4 @@
 ﻿import ControlBar from "./control-bar/control-bar";
-import FieldComponent from "./field/field";
 import {Navigate, useLocation} from "react-router-dom";
 import React from "react";
 import {fetchFieldById, setField} from "../../redux/fieldSlice";
@@ -37,7 +36,6 @@ const PlayGround: React.FC = () =>
     return (
         <div className="flex-container">
             <ControlBar/>
-            {/*<FieldComponent/>*/}
             <CanvasField/>
         </div>
     );

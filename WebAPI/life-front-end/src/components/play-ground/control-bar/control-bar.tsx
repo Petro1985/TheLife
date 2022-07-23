@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useEffect} from "react";
 import "./control-bar.css";
 import {
     addTurnsToBuffer, EDIT_MODE,
@@ -23,24 +23,14 @@ const ControlBar: React.FC = () =>
     const intervalId = useAppSelector(state => state.playGround.intervalId);
     const simulationFiledId = useAppSelector(state => state.playGround.simulatedField.id);
 
-    const resetInterval = useCallback((turnTime: number) =>
-    {
-        if (intervalId)
-        {
-            window.clearInterval(intervalId);
-            const newIntervalId = window.setInterval(() => intervalHandler(simulationHubConnectionService.getConnection()!, simulationFiledId), turnTime);
-            dispatch(setIntervalId(newIntervalId));
-        }
-    }, [intervalId, simulationFiledId])
-
     useEffect(() =>
     {
-        simulationHubConnectionService.setMessageHandler('ReceiveMessage', serverAnswer => {
+        simulationHubConnectionService.setMessageHandler('FieldsRequest', serverAnswer => {
             console.log('Received:', serverAnswer);
             dispatch(addTurnsToBuffer(serverAnswer));
         });
     }, []);
-    
+
     useEffect(() =>
     {
         if (currentSimulationMode === EDIT_MODE)
@@ -48,26 +38,34 @@ const ControlBar: React.FC = () =>
             currentTurn = 0;
         }
     }, [currentSimulationMode])
-    
 
+    const resetInterval = (turnTime: number) =>
+    {
+        if (intervalId)
+        {
+            window.clearInterval(intervalId);
+            const newIntervalId = window.setInterval(() => intervalHandler(simulationHubConnectionService.getConnection()!, simulationFiledId), turnTime);
+            dispatch(setIntervalId(newIntervalId));
+        }
+    }
     
     const intervalHandler = async (con: HubConnection, simulatedFieldId: string) =>
     {
         dispatch(makeSimulationTurn());
         currentTurn++;
         console.log('currentTurn', currentTurn)
-        
+
         if (!con) return;
 
         try {
             const simulationFieldRequest = {Id: simulatedFieldId, toTurn: currentTurn + SIMULATION_FIELD_BUFFER_SIZE}
-            await con.send('SendMessage', simulationFieldRequest);
+            await con.send('SendFields', simulationFieldRequest);
             console.log('sent: ', simulationFieldRequest);
         } catch (e) {
             console.log(e);
         }
     }
-      
+    
     return (
         <div className={"main-container"}>
             <StartButton

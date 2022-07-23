@@ -79,7 +79,7 @@ app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseWebSockets();
+
 app.MapHub<TheLifeSimulationHub>("/SimulationHub");
 app.MapControllers();
 

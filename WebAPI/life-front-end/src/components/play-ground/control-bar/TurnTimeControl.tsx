@@ -1,22 +1,27 @@
-﻿import React, {useState} from "react";
+﻿import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
 import {setSimulationInterval} from "../../../redux/playGroundSlice";
-import {log} from "util";
 
 
 export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInterval}) => {
     
     const turnTime = useAppSelector(state => state.playGround.interval);
     const intervalId = useAppSelector(state => state.playGround.intervalId);
-    const [turnTimeInputValue, setTurnTimeInputValue] = useState<string>(turnTime.toString());
+    const [turnTimeInputValue, setTurnTimeInputValue] = useState<number>(turnTime);
     const dispatch = useAppDispatch();
+
+    
+    useEffect(()=> 
+    {
+        dispatch(setSimulationInterval(turnTimeInputValue));
+        resetInterval(turnTimeInputValue);
+    }
+    ,[turnTimeInputValue])
     
     function onTurnTimeInputChange(e: React.ChangeEvent<HTMLInputElement>) 
     {
-        setTurnTimeInputValue(e.target.value);
         const turnTime = parseInt(e.target.value, 10);
-        dispatch(setSimulationInterval(turnTime));
-        resetInterval(turnTime);
+        setTurnTimeInputValue(turnTime);
     }
 
     function OnTurnTimeInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) 
@@ -32,14 +37,15 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
         <span className={'intervalControl'}>
         <button
             className={'intervalControl--button'}
-            onClick={() => {}}
+            onClick={() => {
+                setTurnTimeInputValue(old => old - 50);
+            }}
         >
             -
         </button>
 
         <input
             className={'simulationIntervalInput'}
-            //readOnly={true}
             value={turnTimeInputValue}
             onKeyDown={e => OnTurnTimeInputKeyDown(e)}
             onChange={onTurnTimeInputChange}
@@ -48,6 +54,7 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
         <button
             className={'intervalControl--button'}
             onClick={() => {
+                setTurnTimeInputValue(old => old + 50);
             }}
         >
             +

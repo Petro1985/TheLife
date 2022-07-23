@@ -1,16 +1,12 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.SignalR;
 using TheLifeServices.Services;
+using TheLiveLogic.DataStruct;
 using TheLiveLogic.Interfaces;
 
 namespace WebAPI.SignalR;
 
-public class SimulatedFieldRequest
-{
-    public Guid Id { set; get; }
-    public int ToTurn { get; set; }
-}
-public class TheLifeSimulationHub : Hub
+public class TheLifeSimulationHub : Hub<IFieldSimulationClient>
 {
     private readonly ISimulationService _simulationService;
 
@@ -19,7 +15,7 @@ public class TheLifeSimulationHub : Hub
         _simulationService = simulationService;
     }
 
-    public async Task SendMessage(SimulatedFieldRequest simulatedFieldRequest)
+    public async Task SendFields(SimulatedFieldSignalRRequest simulatedFieldRequest)
     {
         var isInProcess = Context.Items.TryAdd("inProcess", null);
         if (!isInProcess) return;
@@ -31,8 +27,8 @@ public class TheLifeSimulationHub : Hub
         
         for (var i = currentTurn; i < simulatedFieldRequest.ToTurn; i++)
         {
-            var nextTurn = _simulationService.MakeTurn(simulatedFieldRequest.Id);
-            await Clients.Caller.SendAsync("ReceiveMessage", nextTurn);
+            var fields = _simulationService.MakeTurn(simulatedFieldRequest.Id);
+            await Clients.Caller.FieldsRequest(fields??new List<SimulatedFieldWithOutId>());
         };
         
         Context.Items.Remove("inProcess");

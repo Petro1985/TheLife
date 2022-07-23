@@ -1,5 +1,5 @@
 ﻿import React, {useEffect, useMemo, useRef, useState} from "react";
-import '../field/field.css';
+import './field.css';
 import {EDIT_MODE, SIMULATION_MODE, SIMULATION_PAUSE_MODE} from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
 import {Coord} from "../../../Types/Coord";
@@ -192,9 +192,7 @@ export const CanvasField: React.FC = () =>
         return {left: newX, top: newY};
     }
 
-    // const Cells = [];
-    
-    useMemo(() =>
+    useEffect( () =>
     {
         if (canvasElement.current)
         {
@@ -228,8 +226,7 @@ export const CanvasField: React.FC = () =>
                     cellSize - cellPadding * 2,
                     cellSize - cellPadding * 2);                
             })
-            console.log('field redrawn')
-            
+            console.log('field redrawn');
         }
     }, [field, rerender, startCellX, startCellY, cellSize]);
 
