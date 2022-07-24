@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.SignalR;
-using TheLifeServices.Services;
+﻿using Microsoft.AspNetCore.SignalR;
 using TheLiveLogic.DataStruct;
 using TheLiveLogic.Interfaces;
 
@@ -17,6 +15,8 @@ public class TheLifeSimulationHub : Hub<IFieldSimulationClient>
 
     public async Task SendFields(SimulatedFieldSignalRRequest simulatedFieldRequest)
     {
+        if (Context.ConnectionAborted.IsCancellationRequested) Context.Items["abort"] = true;
+        
         var isInProcess = Context.Items.TryAdd("inProcess", null);
         if (!isInProcess) return;
 
@@ -29,6 +29,8 @@ public class TheLifeSimulationHub : Hub<IFieldSimulationClient>
         {
             var fields = _simulationService.MakeTurn(simulatedFieldRequest.Id);
             await Clients.Caller.FieldsRequest(fields??new List<SimulatedFieldWithOutId>());
+            if (Context.Items.ContainsKey("abort")) 
+                return;
         };
         
         Context.Items.Remove("inProcess");

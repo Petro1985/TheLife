@@ -2,6 +2,7 @@
 import {AppDispatch, RootState} from "./Store";
 import {FieldWithoutId} from "../Types/SimulationFieldResponse";
 import {StartNewFieldSimulationServerAPI} from "../ServerApiHandlers/StartFieldSimulation";
+export const MENU_MODE = "MENU_MODE";
 export const EDIT_MODE = "EDIT_MODE";
 export const SIMULATION_MODE = "SIMULATION_MODE";
 export const SIMULATION_PAUSE_MODE = "SIMULATION_PAUSE_MODE";

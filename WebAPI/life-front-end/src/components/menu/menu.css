@@ -1,32 +1,56 @@
 ﻿
-.menu
+.menu-container
 {
-    margin: 5vh auto;
     padding: 25px 5px;
-    position: relative;
-    max-width: 600px;
-    width: 450px;
-    
-    display: flex;
-    flex-flow: column;
+
+    position: fixed;
+    top: 3%;
     
     background-color: #789653;
-    /*border-radius: 10px;*/
+
     border: solid 4px #7cd927;
     outline: solid 4px #9ed927 ;
     outline-offset: -7px;
+    
+    display: flex;
+    flex-flow: row;
+    
+    transition: all 0.5s ease;
+}
+
+
+.menu
+{
+    min-width: 450px;
+    display: flex;
+    flex-flow: column;
+    
     gap: 20px;
 
     user-select: none;
 }
 
-.menu > button
+.fixed
+{
+    position: fixed;
+}
+
+.menu > div
+{
+    display: flex;
+    flex-flow: row;
+    justify-content: start;
+}
+
+
+.menu > div > button
 {
     margin: 0 auto;
-    width: 400px;
+    width: 45%;
     height: 60px;
-    font-size: 40px;
+    font-size: 32px;
 }
+
 .menu > button:hover
  {
     transform: scale(1.05);
@@ -38,8 +62,6 @@
     margin: 0 auto;
     display: flex;
     flex-flow: row;
-    
-        
 }
 
 .menu--button-image
@@ -75,6 +97,7 @@
     box-shadow: 3px 3px 5px brown;
     cursor: pointer;
 }
+
 .menu--delete-field-button:hover
 {
     transform: scale(1.05);
@@ -145,4 +168,14 @@
 .pointer
 {
     cursor: pointer;
+}
+
+.patterns
+{
+    width: 500px;
+    height: 300px;
+    background-color: darkslategray;
+    position: relative;
+    left: 0;
+    top: 0;
 }

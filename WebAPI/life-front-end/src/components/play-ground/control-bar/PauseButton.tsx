@@ -43,7 +43,7 @@ export const PauseButton: React.FC<{intervalHandler: Function, connectionService
     return (
         <button
             onClick={onPauseButtonClick}
-            disabled={currentMode === EDIT_MODE}
+            disabled={currentMode !== SIMULATION_MODE && currentMode !== SIMULATION_PAUSE_MODE}
             className={"control--button-pause green-button"}
             type={"button"}>
             {currentMode === SIMULATION_PAUSE_MODE ?"Play" : "Pause"}

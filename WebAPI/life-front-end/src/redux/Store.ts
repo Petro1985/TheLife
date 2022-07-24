@@ -8,8 +8,11 @@ export const store = configureStore({
         field: fieldReducer,
         menu: menuReducer,
         playGround: playGroundReducer,
-        //[apiSlice.reducerPath]: apiSlice.reducer, 
     },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(
+    {
+        serializableCheck: false        
+    })
 });
 
 export type RootState = ReturnType<typeof store.getState>;

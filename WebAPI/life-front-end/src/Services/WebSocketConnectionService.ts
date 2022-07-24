@@ -25,6 +25,14 @@ export class SimulationHubConnectionService
         }
     }
     
+    clearMessageHandler(methodName: string)
+    {
+        if (this.#connection)
+        {
+            this.#connection.off(methodName);
+        }
+    }
+    
     getConnection = () =>
     {
         try

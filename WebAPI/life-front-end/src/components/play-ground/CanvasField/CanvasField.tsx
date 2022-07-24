@@ -13,18 +13,18 @@ const MAX_CELL_SIZE = 90;
 const ZOOM_STEP = 0.1;
 const INITIAL_CELL_SIZE = 70;
 
-type FieldPositionStyle =
+type PositionStyle =
 {
     left: number,
     top: number,
 };
 
-export const CanvasField: React.FC = () =>
+export const CanvasField: React.FC<{enabled: boolean}> = ({enabled}) =>
 {
     const fieldElement = useRef<HTMLDivElement>(null);
     const canvasElement = useRef<HTMLCanvasElement>(null);
 
-    const [canvasPositionStyle, setCanvasPositionStyle] = useState<FieldPositionStyle>({left: 0 , top:0});
+    const [canvasPositionStyle, setCanvasPositionStyle] = useState<PositionStyle>({left: 0 , top:0});
 
     const [rerender, setRerender] = useState(0)
 
@@ -75,6 +75,13 @@ export const CanvasField: React.FC = () =>
    
 
     function onMouseDownHandler(event: React.MouseEvent) {
+        if (!enabled) 
+        {
+            event.stopPropagation();
+            event.preventDefault();
+            return;
+        }
+        
         if (event.button === 2)
         {
             isMouseButton2Down = true;
@@ -110,6 +117,12 @@ export const CanvasField: React.FC = () =>
         }
     }
     function onScrollHandler(event: React.WheelEvent) {
+        if (!enabled)
+        {
+            event.stopPropagation();
+            return;
+        }
+        
         if (event.deltaY > 0) {
             if (cellSize > MIN_CELL_SIZE * (1 + ZOOM_STEP)) {
                 setCellSize(old => {
@@ -147,7 +160,7 @@ export const CanvasField: React.FC = () =>
         }
     }
 
-    function normalizeFieldPosition(fieldStyles: FieldPositionStyle) : FieldPositionStyle  {
+    function normalizeFieldPosition(fieldStyles: PositionStyle) : PositionStyle  {
         if (!fieldElement.current) return {left: 0, top: 0};
         
         const fieldShiftX = fieldElement.current.clientWidth * FIELD_OUTSIDE_VIEW;

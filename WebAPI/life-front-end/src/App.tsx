@@ -1,10 +1,11 @@
 import './App.css';
 import React, {useEffect, useState} from 'react';
 import Menu from "./components/menu/menu"
-import {logDOM} from "@testing-library/react";
 import {GetUserInfoFromServer} from "./ServerApiHandlers/GetUserInfoFromServer";
 import {Routes, Route, Navigate, useLocation, useNavigate} from "react-router-dom";
 import PlayGround from "./components/play-ground/play-ground";
+import {useAppDispatch} from "./Hooks/reduxHooks";
+import {EDIT_MODE, MENU_MODE, setSimulationMode} from "./redux/playGroundSlice";
 
 const App: React.FC = () => 
 {
@@ -12,6 +13,8 @@ const App: React.FC = () =>
         GetUserInfoFromServer()
             .then();
     },[]);
+    
+    const dispatch = useAppDispatch();
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -22,10 +25,13 @@ const App: React.FC = () =>
             switch (location.pathname) 
             {
                 case '/menu':
+                    dispatch(setSimulationMode(EDIT_MODE));
                     navigate('/field')
                     break;
                 case '/field':
+                    dispatch(setSimulationMode(MENU_MODE));
                     navigate('/menu')
+                    
                     break;
                 default:
                     navigate('/menu')
@@ -37,7 +43,10 @@ const App: React.FC = () =>
         <>
             <Routes>
                 <Route path={"/menu"} element={
-                    <Menu />
+                    <>
+                        <PlayGround />
+                        <Menu />
+                    </>
                 } />
 
                 <Route path={"/field"} element={

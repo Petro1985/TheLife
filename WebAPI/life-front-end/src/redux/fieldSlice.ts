@@ -1,6 +1,6 @@
 ﻿import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {SERVER_ADDRESS} from "../Utilities/serverAddress";
-import {createNewFieldOnServer} from "../ServerApiHandlers/UpdateFieldOnServer";
+import {createNewFieldOnServer} from "../ServerApiHandlers/createNewFieldOnServer";
 import {AppDispatch, RootState} from "./Store";
 import {Coord} from "../Types/Coord";
 import {Field} from "../Types/Field";

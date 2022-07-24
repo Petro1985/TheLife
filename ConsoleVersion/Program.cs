@@ -8,10 +8,16 @@ var map = new EndlessField();
 var consoleOutput = new ConsoleOutput();
 
 map.SetCell(new Coord(3, 3), true);
+map.SetCell(new Coord(3, 4), true);
+map.SetCell(new Coord(4, 3), true);
 map.SetCell(new Coord(4, 4), true);
-map.SetCell(new Coord(4, 5), true);
-map.SetCell(new Coord(3, 5), true);
-map.SetCell(new Coord(2, 5), true);
+map.SetCell(new Coord(5, 3), true);
+map.SetCell(new Coord(5, 4), true);
+map.SetCell(new Coord(6, 3), true);
+map.SetCell(new Coord(6, 4), true);
+map.SetCell(new Coord(7, 3), true);
+map.SetCell(new Coord(7, 4), true);
+
 
 var theEngine = new LifeEngine();
 
@@ -23,5 +29,5 @@ while (true)
     var curPos = Console.GetCursorPosition();
     Console.Write(textMap);
     Console.SetCursorPosition(curPos.Left, curPos.Top);
-    await Task.Delay(100);
+    Console.ReadKey();
 }

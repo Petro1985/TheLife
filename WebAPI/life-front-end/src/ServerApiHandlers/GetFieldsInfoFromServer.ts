@@ -1,7 +1,7 @@
 ﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
 import {FieldInfo} from "../Types/FieldInfo";
 
-export async function GetAllMapsInfoFromServer() : Promise<FieldInfo>
+export async function GetAllMapsInfoFromServer() : Promise<FieldInfo[]>
 {
     try {
         const result = await fetch(SERVER_ADDRESS + '/Map/', {mode: "cors", credentials: "include", method: "GET"});
@@ -10,6 +10,6 @@ export async function GetAllMapsInfoFromServer() : Promise<FieldInfo>
     catch (e)
     {
         console.error("func FetchService.GetAllMapsInfo error: " + e);
-        return {id:-1, lastChange:"", name:"",minimapBase64:""};
+        return [{id:-1, lastChange:"", name:"",minimapBase64:""}];
     }
 }

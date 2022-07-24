@@ -2,6 +2,7 @@
 import {SERVER_ADDRESS} from "../Utilities/serverAddress";
 import {AppDispatch, RootState} from "./Store";
 import {FieldInfo} from "../Types/FieldInfo";
+import {GetAllMapsInfoFromServer} from "../ServerApiHandlers/GetFieldsInfoFromServer";
 
 export const fetchFieldsInfo = createAsyncThunk<
         void,
@@ -13,8 +14,7 @@ export const fetchFieldsInfo = createAsyncThunk<
     >('menu/fetchFieldsInfo',
     async (_, {rejectWithValue, dispatch}) => {
         try {
-            const result = await fetch(SERVER_ADDRESS + '/Map/', {mode: "cors", credentials: "include", method: "GET"});
-            const newMenu = await result.json();
+            const newMenu = await GetAllMapsInfoFromServer();
             console.log("fetched menu -> ", newMenu)
             dispatch(setMenu(newMenu));
         } catch (e) {

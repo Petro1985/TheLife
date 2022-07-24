@@ -7,8 +7,6 @@ import {
     startNewFieldSimulation
 } from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
-import {HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
-import {SERVER_ADDRESS} from "../../../Utilities/serverAddress";
 import {SimulationHubConnectionService} from "../../../Services/WebSocketConnectionService";
 
 export const StartButton: React.FC<{intervalHandler: Function, connectionService: SimulationHubConnectionService}> = 

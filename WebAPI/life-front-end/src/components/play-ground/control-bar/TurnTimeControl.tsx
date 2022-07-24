@@ -1,16 +1,17 @@
 ﻿import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
-import {setSimulationInterval} from "../../../redux/playGroundSlice";
+import {MENU_MODE, setSimulationInterval} from "../../../redux/playGroundSlice";
 
 
 export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInterval}) => {
     
     const turnTime = useAppSelector(state => state.playGround.interval);
-    const intervalId = useAppSelector(state => state.playGround.intervalId);
     const [turnTimeInputValue, setTurnTimeInputValue] = useState<number>(turnTime);
+    
+    const currentMode = useAppSelector(state => state.playGround.mode);
+    
     const dispatch = useAppDispatch();
 
-    
     useEffect(()=> 
     {
         dispatch(setSimulationInterval(turnTimeInputValue));
@@ -26,7 +27,6 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
 
     function OnTurnTimeInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) 
     {
-        console.log(e.key)
         if (e.key < '0' || e.key > '9' && e.key.length === 1)
         {
             e.preventDefault();
@@ -37,6 +37,7 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
         <span className={'intervalControl'}>
         <button
             className={'intervalControl--button'}
+            disabled={currentMode === MENU_MODE}
             onClick={() => {
                 setTurnTimeInputValue(old => old - 50);
             }}
@@ -49,10 +50,12 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
             value={turnTimeInputValue}
             onKeyDown={e => OnTurnTimeInputKeyDown(e)}
             onChange={onTurnTimeInputChange}
+            disabled={currentMode === MENU_MODE}
         />
             
         <button
             className={'intervalControl--button'}
+            disabled={currentMode === MENU_MODE}
             onClick={() => {
                 setTurnTimeInputValue(old => old + 50);
             }}

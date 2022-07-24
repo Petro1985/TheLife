@@ -17,7 +17,6 @@ public class LifeEngine
             if (aliveNeighborsCount is not (2 or 3))
             {
                 field.SetCell(coord, false);
-                continue;
             }
 
             var neighbors = coord.GetNeighbors();

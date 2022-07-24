@@ -1,5 +1,11 @@
 ﻿import React from "react";
-import {EDIT_MODE, setIntervalId, setSimulationMode} from "../../../redux/playGroundSlice";
+import {
+    EDIT_MODE,
+    setIntervalId,
+    setSimulationMode,
+    SIMULATION_MODE,
+    SIMULATION_PAUSE_MODE
+} from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
 import {SimulationHubConnectionService} from "../../../Services/WebSocketConnectionService";
 
@@ -24,7 +30,7 @@ export const StopButton: React.FC<{connectionService: SimulationHubConnectionSer
     return (
         <button
             onClick={OnStopButtonClick}
-            disabled={currentMode === EDIT_MODE}
+            disabled={currentMode !== SIMULATION_MODE && currentMode !== SIMULATION_PAUSE_MODE}
             className={"control--button-stop green-button"}
             type={"button"}>
             Stop

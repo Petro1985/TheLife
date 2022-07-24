@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import "./control-bar.css";
 import {
     addTurnsToBuffer, EDIT_MODE,
-    makeSimulationTurn, setIntervalId,
+    makeSimulationTurn, setIntervalId, setSimulationMode,
     SIMULATION_FIELD_BUFFER_SIZE
 } from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
@@ -12,23 +12,31 @@ import {StopButton} from "./StopButton";
 import {HubConnection} from "@microsoft/signalr";
 import {SimulationHubConnectionService} from "../../../Services/WebSocketConnectionService";
 import {TurnTimeControl} from "./TurnTimeControl";
+import {store} from "../../../redux/Store";
 
-const simulationHubConnectionService = new SimulationHubConnectionService();
+const simulationHubConnectionService: SimulationHubConnectionService = new SimulationHubConnectionService();
 let currentTurn = 0;
 
-const ControlBar: React.FC = () =>
+const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
 {
     const dispatch = useAppDispatch();
     const currentSimulationMode = useAppSelector(state => state.playGround.mode);
     const intervalId = useAppSelector(state => state.playGround.intervalId);
     const simulationFiledId = useAppSelector(state => state.playGround.simulatedField.id);
+    
 
     useEffect(() =>
     {
-        simulationHubConnectionService.setMessageHandler('FieldsRequest', serverAnswer => {
-            console.log('Received:', serverAnswer);
+        simulationHubConnectionService!.setMessageHandler('FieldsRequest', serverAnswer => {
             dispatch(addTurnsToBuffer(serverAnswer));
         });
+        return () => {
+            window.clearInterval(store.getState().playGround.intervalId);
+            dispatch(setIntervalId(0));
+            dispatch(setSimulationMode(EDIT_MODE));
+            simulationHubConnectionService?.clearMessageHandler('FieldsRequest');
+            simulationHubConnectionService?.stopConnection().then(() => console.log('Connection closed!!!!!!!!!!!'));
+        }
     }, []);
 
     useEffect(() =>
@@ -44,7 +52,7 @@ const ControlBar: React.FC = () =>
         if (intervalId)
         {
             window.clearInterval(intervalId);
-            const newIntervalId = window.setInterval(() => intervalHandler(simulationHubConnectionService.getConnection()!, simulationFiledId), turnTime);
+            const newIntervalId = window.setInterval(() => intervalHandler(simulationHubConnectionService!.getConnection()!, simulationFiledId), turnTime);
             dispatch(setIntervalId(newIntervalId));
         }
     }
@@ -53,31 +61,35 @@ const ControlBar: React.FC = () =>
     {
         dispatch(makeSimulationTurn());
         currentTurn++;
-        console.log('currentTurn', currentTurn)
 
         if (!con) return;
 
         try {
             const simulationFieldRequest = {Id: simulatedFieldId, toTurn: currentTurn + SIMULATION_FIELD_BUFFER_SIZE}
             await con.send('SendFields', simulationFieldRequest);
-            console.log('sent: ', simulationFieldRequest);
         } catch (e) {
             console.log(e);
         }
     }
     
     return (
-        <div className={"main-container"}>
+        <div className={"main-container"}
+             onMouseDown={(e) => 
+             {
+                 e.stopPropagation();
+                 e.preventDefault();
+             }}
+        >
             <StartButton
                 intervalHandler={intervalHandler}
-                connectionService={simulationHubConnectionService}
+                connectionService={simulationHubConnectionService!}
             />
             <PauseButton
                 intervalHandler={intervalHandler}
-                connectionService={simulationHubConnectionService}
+                connectionService={simulationHubConnectionService!}
             />
             <StopButton
-                connectionService={simulationHubConnectionService}
+                connectionService={simulationHubConnectionService!}
             />
 
             <TurnTimeControl

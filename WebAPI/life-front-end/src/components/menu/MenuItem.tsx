@@ -44,7 +44,10 @@ const MenuItem: React.FC<Props> = function ({ind})
     }
     async function MenuButtonClicked() {
         dispatch(fetchFieldById(fieldInfo.id)).unwrap()
-            .then((_) => navigate('/field?id=' + fieldInfo.id));
+            .then((_) => 
+            {
+                navigate('/field?id=' + fieldInfo.id);
+            });
     }
 
     async function OnDeleteFieldClicked(ind: number) {
