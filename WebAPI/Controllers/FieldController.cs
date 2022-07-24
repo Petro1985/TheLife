@@ -10,14 +10,14 @@ using WebAPI.APIStruct;
 namespace WebAPI.Controllers;
 
 [ApiController]
-public class TheLifeController : ControllerBase
+public class FieldController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IFieldService _fieldService;
     private readonly IUserIdAccessor _userIdAccessor;
     private readonly IMinimapGenerator _minimapGenerator;
     
-    public TheLifeController(IFieldService fieldService, IUserIdAccessor userIdAccessor, IMapper mapper,IMinimapGenerator minimapGenerator)
+    public FieldController(IFieldService fieldService, IUserIdAccessor userIdAccessor, IMapper mapper,IMinimapGenerator minimapGenerator)
     {
         _mapper = mapper;
         _minimapGenerator = minimapGenerator;

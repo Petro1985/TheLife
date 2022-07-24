@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
 import {convertImportedFileToField} from "../../Utilities/ImportConvertion";
 import {EDIT_MODE, setSimulationMode} from "../../redux/playGroundSlice";
+import {PatternsElement} from "./PatternsElement";
 
 const Menu: React.FC = () => 
 {
@@ -137,7 +138,7 @@ const Menu: React.FC = () =>
             {
                 isPatternShown && 
                 <div className={`patterns`}>
-                
+                    <PatternsElement/>
                 </div>
             }       
         </div>

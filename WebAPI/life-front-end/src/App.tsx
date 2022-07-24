@@ -5,7 +5,9 @@ import {GetUserInfoFromServer} from "./ServerApiHandlers/GetUserInfoFromServer";
 import {Routes, Route, Navigate, useLocation, useNavigate} from "react-router-dom";
 import PlayGround from "./components/play-ground/play-ground";
 import {useAppDispatch} from "./Hooks/reduxHooks";
-import {EDIT_MODE, MENU_MODE, setSimulationMode} from "./redux/playGroundSlice";
+import {EDIT_MODE, MENU_MODE, setIntervalId, setSimulationMode} from "./redux/playGroundSlice";
+import {store} from "./redux/Store";
+import {simulationHubConnectionService} from "./components/play-ground/control-bar/control-bar";
 
 const App: React.FC = () => 
 {
@@ -29,9 +31,17 @@ const App: React.FC = () =>
                     navigate('/field')
                     break;
                 case '/field':
+                    // close connection and clear intervals if simulation was in progress
+                    const intervalId = store.getState().playGround.intervalId;
+                    if (intervalId)
+                    {
+                        window.clearInterval(intervalId);
+                        dispatch(setIntervalId(0));
+                        simulationHubConnectionService?.stopConnection().then();
+                    }
+
                     dispatch(setSimulationMode(MENU_MODE));
                     navigate('/menu')
-                    
                     break;
                 default:
                     navigate('/menu')

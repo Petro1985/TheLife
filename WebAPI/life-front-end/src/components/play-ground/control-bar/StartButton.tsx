@@ -23,13 +23,9 @@ export const StartButton: React.FC<{intervalHandler: Function, connectionService
         const simulatedFieldId = (await dispatch(startNewFieldSimulation(fieldId)).unwrap()).id;
 
         const connection = connectionService.getConnection();
-        console.log('Got connection', connection);
         await connectionService.startConnection();
-        console.log('Got connection (after start)', connection);
-
         const intervalId = window.setInterval(() => intervalHandler(connection, simulatedFieldId), interval);
         dispatch(setIntervalId(intervalId));
-        console.log('interval set')
     }
 
     return ( 

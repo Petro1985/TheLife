@@ -172,8 +172,9 @@
 
 .patterns
 {
-    width: 500px;
-    height: 300px;
+    width: 495px;
+    justify-self: stretch;
+    
     background-color: darkslategray;
     position: relative;
     left: 0;

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LifeDataBase.Migrations
 {
     [DbContext(typeof(FieldContext))]
-    [Migration("20220624174541_init")]
+    [Migration("20220724150808_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace LifeDataBase.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<DateTime>("LastChange")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -48,6 +51,38 @@ namespace LifeDataBase.Migrations
                     b.HasIndex("UserEntityId");
 
                     b.ToTable("LifeStates");
+                });
+
+            modelBuilder.Entity("LifeDataBase.Entities.PatternEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LastUpdate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PreviewImageBase64")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Survivors")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Patterns");
                 });
 
             modelBuilder.Entity("LifeDataBase.Entities.UserEntity", b =>

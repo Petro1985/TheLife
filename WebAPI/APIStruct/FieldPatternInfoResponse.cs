@@ -10,3 +10,9 @@ public class FieldPatternInfoResponse
     public string PreviewBase64 { get; set; }
     public DateTime LastChange { get; set; }
 }
+
+public class FieldPatternResponse
+{
+    public long Id { get; set; }
+    public List<Coord> Survivors { get; set; }
+}

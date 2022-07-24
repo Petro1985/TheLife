@@ -30,11 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Interfaces" />
-      <Folder Include="Utils" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Remove="life-front-end\src\Utilities\DeleteFieldOnServer.js" />
       <None Remove="life-front-end\src\Services\FetchService.js" />
       <None Remove="life-front-end\src\Utilities\UpdateFieldOnServer.js" />

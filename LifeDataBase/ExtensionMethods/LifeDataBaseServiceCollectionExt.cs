@@ -13,6 +13,7 @@ public static class LifeDataBaseServiceCollectionExt
     {
         collection.AddScoped<IUserRepository, UserRepository>();
         collection.AddScoped<IFieldRepository, FieldRepository>();
+        collection.AddScoped<IPatternRepository, PatternRepository>();
         collection.AddAutoMapper(Assembly.GetAssembly(typeof(FieldContext)));
         return collection;
     }

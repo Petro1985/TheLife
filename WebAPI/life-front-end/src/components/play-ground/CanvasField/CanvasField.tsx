@@ -11,7 +11,7 @@ const CELL_PADDING = 1;
 const MIN_CELL_SIZE = 2;
 const MAX_CELL_SIZE = 90;
 const ZOOM_STEP = 0.1;
-const INITIAL_CELL_SIZE = 70;
+const INITIAL_CELL_SIZE = 10;
 
 type PositionStyle =
 {
@@ -35,13 +35,18 @@ export const CanvasField: React.FC<{enabled: boolean}> = ({enabled}) =>
 
     const dispatch = useAppDispatch();
 
-    const currentMode = useAppSelector( state => state.playGround.mode);
+    const currentSimulationMode = useAppSelector( state => state.playGround.mode);
 
     const simulatedField = useAppSelector( state => state.playGround.simulatedField.field.survivors);
     const activeField = useAppSelector( state => state.field.field.survivors);
+
+    useEffect(() => {
+        Rerender();
+    }, []);
+    
     let field: Coord[];
     
-    if (currentMode === SIMULATION_MODE || currentMode === SIMULATION_PAUSE_MODE)
+    if (currentSimulationMode === SIMULATION_MODE || currentSimulationMode === SIMULATION_PAUSE_MODE)
     {
         field = simulatedField;
     }
@@ -50,10 +55,6 @@ export const CanvasField: React.FC<{enabled: boolean}> = ({enabled}) =>
         field = activeField;
     }
 
-    useEffect(() => {
-        Rerender();
-    }, []);
-    
     let cellsInRow: number = 0;
     let cellsInCol: number = 0;
     let canvasSize = {width: 0, height: 0};
@@ -86,7 +87,7 @@ export const CanvasField: React.FC<{enabled: boolean}> = ({enabled}) =>
         {
             isMouseButton2Down = true;
         }
-        else if (currentMode === EDIT_MODE && event.button === 0)
+        else if (currentSimulationMode === EDIT_MODE && event.button === 0)
         {
             const coord: Coord = {
                 x: Math.floor(startCellX + (event.clientX - canvasElement.current!.offsetLeft) / cellSize),

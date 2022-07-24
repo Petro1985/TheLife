@@ -8,12 +8,12 @@ export const SIMULATION_MODE = "SIMULATION_MODE";
 export const SIMULATION_PAUSE_MODE = "SIMULATION_PAUSE_MODE";
 
 // size of buffer for simulation in seconds
-export const SIMULATION_FIELD_BUFFER_SIZE = 5;
+export const SIMULATION_FIELD_BUFFER_SIZE = 10;
 
 const initialState: PlayGround = {
     mode: EDIT_MODE,
     intervalId: 0,
-    interval: 500,
+    interval: 300,
     simulatedField: {
         id: "",
         field: {survivors: []},

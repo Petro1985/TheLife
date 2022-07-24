@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LifeDataBase.Migrations
 {
     [DbContext(typeof(FieldContext))]
-    partial class LifeContextModelSnapshot : ModelSnapshot
+    partial class FieldContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

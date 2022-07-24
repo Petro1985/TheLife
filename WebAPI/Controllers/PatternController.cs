@@ -1,12 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Drawing.Imaging;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TheLiveLogic.DataStruct;
 using TheLiveLogic.Interfaces;
 using WebAPI.APIStruct;
 
 namespace WebAPI.Controllers;
 
-public class FieldPatternController : ControllerBase
+public class PatternController : ControllerBase
 {
 
     private readonly IPatternService _patternService;
@@ -14,7 +16,7 @@ public class FieldPatternController : ControllerBase
     private readonly IMapper _mapper;
 
 
-    public FieldPatternController(IPatternService patternService, IMinimapGenerator minimapGenerator, IMapper mapper)
+    public PatternController(IPatternService patternService, IMinimapGenerator minimapGenerator, IMapper mapper)
     {
         _patternService = patternService;
         _minimapGenerator = minimapGenerator;
@@ -25,7 +27,7 @@ public class FieldPatternController : ControllerBase
     /// Return information about all patterns.
     /// </summary>
     [Authorize]
-    [HttpGet("Patterns")]
+    [HttpGet("Pattern")]
     [ProducesResponseType(typeof(List<FieldPatternInfoResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllPatternsInfo()
     {
@@ -35,22 +37,28 @@ public class FieldPatternController : ControllerBase
 
         return Ok(patternsResponse);
     }
+
+    /// <summary>
+    /// Saves a new field in database and assigns id
+    /// </summary>
+    /// <param name="newPattern"></param>
+    [Authorize]
+    [HttpPost("Pattern")]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    public async Task<IActionResult> AddPattern([FromBody] AddPatternRequest newPattern)
+    {
+        var mappedPattern = _mapper.Map<FieldPattern>(newPattern);
+
+        using var stream = new MemoryStream();
+        _minimapGenerator.Generate(newPattern.Survivors).Save(stream,  ImageFormat.Png);
+        stream.Position = 0;
+        mappedPattern.PreviewBase64 = Convert.ToBase64String(stream.ToArray());        
+       
+        var patternId = await _patternService.AddPattern(mappedPattern);
+        
+        return Ok(patternId);
+    }
     
-    // /// <summary>
-    // /// Saves a new field in database and assigns id
-    // /// </summary>
-    // /// <param name="field"></param>
-    // [Authorize]
-    // [HttpPost("Map")]
-    // [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    // public async Task<IActionResult> SaveNewMap([FromBody] SetFieldRequest field)
-    // {
-    //     var mappedState = _mapper.Map<Field>(field);
-    //     var mapId = await _fieldService.SaveField(mappedState);
-    //     
-    //     return Ok(mapId);
-    // }
-    //
     // /// <summary>
     // /// Updates field information in database
     // /// </summary>

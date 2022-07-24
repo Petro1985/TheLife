@@ -4,6 +4,7 @@ import {deleteItem, renameField} from "../../redux/menuSlice";
 import {DeleteFieldOnServer} from "../../ServerApiHandlers/DeleteFieldOnServer";
 import {useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
+import {EDIT_MODE, setSimulationMode} from "../../redux/playGroundSlice";
 
 type Props = {
     ind: number,
@@ -46,6 +47,7 @@ const MenuItem: React.FC<Props> = function ({ind})
         dispatch(fetchFieldById(fieldInfo.id)).unwrap()
             .then((_) => 
             {
+                dispatch(setSimulationMode(EDIT_MODE));
                 navigate('/field?id=' + fieldInfo.id);
             });
     }

@@ -27,12 +27,23 @@ public class MinimapGenerator : IMinimapGenerator
             if (coord.Y < minY) minY = coord.Y;
         }
 
-        var size = Math.Max(maxX - minX + 1, maxY - minY + 1);
-        var minMapOffset = 0;
+        var width = maxX - minX + 1;
+        var height = maxY - minY + 1;
+        var size = Math.Max(width, height);
+        
+        var mapOffsetX = 0;
+        var mapOffsetY = 0;
+        
         if (size < 10)
         {
-            minMapOffset = (10 - size) / 2;
+            mapOffsetX = (10 - width) / 2;
+            mapOffsetY = (10 - height) / 2;
             size = 10;
+        }
+        else
+        {
+            mapOffsetX = (size - width) / 2;
+            mapOffsetY = (size - height) / 2;
         }
         
         var minimap = new Bitmap(size, size);
@@ -43,7 +54,7 @@ public class MinimapGenerator : IMinimapGenerator
         
         foreach (var coord in field)
         {
-            minimap.SetPixel(coord.X - minX + minMapOffset, coord.Y - minY + minMapOffset, Color.Chartreuse);
+            minimap.SetPixel(coord.X - minX + mapOffsetX, coord.Y - minY + mapOffsetY, Color.Chartreuse);
         }
 
         minimap = ResizeImage(minimap, MinimapSize, MinimapSize);

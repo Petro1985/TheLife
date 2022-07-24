@@ -14,7 +14,7 @@ import {SimulationHubConnectionService} from "../../../Services/WebSocketConnect
 import {TurnTimeControl} from "./TurnTimeControl";
 import {store} from "../../../redux/Store";
 
-const simulationHubConnectionService: SimulationHubConnectionService = new SimulationHubConnectionService();
+export const simulationHubConnectionService: SimulationHubConnectionService = new SimulationHubConnectionService();
 let currentTurn = 0;
 
 const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
@@ -29,6 +29,7 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
     {
         simulationHubConnectionService!.setMessageHandler('FieldsRequest', serverAnswer => {
             dispatch(addTurnsToBuffer(serverAnswer));
+            console.log(`Received data from server`);
         });
         return () => {
             window.clearInterval(store.getState().playGround.intervalId);
@@ -67,6 +68,7 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
         try {
             const simulationFieldRequest = {Id: simulatedFieldId, toTurn: currentTurn + SIMULATION_FIELD_BUFFER_SIZE}
             await con.send('SendFields', simulationFieldRequest);
+            console.log(`Request ro turn ${currentTurn + SIMULATION_FIELD_BUFFER_SIZE} sent`);
         } catch (e) {
             console.log(e);
         }

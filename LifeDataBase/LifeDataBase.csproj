@@ -31,4 +31,8 @@
       <Compile Remove="Migrations\20220617135033_NewOne.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations" />
+    </ItemGroup>
+
 </Project>

@@ -8,16 +8,18 @@ public class LifeProfile : Profile
 {
     public LifeProfile()
     {
-        CreateMap<Field, FieldResponse>();
 
-        CreateMap<Field, SimulatedFieldResponse>();
-
-        CreateMap<SimulatedField, SimulatedFieldResponse>();
+        CreateMap<FieldPattern, FieldPatternInfoResponse>();
+        CreateMap<FieldPattern, FieldPatternResponse>();
         
+        CreateMap<Field, FieldResponse>();
+        CreateMap<Field, SimulatedFieldResponse>();
         CreateMap<Field, FieldInfoResponse>()
             .ForMember(
                 response => response.MinimapBase64,
                 option => option.Ignore());
+
+        CreateMap<SimulatedField, SimulatedFieldResponse>();
 
         CreateMap<SetFieldRequest, Field>()
             .ForMember(
