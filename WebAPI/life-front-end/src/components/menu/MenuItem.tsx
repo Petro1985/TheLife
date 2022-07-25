@@ -1,10 +1,10 @@
 ﻿import React, {useEffect, useRef, useState} from "react";
 import {fetchFieldById} from "../../redux/fieldSlice";
 import {deleteItem, renameField} from "../../redux/menuSlice";
-import {DeleteFieldOnServer} from "../../ServerApiHandlers/DeleteFieldOnServer";
 import {useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
 import {EDIT_MODE, setSimulationMode} from "../../redux/playGroundSlice";
+import {DeleteFieldOnServer} from "../../ServerApiHandlers/Field/DeleteFieldOnServer";
 
 type Props = {
     ind: number,
@@ -27,7 +27,7 @@ const MenuItem: React.FC<Props> = function ({ind})
     const inputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
     
-    const fieldInfo = useAppSelector(state => state.menu.menu[ind]);
+    const fieldInfo = useAppSelector(state => state.menu.fields[ind]);
     const fieldLastChange = new Date(fieldInfo.lastChange);
 
     function onEditFieldNameClick()

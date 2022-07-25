@@ -23,7 +23,6 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
     const currentSimulationMode = useAppSelector(state => state.playGround.mode);
     const intervalId = useAppSelector(state => state.playGround.intervalId);
     const simulationFiledId = useAppSelector(state => state.playGround.simulatedField.id);
-    
 
     useEffect(() =>
     {
@@ -75,13 +74,7 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
     }
     
     return (
-        <div className={"main-container"}
-             onMouseDown={(e) => 
-             {
-                 e.stopPropagation();
-                 e.preventDefault();
-             }}
-        >
+        <div className={"main-container"}>
             <StartButton
                 intervalHandler={intervalHandler}
                 connectionService={simulationHubConnectionService!}

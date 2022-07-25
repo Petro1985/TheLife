@@ -2,25 +2,48 @@
 import {SERVER_ADDRESS} from "../Utilities/serverAddress";
 import {AppDispatch, RootState} from "./Store";
 import {FieldInfo} from "../Types/FieldInfo";
-import {GetAllMapsInfoFromServer} from "../ServerApiHandlers/GetFieldsInfoFromServer";
+import {GetAllMapsInfoFromServer} from "../ServerApiHandlers/Menu/GetFieldsInfoFromServer";
+import {GetAllPatternsInfoFromServer} from "../ServerApiHandlers/Menu/GetPatternsInfoFromServer";
+import {PatternInfo} from "../Types/PatternInfo";
 
 export const fetchFieldsInfo = createAsyncThunk<
-        void,
+        FieldInfo[],
         void,
         {
             dispatch: AppDispatch,
             state: RootState
         }
     >('menu/fetchFieldsInfo',
-    async (_, {rejectWithValue, dispatch}) => {
+    async (_, {rejectWithValue}) => {
         try {
             const newMenu = await GetAllMapsInfoFromServer();
             console.log("fetched menu -> ", newMenu)
-            dispatch(setMenu(newMenu));
+            return newMenu;
         } catch (e) {
             rejectWithValue(e);
+            return [];
         }
     });
+
+export const fetchPatternsInfo = createAsyncThunk<
+    PatternInfo[],
+    void,
+    {
+        dispatch: AppDispatch,
+        state: RootState
+    }
+    >('menu/fetchPatternsInfo',
+    async (_, {rejectWithValue}) => {
+        try {
+            const patterns = await GetAllPatternsInfoFromServer();
+            console.log("fetched menu -> ", patterns)
+            return patterns;
+        } catch (e) {
+            rejectWithValue(e);
+            return [];
+        }
+    });
+
 
 export const renameField = createAsyncThunk<
     void,
@@ -42,29 +65,29 @@ export const renameField = createAsyncThunk<
     }
 });
 
-interface FieldsInfo
+interface MenuInfo
 {
-    menu: FieldInfo[]
+    fields: FieldInfo[]
+    patterns: PatternInfo[]
 }
 
-const initialState: FieldsInfo = {
-    menu: []
+const initialState: MenuInfo = {
+    fields: [],
+    patterns: []
 };
 
 export const menuSlice = createSlice({
     name: 'menu',
     initialState,
     reducers: {
-        setMenu: (state, action: PayloadAction<FieldInfo[]>) => {
-            state.menu = action.payload;
-        },
+
         deleteItem: (state, action: PayloadAction<number>) => {
             const indToDelete = action.payload;
-            state.menu = state.menu.filter((item, ind) => ind !== indToDelete);
+            state.fields = state.fields.filter((item, ind) => ind !== indToDelete);
         },
         renameItem: (state, action:PayloadAction<{ind: number, name: string}>) => {
             const ind = action.payload.ind;
-            state.menu[ind].name = action.payload.name;
+            state.fields[ind].name = action.payload.name;
         }
     },
     extraReducers: builder => {
@@ -72,14 +95,27 @@ export const menuSlice = createSlice({
         builder.addCase(fetchFieldsInfo.pending, (state, action) => {
 
         });
-        builder.addCase(fetchFieldsInfo.fulfilled, (state, action) => {
-
+        builder.addCase(fetchFieldsInfo.fulfilled, (state, action) => 
+        {
+            state.fields = action.payload;
         });
         builder.addCase(fetchFieldsInfo.rejected, (state, action) => {
+
+        });
+
+
+        builder.addCase(fetchPatternsInfo.pending, (state, action) => {
+
+        });
+        builder.addCase(fetchPatternsInfo.fulfilled, (state, action) =>
+        {
+            state.patterns = action.payload;
+        });
+        builder.addCase(fetchPatternsInfo.rejected, (state, action) => {
 
         });
     }
 })
 
-export const {setMenu, deleteItem, renameItem} = menuSlice.actions;
+export const {deleteItem, renameItem} = menuSlice.actions;
 export default menuSlice.reducer; 

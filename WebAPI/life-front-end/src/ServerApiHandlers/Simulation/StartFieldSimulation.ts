@@ -1,5 +1,5 @@
-﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
-import {SimulationFieldResponse} from "../Types/SimulationFieldResponse";
+﻿import {SERVER_ADDRESS} from "../../Utilities/serverAddress";
+import {SimulationFieldResponse} from "../../Types/SimulationFieldResponse";
 
 
 export async function StartNewFieldSimulationServerAPI(fieldId: number) : Promise<SimulationFieldResponse>

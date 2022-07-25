@@ -1,9 +1,10 @@
-﻿import React, {useEffect, useMemo, useRef, useState} from "react";
+﻿import React, {useEffect, useRef, useState} from "react";
 import './field.css';
 import {EDIT_MODE, SIMULATION_MODE, SIMULATION_PAUSE_MODE} from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
 import {Coord} from "../../../Types/Coord";
 import {changeCell, updateFieldOnServer} from "../../../redux/fieldSlice";
+import {PositionStyle} from "../../../Types/PositionStyle";
 
 let isMouseButton2Down = false;
 const FIELD_OUTSIDE_VIEW = 0.15;
@@ -12,12 +13,6 @@ const MIN_CELL_SIZE = 2;
 const MAX_CELL_SIZE = 90;
 const ZOOM_STEP = 0.1;
 const INITIAL_CELL_SIZE = 10;
-
-type PositionStyle =
-{
-    left: number,
-    top: number,
-};
 
 export const CanvasField: React.FC<{enabled: boolean}> = ({enabled}) =>
 {

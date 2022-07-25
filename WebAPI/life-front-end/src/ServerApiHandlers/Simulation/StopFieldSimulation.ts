@@ -1,4 +1,4 @@
-﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
+﻿import {SERVER_ADDRESS} from "../../Utilities/serverAddress";
 
 export async function StopFieldSimulation(simulatedFieldId: string) : Promise<void>
 {

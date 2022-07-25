@@ -1,5 +1,5 @@
-﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
-import {FieldInfo} from "../Types/FieldInfo";
+﻿import {SERVER_ADDRESS} from "../../Utilities/serverAddress";
+import {FieldInfo} from "../../Types/FieldInfo";
 
 export async function GetAllMapsInfoFromServer() : Promise<FieldInfo[]>
 {

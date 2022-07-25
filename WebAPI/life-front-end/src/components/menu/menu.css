@@ -173,10 +173,36 @@
 .patterns
 {
     width: 495px;
-    justify-self: stretch;
-    
+    height: 800px;
+    overflow: hidden auto;
+}
+
+.patterns-container
+{
     background-color: darkslategray;
-    position: relative;
-    left: 0;
-    top: 0;
+    
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+    justify-content: space-evenly;
+
+}
+
+.patterns--item
+{
+    width: 100%;
+    height: 300px;
+    padding-top: 30px;
+    background-color: #019f01;
+    box-sizing: border-box;
+}
+
+
+.pattern--image
+{
+    width: 230px;
+    height: 230px;
+    background-color: #282c34;
+    margin-right: 10px;
+    
 }

@@ -14,6 +14,9 @@ const App: React.FC = () =>
     useEffect(() => {            // TODO: refactor this later
         GetUserInfoFromServer()
             .then();
+        
+        // set current game mode based on location
+        dispatch(setSimulationMode(location.pathname === '/menu'?MENU_MODE : EDIT_MODE));
     },[]);
     
     const dispatch = useAppDispatch();

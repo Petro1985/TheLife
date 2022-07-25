@@ -4,7 +4,6 @@ import React from "react";
 import {fetchFieldById, setField} from "../../redux/fieldSlice";
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
 import {CanvasField} from "./CanvasField/CanvasField";
-import {EDIT_MODE, MENU_MODE, setSimulationMode} from "../../redux/playGroundSlice";
 
 const PlayGround: React.FC = () => {
     const location = useLocation();
@@ -35,7 +34,7 @@ const PlayGround: React.FC = () => {
             }
         }
     }
-
+    
     return (
         <div className="flex-hor-container">
             <ControlBar

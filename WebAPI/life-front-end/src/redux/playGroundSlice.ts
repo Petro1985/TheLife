@@ -1,7 +1,7 @@
 ﻿import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppDispatch, RootState} from "./Store";
 import {FieldWithoutId} from "../Types/SimulationFieldResponse";
-import {StartNewFieldSimulationServerAPI} from "../ServerApiHandlers/StartFieldSimulation";
+import {StartNewFieldSimulationServerAPI} from "../ServerApiHandlers/Simulation/StartFieldSimulation";
 export const MENU_MODE = "MENU_MODE";
 export const EDIT_MODE = "EDIT_MODE";
 export const SIMULATION_MODE = "SIMULATION_MODE";

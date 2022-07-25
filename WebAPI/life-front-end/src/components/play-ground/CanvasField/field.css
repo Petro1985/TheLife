@@ -11,6 +11,12 @@ body {
     flex-flow: row;
 }
 
+.flex-vert-container
+{
+    display: flex;
+    flex-flow: column;
+}
+
 .field {
     margin: 20px 20px 0 0;
     padding: 0;
@@ -19,7 +25,7 @@ body {
     height: calc(90vh);
     display: flex;
     background-color: beige;
-    border-radius: 10px;
+    /*border-radius: 10px;*/
     border: solid 2px #58bd58;
     overflow:hidden;
 }

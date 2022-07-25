@@ -1,6 +1,5 @@
-﻿import {SERVER_ADDRESS} from "../Utilities/serverAddress";
-import {SimulatedField} from "../Types/SimulatedField";
-import {SimulationFieldResponse} from "../Types/SimulationFieldResponse";
+﻿import {SERVER_ADDRESS} from "../../Utilities/serverAddress";
+import {SimulationFieldResponse} from "../../Types/SimulationFieldResponse";
 
 
 export async function RequestSimulationTurns(simulatedFieldId: string, count: number) : Promise<SimulationFieldResponse>
