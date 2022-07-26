@@ -13,11 +13,18 @@
     outline-offset: -7px;
     
     display: flex;
-    flex-flow: row;
+    flex-flow: column;
     
     transition: all 0.5s ease;
 }
 
+
+.top-buttons-container
+{
+    justify-content: space-evenly;
+    flex-flow: row;
+    display: flex;
+}
 
 .menu
 {
@@ -29,6 +36,7 @@
 
     user-select: none;
 }
+
 
 .fixed
 {
@@ -172,9 +180,32 @@
 
 .patterns
 {
-    width: 495px;
-    height: 800px;
+    margin: 15px auto 0;
+    width:0;
+    height: 700px;
     overflow: hidden auto;
+
+    -moz-animation: showIn05Animation 0s ease-in 0.5s forwards;
+    /* Firefox */
+    -webkit-animation: showIn05Animation 0s ease-in 0.5s forwards;
+    /* Safari and Chrome */
+    -o-animation: showIn05Animation 0s ease-in 0.5s forwards;
+    /* Opera */
+    animation: showIn05Animation 0s ease-in 0.5s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+
+@keyframes showIn05Animation {
+    to {
+        width: 900px;
+    }
+}
+@-webkit-keyframes showIn05Animation {
+    to {
+        width: 900px;
+        visibility: visible;
+    }
 }
 
 .patterns-container

@@ -52,7 +52,8 @@ public class PatternController : ControllerBase
         using var stream = new MemoryStream();
         _minimapGenerator.Generate(newPattern.Survivors).Save(stream,  ImageFormat.Png);
         stream.Position = 0;
-        mappedPattern.PreviewBase64 = Convert.ToBase64String(stream.ToArray());        
+        mappedPattern.PreviewBase64 = Convert.ToBase64String(stream.ToArray());
+        
        
         var patternId = await _patternService.AddPattern(mappedPattern);
         

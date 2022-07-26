@@ -8,7 +8,7 @@ public class LifeProfile : Profile
 {
     public LifeProfile()
     {
-
+        CreateMap<AddPatternRequest, FieldPattern>();
         CreateMap<FieldPattern, FieldPatternInfoResponse>();
         CreateMap<FieldPattern, FieldPatternResponse>();
         

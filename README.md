@@ -1,6 +1,6 @@
 # TheLife
-This is me implementation of "Conway's Game of Life".
-Проект представляет собой клинт-серверную архитектуру. Серверная часть написана на C# ASP.NET, клиентская на HTML/CSS/JS с использованием фрэймворка React.
+This is my implementation of "Conway's Game of Life".
+Проект представляет собой SPA клиент и сервер. Серверная часть написана на C# ASP.NET, клиентская на HTML/CSS/JS с использованием фрэймворка React.
 
 Для запуска приложения можно пройсто пройти по ссылке в браузере ХХХХХХХХ.
 

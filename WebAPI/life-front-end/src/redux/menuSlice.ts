@@ -88,6 +88,10 @@ export const menuSlice = createSlice({
         renameItem: (state, action:PayloadAction<{ind: number, name: string}>) => {
             const ind = action.payload.ind;
             state.fields[ind].name = action.payload.name;
+        },
+        addPattern: (state, action:PayloadAction<PatternInfo>) => 
+        {
+            state.patterns.unshift(action.payload)
         }
     },
     extraReducers: builder => {
@@ -117,5 +121,5 @@ export const menuSlice = createSlice({
     }
 })
 
-export const {deleteItem, renameItem} = menuSlice.actions;
+export const {deleteItem, renameItem, addPattern} = menuSlice.actions;
 export default menuSlice.reducer; 

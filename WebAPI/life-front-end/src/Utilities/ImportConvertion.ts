@@ -1,16 +1,15 @@
 import {FieldWithoutId} from "../Types/SimulationFieldResponse";
 
 
-export const convertImportedFileToField = (text: string) =>
+export const convertImportedFileToField: (text: string) => FieldWithoutId = (text) =>
 {
-    console.log('input ->', text);
     const input = text.replace('\n', '');
-    console.log('input after ->', input);
 
     let lastNumber = 0;
     let currentY = 0;
     let currentX = 0;
-    
+
+    console.log(text)
     const field: FieldWithoutId = {survivors: []};
     
     for (let i = 0; i < input.length; i++)
@@ -41,6 +40,10 @@ export const convertImportedFileToField = (text: string) =>
         {
             lastNumber = lastNumber * 10 + parseInt(input[i], 10);
         }
+        // else
+        // {
+        //     return {survivors: []};
+        // }
     }
 
     return field; 
