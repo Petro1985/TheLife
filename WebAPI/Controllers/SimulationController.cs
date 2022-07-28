@@ -58,8 +58,7 @@ public class SimulationController : ControllerBase
         var newSimulatedFieldId = _simulation.CreateSimulatedField(field);
         var newField = new List<FieldWithoutId>
         {
-            new FieldWithoutId {Survivors = field.Survivors},
-            new FieldWithoutId {Survivors = _simulation.MakeTurn(newSimulatedFieldId, 1)!.First().Survivors},
+            new FieldWithoutId {Survivors = _simulation.MakeTurn(newSimulatedFieldId)!.First().Survivors},
         };
 
         var newSimulatedField = new SimulatedFieldResponse 

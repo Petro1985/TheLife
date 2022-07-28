@@ -103,7 +103,10 @@ const MenuItem: React.FC<Props> = function ({ind})
                             </span>
     
                 </div>
-                <div><strong>Last change: </strong>{fieldLastChange.toLocaleDateString() + ' at '+fieldLastChange.getHours()+':'+fieldLastChange.getMinutes()}</div>
+                <div><strong>Last change: </strong>
+                    {fieldLastChange.toLocaleDateString() 
+                        + ' at ' + fieldLastChange.getHours() + ':' + fieldLastChange.getMinutes()}
+                </div>
     
                 <div className={"menu--field--choose-delete-buttons"}>
                     <button

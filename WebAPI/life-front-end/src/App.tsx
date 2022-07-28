@@ -24,28 +24,6 @@ const App: React.FC = () =>
     const location = useLocation();
     const navigate = useNavigate();
     
-    // window.onkeydown = (e) => {
-    //     if (e.key === 'Escape')
-    //     {
-    //         switch (location.pathname) 
-    //         {
-    //             case '/menu':
-    //                 dispatch(setSimulationMode(EDIT_MODE));
-    //                 navigate('/field')
-    //                 break;
-    //             case '/field':
-    //                 // close connection and clear intervals if simulation was in progress
-    //
-    //
-    //                 dispatch(setSimulationMode(MENU_MODE));
-    //                 navigate('/menu')
-    //                 break;
-    //             default:
-    //                 navigate('/menu')
-    //                 break;
-    //         }
-    //     }
-    // } 
     return (
         <>
             <Routes>

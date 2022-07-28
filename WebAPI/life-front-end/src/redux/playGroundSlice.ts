@@ -39,12 +39,16 @@ export const startNewFieldSimulation = createAsyncThunk<
     >('playground/StartNewFieldSimulation', async (fieldId, {dispatch, getState}) =>
 {
     try {
-        return await startNewFieldSimulationServerAPI(getState().field.field.survivors);
+        const state = getState();
+        const currentSurvivors = state.field.field.survivors;
+        const nextTurn = await startNewFieldSimulationServerAPI(currentSurvivors);
+        nextTurn.field.unshift({survivors: currentSurvivors});
+        return nextTurn;
     }
     catch (e)
     {
         console.error("func setFieldSimulation error: ", e);
-        return {id:"", field: [{survivors:[]}]};
+        return {id:"", field:[]};
     }    
 });
 
@@ -52,14 +56,14 @@ export const playGroundSlice = createSlice({
     name: 'playGround',
     initialState,
     reducers: {
-        addTurnsToBuffer: (state, {payload}) =>
+        addTurnsToBuffer: (state, action:PayloadAction<FieldWithoutId[]>) =>
         {
             if (state.simulatedField.fieldBuffer.length){
-                state.simulatedField.fieldBuffer = state.simulatedField.fieldBuffer.concat(payload);
+                state.simulatedField.fieldBuffer = state.simulatedField.fieldBuffer.concat(action.payload);
             }
             else
             {
-                state.simulatedField.fieldBuffer = payload;
+                state.simulatedField.fieldBuffer = action.payload;
             }
         },
         makeSimulationTurn: (state) =>
@@ -92,8 +96,8 @@ export const playGroundSlice = createSlice({
             {
                 state.mode = SIMULATION_MODE;
                 state.simulatedField.id = payload.id;
-                state.simulatedField.field.survivors = payload.field[0].survivors;
-                state.simulatedField.fieldBuffer = [{survivors: payload.field[1].survivors}];
+                state.simulatedField.field = payload.field[0];
+                state.simulatedField.fieldBuffer = payload.field;
             }
         )        
     }

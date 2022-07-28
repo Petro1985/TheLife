@@ -7,7 +7,6 @@ export async function startNewFieldSimulationServerAPI(survivors: Coord[]) : Pro
 {
     try {
         const bodyContent = JSON.stringify(survivors);
-        console.log(bodyContent);
         const response = await fetch(SERVER_ADDRESS + '/StartNewFieldSimulation/', 
             {
                 mode: "cors",
@@ -22,6 +21,6 @@ export async function startNewFieldSimulationServerAPI(survivors: Coord[]) : Pro
     catch (e)
     {
         console.error("func setFieldSimulation error: ", e);
-        return {id:"", field: [{survivors:[]}]};
+        return {id:"", field: []};
     }
 }

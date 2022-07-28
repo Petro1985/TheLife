@@ -20,6 +20,6 @@ export async function RequestSimulationTurns(simulatedFieldId: string, count: nu
     catch (e)
     {
         console.error("func setFieldSimulation error: ", e);
-        return {id:"",field:[]};
+        return {id:"", field:[]};
     }
 }
