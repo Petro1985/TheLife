@@ -4,5 +4,5 @@ namespace WebAPI.SignalR;
 
 public interface IFieldSimulationClient
 {
-    Task FieldsRequest(List<SimulatedFieldWithOutId> fields);
+    Task FieldsRequest(List<FieldWithoutId> fields);
 }

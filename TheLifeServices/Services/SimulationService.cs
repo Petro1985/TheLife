@@ -24,19 +24,19 @@ public class SimulationService : ISimulationService
         };
     }
 
-    public List<SimulatedFieldWithOutId>? MakeTurn(Guid simulatedFieldId, int count = 1)
+    public List<FieldWithoutId>? MakeTurn(Guid simulatedFieldId, int count = 1)
     {
         var isFieldInCache = _simulatedFields.TryGetValue(simulatedFieldId, out IFieldLogic simulatedField);
         if (isFieldInCache == false) return null;
 
-        var result = new List<SimulatedFieldWithOutId>();
+        var result = new List<FieldWithoutId>();
 
         lock (_lockMark)
         {
             for (var i = 0; i < count; i++)
             {
                 _lifeEngine.MakeTurn(simulatedField);
-                result.Add(new SimulatedFieldWithOutId {Survivors = simulatedField.GetSurvivors()});
+                result.Add(new FieldWithoutId {Survivors = simulatedField.GetSurvivors()});
             }            
         }
 

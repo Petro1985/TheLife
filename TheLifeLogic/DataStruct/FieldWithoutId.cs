@@ -2,8 +2,7 @@
 
 namespace TheLiveLogic.DataStruct;
 
-public class SimulatedField 
+public class FieldWithoutId 
 {
-    public Guid Id { get; set; }
     public List<Coord> Survivors { get; set; }
 }

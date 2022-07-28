@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TheLiveLogic.DataStruct;
+using TheLiveLogic.Fields;
 using TheLiveLogic.Interfaces;
 using WebAPI.APIStruct;
 
@@ -38,6 +39,21 @@ public class PatternController : ControllerBase
         return Ok(patternsResponse);
     }
 
+    
+    /// <summary>
+    /// Return field of specific pattern.
+    /// </summary>
+    [Authorize]
+    [HttpGet("Pattern/{patternId:long}")]
+    [ProducesResponseType(typeof(FieldWithoutId), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetPatternById(long patternId)
+    {
+        var pattern = await _patternService.GetPattern(patternId);
+        var response = _mapper.Map<FieldWithoutId>(pattern);
+        
+        return Ok(response);
+    }    
+    
     /// <summary>
     /// Saves a new field in database and assigns id
     /// </summary>
@@ -50,7 +66,7 @@ public class PatternController : ControllerBase
         var mappedPattern = _mapper.Map<FieldPattern>(newPattern);
 
         using var stream = new MemoryStream();
-        _minimapGenerator.Generate(newPattern.Survivors).Save(stream,  ImageFormat.Png);
+        _minimapGenerator.Generate(newPattern.Survivors, 300).Save(stream,  ImageFormat.Png);
         stream.Position = 0;
         mappedPattern.PreviewBase64 = Convert.ToBase64String(stream.ToArray());
         

@@ -33,7 +33,7 @@ public class MinimapGeneratorTests
             new Coord(-3, -3)
         };
 
-        var img = _generator.Generate(map);
+        var img = _generator.Generate(map, 140);
 
         var qwe = new ImageConverter();
         var stringImage = (byte[])qwe.ConvertTo(img, typeof(byte[]));

@@ -54,10 +54,10 @@ public class SimulationController : ControllerBase
         if (field is null) return BadRequest($"There is no field with id={fieldId}");
         
         var newSimulatedFieldId = _simulation.CreateSimulatedField(field);
-        var newField = new List<SimulatedFieldWithOutId>
+        var newField = new List<FieldWithoutId>
         {
-            new SimulatedFieldWithOutId {Survivors = field.Survivors},
-            new SimulatedFieldWithOutId {Survivors = _simulation.MakeTurn(newSimulatedFieldId, 1)!.First().Survivors},
+            new FieldWithoutId {Survivors = field.Survivors},
+            new FieldWithoutId {Survivors = _simulation.MakeTurn(newSimulatedFieldId, 1)!.First().Survivors},
         };
 
         var newSimulatedField = new SimulatedFieldResponse 

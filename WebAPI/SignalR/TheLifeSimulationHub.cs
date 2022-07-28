@@ -28,7 +28,7 @@ public class TheLifeSimulationHub : Hub<IFieldSimulationClient>
         for (var i = currentTurn; i < simulatedFieldRequest.ToTurn; i++)
         {
             var fields = _simulationService.MakeTurn(simulatedFieldRequest.Id);
-            await Clients.Caller.FieldsRequest(fields??new List<SimulatedFieldWithOutId>());
+            await Clients.Caller.FieldsRequest(fields??new List<FieldWithoutId>());
             if (Context.Items.ContainsKey("abort")) 
                 return;
         };

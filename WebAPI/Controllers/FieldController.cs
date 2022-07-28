@@ -42,7 +42,7 @@ public class FieldController : ControllerBase
             return BadRequest($"There is no field with Id == {fieldId}");
         }
 
-        var minimap = _minimapGenerator.Generate(field.Survivors);
+        var minimap = _minimapGenerator.Generate(field.Survivors, 140);
         var stream = new MemoryStream();
         minimap.Save(stream, ImageFormat.Png);
         stream.Position = 0;
@@ -83,7 +83,7 @@ public class FieldController : ControllerBase
             var mappedField = _mapper.Map<FieldInfoResponse>(field);
             using var stream = new MemoryStream();
             
-            _minimapGenerator.Generate(field.Survivors).Save(stream,  ImageFormat.Png);
+            _minimapGenerator.Generate(field.Survivors, 140).Save(stream,  ImageFormat.Png);
             stream.Position = 0;
             
             mappedField.MinimapBase64 = Convert.ToBase64String(stream.ToArray());

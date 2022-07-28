@@ -210,8 +210,6 @@
 
 .patterns-container
 {
-    background-color: darkslategray;
-    
     display: flex;
     flex-flow: column;
     gap: 10px;
@@ -223,17 +221,23 @@
 {
     width: 100%;
     height: 300px;
-    padding-top: 30px;
-    background-color: #019f01;
-    box-sizing: border-box;
+    outline: double 3px darkgreen;
+    outline-offset: -3px;
+    position: relative;
 }
 
+.patterns--item:hover
+{
+    
+    outline: solid 10px darkgreen;
+    outline-offset: -10px;
+}
 
 .pattern--image
 {
-    width: 230px;
-    height: 230px;
-    background-color: #282c34;
+    width: 300px;
+    height: 300px;
     margin-right: 10px;
+    border-right: double 3px darkgreen;
     
 }

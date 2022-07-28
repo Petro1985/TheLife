@@ -1,5 +1,5 @@
 ﻿import React, {MouseEventHandler, useRef} from "react";
-import {createNewField, setField, updateFieldOnServer} from "../../redux/fieldSlice";
+import {createNewField} from "../../redux/fieldSlice";
 import {EDIT_MODE, setSimulationMode} from "../../redux/playGroundSlice";
 import {useAppDispatch} from "../../Hooks/reduxHooks";
 import {useNavigate} from "react-router-dom";

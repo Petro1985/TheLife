@@ -1,9 +1,9 @@
 ﻿import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {SERVER_ADDRESS} from "../Utilities/serverAddress";
 import {AppDispatch, RootState} from "./Store";
 import {Coord} from "../Types/Coord";
 import {Field} from "../Types/Field";
 import {createNewFieldOnServer} from "../ServerApiHandlers/Field/createNewFieldOnServer";
+import {getFieldById} from "../ServerApiHandlers/Field/GetFieldById";
 
 interface IField
 {
@@ -36,36 +36,6 @@ export const createNewField = createAsyncThunk<
     }
 })
 
-export const updateFieldOnServer = createAsyncThunk<
-    void,
-    void,
-    {
-        dispatch: AppDispatch
-        state: RootState
-    }
-    >(
-    'field/updateFieldOnServer', 
-    async (_, thunkAPI) => {
-        try {
-            const field = thunkAPI.getState().field.field;
-            
-            const bodyContent =  JSON.stringify({"survivors": field.survivors, "name": field.name});
-    
-            await fetch(SERVER_ADDRESS + '/Map/' + field.id, 
-                {
-                    mode: "cors", 
-                    credentials: "include", 
-                    headers: {'Content-Type': 'application/json'}, 
-                    method: "PUT", 
-                    body: bodyContent
-                });
-        }
-        catch (e)
-        {
-            thunkAPI.rejectWithValue("error during updating field: " + e);
-        }
-})
-
 export const fetchFieldById = createAsyncThunk<
     Field,
     number,
@@ -76,10 +46,7 @@ export const fetchFieldById = createAsyncThunk<
     }    >('field/fetchFieldById', async (fieldId, {fulfillWithValue, rejectWithValue, dispatch}) => {
     try
     {
-        const result = await fetch(SERVER_ADDRESS + '/Map/'+fieldId, {mode: "cors", credentials: "include"});
-
-        const newField = await result.json();
-        
+        const newField = getFieldById(fieldId);
         fulfillWithValue(newField);
         return newField;
     }
@@ -88,6 +55,28 @@ export const fetchFieldById = createAsyncThunk<
         rejectWithValue("Couldn't load field from server");
     }
 })
+
+export const setFieldFromPattern = createAsyncThunk<
+    Field,
+    number,
+    {
+        dispatch: AppDispatch,
+        state: RootState,
+        fulfillWithValue: (Field)
+    }    >('field/fetchFieldById', async (fieldId, {fulfillWithValue, rejectWithValue, dispatch}) => {
+    try
+    {
+        const newField = getFieldById(fieldId);
+        fulfillWithValue(newField);
+        return newField;
+    }
+    catch (e)
+    {
+        rejectWithValue("Couldn't load field from server");
+    }
+})
+
+
 
 export const fieldSlice = createSlice({
     name: 'field',

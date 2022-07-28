@@ -8,6 +8,8 @@ public class LifeProfile : Profile
 {
     public LifeProfile()
     {
+        CreateMap<FieldPattern, FieldWithoutId>();
+        
         CreateMap<AddPatternRequest, FieldPattern>();
         CreateMap<FieldPattern, FieldPatternInfoResponse>();
         CreateMap<FieldPattern, FieldPatternResponse>();

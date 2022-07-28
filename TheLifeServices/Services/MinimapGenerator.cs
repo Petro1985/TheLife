@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using TheLiveLogic.Fields;
@@ -9,10 +8,12 @@ namespace TheLifeServices.Services;
 
 public class MinimapGenerator : IMinimapGenerator
 {
-    const int MinimapSize = 140;
-    public Bitmap Generate(List<Coord> field)
+    const int DefaultMinimapSize = 140;
+    private const int Paddings = 5;        // paddings in percents from fieldSize
+    private const int MinPaddings = 2;     // minimal paddings from each side
+    public Bitmap Generate(List<Coord> field, int minimapSize)
     {
-        if (field.Count == 0) return new Bitmap(MinimapSize, MinimapSize);
+        if (field.Count == 0) return new Bitmap(DefaultMinimapSize, DefaultMinimapSize);
         
         var maxX = field[0].X;
         var maxY = field[0].Y;
@@ -29,10 +30,12 @@ public class MinimapGenerator : IMinimapGenerator
 
         var width = maxX - minX + 1;
         var height = maxY - minY + 1;
-        var size = Math.Max(width, height);
+        var size = Math.Max(
+            width + Math.Max(width*2*Paddings/100, MinPaddings),
+            height + Math.Max(height*2*Paddings/100, MinPaddings));
         
-        var mapOffsetX = 0;
-        var mapOffsetY = 0;
+        int mapOffsetX;
+        int mapOffsetY;
         
         if (size < 10)
         {
@@ -57,7 +60,7 @@ public class MinimapGenerator : IMinimapGenerator
             minimap.SetPixel(coord.X - minX + mapOffsetX, coord.Y - minY + mapOffsetY, Color.Chartreuse);
         }
 
-        minimap = ResizeImage(minimap, MinimapSize, MinimapSize);
+        minimap = ResizeImage(minimap, minimapSize, minimapSize);
 
         return minimap;
     }

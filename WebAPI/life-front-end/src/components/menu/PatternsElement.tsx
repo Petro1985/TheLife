@@ -13,10 +13,19 @@ export const PatternsElement: React.FC = () =>
         dispatch(fetchPatternsInfo());        
     }, []);
 
-    const patternItems = patterns.map(pattern =>
+    function onPatternClickHandler(e: React.MouseEvent<HTMLDivElement>, ind: number) {
+//        dispatch(getPatternFromServer(patterns[ind].id));
+        
+    }
+
+    const patternItems = patterns.map((pattern, ind) =>
     {
         return (
-            <div id={'pattern'+pattern.id} className={`patterns--item`}>
+            <div 
+                id={'pattern'+pattern.id}
+                className={`patterns--item`}
+                onClick={(e) => onPatternClickHandler(e, ind)}
+            >
                 <div className={'flex-hor-container'}>
                     <img src={'data:image/png;base64,' + pattern.previewBase64} alt={'pattern'} className={'pattern--image'}/>
                     <div className={'flex-vert-container'}>

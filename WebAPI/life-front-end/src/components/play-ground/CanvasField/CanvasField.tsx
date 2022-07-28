@@ -3,8 +3,9 @@ import './field.css';
 import {EDIT_MODE, SIMULATION_MODE, SIMULATION_PAUSE_MODE} from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
 import {Coord} from "../../../Types/Coord";
-import {changeCell, updateFieldOnServer} from "../../../redux/fieldSlice";
+import {changeCell} from "../../../redux/fieldSlice";
 import {PositionStyle} from "../../../Types/PositionStyle";
+import {updateFieldOnServer} from "../../../ServerApiHandlers/Field/UpdateFieldOnServer";
 
 let isMouseButton2Down = false;
 const FIELD_OUTSIDE_VIEW = 0.15;
@@ -88,7 +89,7 @@ export const CanvasField: React.FC<{enabled: boolean}> = ({enabled}) =>
                 x: Math.floor(startCellX + (event.clientX - canvasElement.current!.offsetLeft) / cellSize),
                 y: Math.floor(startCellY + (event.clientY - (canvasElement.current!.offsetTop)) / cellSize)};
             dispatch(changeCell(coord));
-            dispatch(updateFieldOnServer());
+            updateFieldOnServer().then();
         }
     }
 
