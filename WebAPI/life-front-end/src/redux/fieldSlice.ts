@@ -4,6 +4,8 @@ import {Coord} from "../Types/Coord";
 import {Field} from "../Types/Field";
 import {createNewFieldOnServer} from "../ServerApiHandlers/Field/createNewFieldOnServer";
 import {getFieldById} from "../ServerApiHandlers/Field/GetFieldById";
+import {getPatternFromServer} from "../ServerApiHandlers/Field/GetPatternFromServer";
+import {FieldWithoutId} from "../Types/SimulationFieldResponse";
 
 interface IField
 {
@@ -57,22 +59,21 @@ export const fetchFieldById = createAsyncThunk<
 })
 
 export const setFieldFromPattern = createAsyncThunk<
-    Field,
+    FieldWithoutId,
     number,
     {
         dispatch: AppDispatch,
         state: RootState,
-        fulfillWithValue: (Field)
-    }    >('field/fetchFieldById', async (fieldId, {fulfillWithValue, rejectWithValue, dispatch}) => {
+    }    
+    >('field/fetchFieldById', async (patternId, {rejectWithValue}) => {
     try
     {
-        const newField = getFieldById(fieldId);
-        fulfillWithValue(newField);
-        return newField;
+        return await getPatternFromServer(patternId);
     }
     catch (e)
     {
-        rejectWithValue("Couldn't load field from server");
+        rejectWithValue("Couldn't load pattern from server");
+        return {survivors:[]}
     }
 })
 

@@ -1,7 +1,7 @@
 ﻿import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppDispatch, RootState} from "./Store";
 import {FieldWithoutId} from "../Types/SimulationFieldResponse";
-import {StartNewFieldSimulationServerAPI} from "../ServerApiHandlers/Simulation/StartFieldSimulation";
+import {startNewFieldSimulationServerAPI} from "../ServerApiHandlers/Simulation/StartFieldSimulation";
 export const MENU_MODE = "MENU_MODE";
 export const EDIT_MODE = "EDIT_MODE";
 export const SIMULATION_MODE = "SIMULATION_MODE";
@@ -39,7 +39,7 @@ export const startNewFieldSimulation = createAsyncThunk<
     >('playground/StartNewFieldSimulation', async (fieldId, {dispatch, getState}) =>
 {
     try {
-        return await StartNewFieldSimulationServerAPI(fieldId);
+        return await startNewFieldSimulationServerAPI(getState().field.field.survivors);
     }
     catch (e)
     {

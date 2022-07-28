@@ -15,7 +15,7 @@ const MAX_CELL_SIZE = 90;
 const ZOOM_STEP = 0.1;
 const INITIAL_CELL_SIZE = 10;
 
-export const CanvasField: React.FC<{enabled: boolean}> = ({enabled}) =>
+export const CanvasField: React.FC<{enabled: boolean, patternMode: boolean}> = ({enabled, patternMode}) =>
 {
     const fieldElement = useRef<HTMLDivElement>(null);
     const canvasElement = useRef<HTMLCanvasElement>(null);
@@ -83,7 +83,7 @@ export const CanvasField: React.FC<{enabled: boolean}> = ({enabled}) =>
         {
             isMouseButton2Down = true;
         }
-        else if (currentSimulationMode === EDIT_MODE && event.button === 0)
+        else if (currentSimulationMode === EDIT_MODE && event.button === 0 && !patternMode)
         {
             const coord: Coord = {
                 x: Math.floor(startCellX + (event.clientX - canvasElement.current!.offsetLeft) / cellSize),

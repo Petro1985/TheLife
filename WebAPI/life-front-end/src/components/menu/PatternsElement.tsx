@@ -1,10 +1,14 @@
 ﻿import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
 import {fetchPatternsInfo} from "../../redux/menuSlice";
+import {setFieldFromPattern} from "../../redux/fieldSlice";
+import {useNavigate} from "react-router-dom";
+import {EDIT_MODE, setSimulationMode} from "../../redux/playGroundSlice";
 
 export const PatternsElement: React.FC = () =>
 {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     
     const patterns = useAppSelector(state => state.menu.patterns);
        
@@ -14,8 +18,9 @@ export const PatternsElement: React.FC = () =>
     }, []);
 
     function onPatternClickHandler(e: React.MouseEvent<HTMLDivElement>, ind: number) {
-//        dispatch(getPatternFromServer(patterns[ind].id));
-        
+        dispatch(setFieldFromPattern(patterns[ind].id));
+        dispatch(setSimulationMode(EDIT_MODE));
+        navigate('/pattern?id='+patterns[ind].id);
     }
 
     const patternItems = patterns.map((pattern, ind) =>

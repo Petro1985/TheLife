@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import "./control-bar.css";
 import {
     addTurnsToBuffer, EDIT_MODE,
-    makeSimulationTurn, setIntervalId, setSimulationMode,
+    makeSimulationTurn, MENU_MODE, setIntervalId, setSimulationMode,
     SIMULATION_FIELD_BUFFER_SIZE
 } from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
@@ -13,6 +13,7 @@ import {HubConnection} from "@microsoft/signalr";
 import {SimulationHubConnectionService} from "../../../Services/WebSocketConnectionService";
 import {TurnTimeControl} from "./TurnTimeControl";
 import {store} from "../../../redux/Store";
+import {Navigate, useNavigate} from "react-router-dom";
 
 export const simulationHubConnectionService: SimulationHubConnectionService = new SimulationHubConnectionService();
 let currentTurn = 0;
@@ -23,6 +24,8 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
     const currentSimulationMode = useAppSelector(state => state.playGround.mode);
     const intervalId = useAppSelector(state => state.playGround.intervalId);
     const simulationFiledId = useAppSelector(state => state.playGround.simulatedField.id);
+    
+    const navigate = useNavigate();
 
     useEffect(() =>
     {
@@ -34,8 +37,6 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
             window.clearInterval(store.getState().playGround.intervalId);
             dispatch(setIntervalId(0));
             dispatch(setSimulationMode(EDIT_MODE));
-            simulationHubConnectionService?.clearMessageHandler('FieldsRequest');
-            simulationHubConnectionService?.stopConnection().then(() => console.log('Connection closed!!!!!!!!!!!'));
         }
     }, []);
 
@@ -86,6 +87,19 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
             <StopButton
                 connectionService={simulationHubConnectionService!}
             />
+            <button 
+                className={'green-button'}
+                onClick={() => {
+                    dispatch(setSimulationMode(MENU_MODE));
+                    if (intervalId)
+                    {
+                        window.clearInterval(intervalId);
+                        dispatch(setIntervalId(0));
+                        simulationHubConnectionService?.stopConnection().then();
+                    }                    
+                    navigate('/menu');
+                }}
+            >Menu</button>
 
             <TurnTimeControl
                 resetInterval={resetInterval}

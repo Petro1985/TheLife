@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TheLiveLogic.DataStruct;
+using TheLiveLogic.Fields;
 using TheLiveLogic.Interfaces;
 using WebAPI.APIStruct;
 
@@ -42,17 +43,18 @@ public class SimulationController : ControllerBase
     }
     
     /// <summary>
-    /// Set specific field as an simulated one 
+    /// start simulation for specified set of survivors 
     /// </summary>
     [Authorize]
-    [HttpPost("StartNewFieldSimulation/{fieldId:int}")]
+    [HttpPost("StartNewFieldSimulation/")]
     [ProducesResponseType(typeof(SimulatedFieldResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> StartNewFieldSimulation(int fieldId)
+    public Task<IActionResult> StartNewFieldSimulation([FromBody] List<Coord> survivors)
     {
-        var field = await _fieldService.LoadField(fieldId);
-        if (field is null) return BadRequest($"There is no field with id={fieldId}");
-        
+        var field = new Field
+        {
+            Survivors = survivors,
+        };
         var newSimulatedFieldId = _simulation.CreateSimulatedField(field);
         var newField = new List<FieldWithoutId>
         {
@@ -66,7 +68,7 @@ public class SimulationController : ControllerBase
             Field = newField!
         };
 
-        return Ok(newSimulatedField);
+        return Task.FromResult<IActionResult>(Ok(newSimulatedField));
     }
 
     /// <summary>

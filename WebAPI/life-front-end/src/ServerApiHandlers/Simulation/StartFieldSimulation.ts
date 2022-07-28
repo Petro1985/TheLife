@@ -1,15 +1,20 @@
 ﻿import {SERVER_ADDRESS} from "../../Utilities/serverAddress";
 import {SimulationFieldResponse} from "../../Types/SimulationFieldResponse";
+import {Coord} from "../../Types/Coord";
 
 
-export async function StartNewFieldSimulationServerAPI(fieldId: number) : Promise<SimulationFieldResponse>
+export async function startNewFieldSimulationServerAPI(survivors: Coord[]) : Promise<SimulationFieldResponse>
 {
     try {
-        const response = await fetch(SERVER_ADDRESS + '/StartNewFieldSimulation/' + fieldId, 
+        const bodyContent = JSON.stringify(survivors);
+        console.log(bodyContent);
+        const response = await fetch(SERVER_ADDRESS + '/StartNewFieldSimulation/', 
             {
-            mode: "cors",
-            credentials: "include",
-            method: "POST"
+                mode: "cors",
+                credentials: "include",
+                method: "POST", 
+                body: bodyContent,
+                headers: {'Content-Type': 'application/json'},
             });
 
         return await response.json();        
