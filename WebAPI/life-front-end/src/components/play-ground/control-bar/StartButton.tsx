@@ -1,8 +1,6 @@
-﻿import React, {useEffect, useState} from "react";
+﻿import React from "react";
 import {
-    addTurnsToBuffer,
     EDIT_MODE,
-    makeSimulationTurn, 
     setIntervalId,
     startNewFieldSimulation
 } from "../../../redux/playGroundSlice";

@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import "./control-bar.css";
 import {
     addTurnsToBuffer, EDIT_MODE,
-    makeSimulationTurn, MENU_MODE, setIntervalId, setSimulationMode,
+    makeSimulationTurn, MENU_MODE, setCurrentTurn, setIntervalId, setSimulationMode,
     SIMULATION_FIELD_BUFFER_SIZE
 } from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
@@ -13,10 +13,10 @@ import {HubConnection} from "@microsoft/signalr";
 import {SimulationHubConnectionService} from "../../../Services/WebSocketConnectionService";
 import {TurnTimeControl} from "./TurnTimeControl";
 import {store} from "../../../redux/Store";
-import {Navigate, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export const simulationHubConnectionService: SimulationHubConnectionService = new SimulationHubConnectionService();
-let currentTurn = 0;
+// let currentTurn = 0;
 
 const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
 {
@@ -44,7 +44,7 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
     {
         if (currentSimulationMode === EDIT_MODE)
         {
-            currentTurn = 0;
+            dispatch(setCurrentTurn(0));
         }
     }, [currentSimulationMode])
 
@@ -61,11 +61,11 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
     const intervalHandler = async (con: HubConnection, simulatedFieldId: string) =>
     {
         dispatch(makeSimulationTurn());
-        currentTurn++;
-
         if (!con) return;
-
-        try {
+        try 
+        {
+            const currentTurn = store.getState().playGround.currentTurn;
+            
             const simulationFieldRequest = {Id: simulatedFieldId, toTurn: currentTurn + SIMULATION_FIELD_BUFFER_SIZE}
             await con.send('SendFields', simulationFieldRequest);
             console.log(`Request ro turn ${currentTurn + SIMULATION_FIELD_BUFFER_SIZE} sent`);

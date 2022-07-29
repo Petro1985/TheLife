@@ -58,24 +58,24 @@ export const fetchFieldById = createAsyncThunk<
     }
 })
 
-export const setFieldFromPattern = createAsyncThunk<
-    FieldWithoutId,
-    number,
-    {
-        dispatch: AppDispatch,
-        state: RootState,
-    }    
-    >('field/fetchFieldById', async (patternId, {rejectWithValue}) => {
-    try
-    {
-        return await getPatternFromServer(patternId);
-    }
-    catch (e)
-    {
-        rejectWithValue("Couldn't load pattern from server");
-        return {survivors:[]}
-    }
-})
+// export const setFieldFromPattern = createAsyncThunk<
+//     FieldWithoutId,
+//     number,
+//     {
+//         dispatch: AppDispatch,
+//         state: RootState,
+//     }    
+//     >('field/setFieldFromPattern', async (patternId, {rejectWithValue}) => {
+//     try
+//     {
+//         return await getPatternFromServer(patternId);
+//     }
+//     catch (e)
+//     {
+//         rejectWithValue("Couldn't load pattern from server");
+//         return {survivors:[]}
+//     }
+// })
 
 
 
@@ -120,10 +120,22 @@ export const fieldSlice = createSlice({
         });
         builder.addCase(createNewField.rejected, (state, action) => {
             console.log("Request of creating new field has been rejected");
-        })
+        });
         builder.addCase(createNewField.pending, (state, action) => {
             console.log("Request of creating new field is pending");
-        })
+        });
+
+        // builder.addCase(setFieldFromPattern.fulfilled, (state, action) => {
+        //     state.field.survivors = action.payload.survivors;
+        //     console.log("Request of creating new field has been fulfilled");
+        // });
+        // builder.addCase(setFieldFromPattern.rejected, (state, action) => {
+        //     console.log("Request of creating new field has been rejected");
+        // });
+        // builder.addCase(setFieldFromPattern.pending, (state, action) => {
+        //     console.log("Request of creating new field is pending");
+        // });
+        
     }
 })
 

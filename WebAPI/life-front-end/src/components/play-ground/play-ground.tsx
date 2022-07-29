@@ -1,11 +1,11 @@
 ﻿import ControlBar from "./control-bar/control-bar";
 import {Navigate, useLocation} from "react-router-dom";
 import React from "react";
-import {fetchFieldById, setField, setFieldFromPattern} from "../../redux/fieldSlice";
+import {fetchFieldById, setField} from "../../redux/fieldSlice";
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
 import {CanvasField} from "./CanvasField/CanvasField";
-import {getPatternFromServer} from "../../ServerApiHandlers/Field/GetPatternFromServer";
 import {Field} from "../../Types/Field";
+import {getPatternFromServer} from "../../ServerApiHandlers/Field/GetPatternFromServer";
 
 const PlayGround: React.FC = () => {
     const location = useLocation();
@@ -21,17 +21,23 @@ const PlayGround: React.FC = () => {
     if (!inMenu)
     {
         // If there is no field loaded
+        console.log('field id ->', field.id)
         if (field.id === -1) 
         {
             const fieldOrPatternIdStr = params.get('id');
             const fieldOrPatternId: number = parseInt(fieldOrPatternIdStr ?? "", 10);
+            
             if (isPattern)
             {
-                dispatch(setFieldFromPattern(fieldOrPatternId)).unwrap()
-                    .then((fieldWithoutId) => {
-                        const field: Field = {id:fieldOrPatternId, name: "", survivors: fieldWithoutId.survivors}; 
-                        dispatch(setField(field))
-                    });
+                if (!field.survivors.length) 
+                {
+                    console.log('pattern loaded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                    getPatternFromServer(fieldOrPatternId)
+                        .then((fieldWithoutId) => {
+                            const field: Field = {id: fieldOrPatternId, name: "", survivors: fieldWithoutId.survivors};
+                            dispatch(setField(field))
+                        });
+                }
             }
             else 
             {

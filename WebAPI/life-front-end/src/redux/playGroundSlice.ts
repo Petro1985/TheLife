@@ -14,6 +14,7 @@ const initialState: PlayGround = {
     mode: EDIT_MODE,
     intervalId: 0,
     interval: 300,
+    currentTurn: 0,
     simulatedField: {
         id: "",
         field: {survivors: []},
@@ -26,6 +27,7 @@ interface PlayGround
     mode: string,
     intervalId: number,
     interval: number,
+    currentTurn: number,
     simulatedField: {id: string, field: FieldWithoutId, fieldBuffer: FieldWithoutId[]},
 }
 
@@ -56,6 +58,10 @@ export const playGroundSlice = createSlice({
     name: 'playGround',
     initialState,
     reducers: {
+        setCurrentTurn: (state, action:PayloadAction<number>) =>
+        {
+            state.currentTurn = action.payload;
+        },
         addTurnsToBuffer: (state, action:PayloadAction<FieldWithoutId[]>) =>
         {
             if (state.simulatedField.fieldBuffer.length){
@@ -72,6 +78,7 @@ export const playGroundSlice = createSlice({
             if (newField) 
             {
                 state.simulatedField.field = newField;
+                state.currentTurn++;
             }
         },
         setSimulationMode: (state, action: PayloadAction<string>) =>
@@ -103,5 +110,5 @@ export const playGroundSlice = createSlice({
     }
 });
 
-export const {setIntervalId, setSimulationMode, setSimulationInterval, makeSimulationTurn, addTurnsToBuffer} = playGroundSlice.actions;
+export const {setIntervalId, setSimulationMode, setSimulationInterval, makeSimulationTurn, addTurnsToBuffer, setCurrentTurn} = playGroundSlice.actions;
 export default playGroundSlice.reducer;

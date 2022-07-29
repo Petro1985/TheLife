@@ -14,8 +14,9 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
 
     useEffect(()=> 
     {
-        dispatch(setSimulationInterval(turnTimeInputValue));
-        resetInterval(turnTimeInputValue);
+        dispatch(setSimulationInterval(1000 - turnTimeInputValue));
+        console.log('new time our set ->', 1000 - turnTimeInputValue)
+        resetInterval(1000 - turnTimeInputValue);
     }
     ,[turnTimeInputValue])
     
@@ -39,7 +40,7 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
                 className={'intervalControl--button'}
                 disabled={currentMode === MENU_MODE}
                 onClick={() => {
-                    setTurnTimeInputValue(old => old - 50);
+                    setTurnTimeInputValue(old => old > 50 ? old - 50 : 0);
                 }}
             >
                 -
@@ -48,8 +49,8 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
             <input
                 id={'TimeRange'}
                 type={'range'}
-                min={50}
-                max={1000}
+                min={0}
+                max={950}
                 step={50}
                 className={'simulationIntervalInput'}
                 value={turnTimeInputValue}
@@ -62,7 +63,7 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
                 className={'intervalControl--button'}
                 disabled={currentMode === MENU_MODE}
                 onClick={() => {
-                    setTurnTimeInputValue(old => old + 50);
+                    setTurnTimeInputValue(old => old < 950 ? old + 50 : 950);
                 }}
             >
                 +

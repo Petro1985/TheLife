@@ -16,7 +16,7 @@ const App: React.FC = () =>
             .then();
         
         // set current game mode based on location
-        dispatch(setSimulationMode(location.pathname === '/menu' ? MENU_MODE : EDIT_MODE));
+        dispatch(setSimulationMode(location.pathname === '/menu' || location.pathname === '/' ? MENU_MODE : EDIT_MODE));
     },[]);
     
     const dispatch = useAppDispatch();
@@ -42,7 +42,7 @@ const App: React.FC = () =>
                 }/>
 
                 <Route path={"/"} element={
-                    <Navigate replace to={"/menu"}></Navigate>
+                    <Navigate replace to={'/menu'}></Navigate>
                 }/>
             </Routes>
         </>
