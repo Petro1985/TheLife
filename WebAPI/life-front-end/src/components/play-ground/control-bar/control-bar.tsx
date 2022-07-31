@@ -74,8 +74,10 @@ const ControlBar: React.FC<{enabled: boolean, centerView:Function}> = ({enabled,
     }
     
     return (
-        <div className={"main-container"}
-            onMouseDown={e => e.stopPropagation()}>
+        <div 
+            className={"main-container"}
+            onMouseDown={e => e.stopPropagation()}
+        >
             <StartButton
                 intervalHandler={intervalHandler}
                 connectionService={simulationHubConnectionService!}
@@ -88,6 +90,7 @@ const ControlBar: React.FC<{enabled: boolean, centerView:Function}> = ({enabled,
                 connectionService={simulationHubConnectionService!}
             />
             <button 
+                disabled={currentSimulationMode === MENU_MODE}
                 className={'green-button'}
                 onClick={(e) => {
                     dispatch(setSimulationMode(MENU_MODE));
@@ -105,6 +108,7 @@ const ControlBar: React.FC<{enabled: boolean, centerView:Function}> = ({enabled,
                 resetInterval={resetInterval}
             />
             <button
+                disabled={currentSimulationMode === MENU_MODE}
                 className={'green-button'}
                 onClick={e => centerView()}
             >Center</button>

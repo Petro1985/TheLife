@@ -11,7 +11,7 @@ import ControlBar from "../control-bar/control-bar";
 let isMouseButton2Down = false;
 const FIELD_OUTSIDE_VIEW = 0.15;
 const CELL_PADDING = 1;
-const MIN_CELL_SIZE = 2;
+const MIN_CELL_SIZE = 0;
 const MAX_CELL_SIZE = 90;
 const ZOOM_STEP = 0.1;
 const INITIAL_CELL_SIZE = 10;
