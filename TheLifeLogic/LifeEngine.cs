@@ -5,6 +5,7 @@ namespace TheLiveLogic;
 
 public class LifeEngine
 {
+    private readonly HashSet<Coord> _neighborsChecked = new HashSet<Coord>();
     public void MakeTurn(IFieldLogic field)
     {
         var curState = field.GetField();
@@ -23,6 +24,9 @@ public class LifeEngine
             
             foreach (var neighborCoord in neighbors)
             {
+                if (_neighborsChecked.Contains(neighborCoord)) continue;        // todo: need to benchmark it!
+                _neighborsChecked.Add(neighborCoord);
+                
                 var aliveCount = oldMap.GetAliveNeighborsCount(neighborCoord);
                 if (aliveCount == 3)
                 {
@@ -30,5 +34,6 @@ public class LifeEngine
                 }
             }
         }
+        _neighborsChecked.Clear();
     }
 }

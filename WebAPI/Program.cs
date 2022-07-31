@@ -40,7 +40,6 @@ builder.Services.AddTheLifeServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IUserIdAccessor, UserIdAccessor>();
 
-
 builder.Services.AddAuthentication(opt =>
 {
     opt.AddScheme<UserAuth>("user_auth", "");

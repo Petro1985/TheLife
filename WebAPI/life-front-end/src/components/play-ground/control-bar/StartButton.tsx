@@ -17,7 +17,7 @@ export const StartButton: React.FC<{intervalHandler: Function, connectionService
     const dispatch = useAppDispatch();
     
 
-    async function onStartPressed() {
+    async function onStartPressed(e: React.MouseEvent) {
         const simulatedFieldId = (await dispatch(startNewFieldSimulation(fieldId)).unwrap()).id;
 
         const connection = connectionService.getConnection();

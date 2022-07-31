@@ -56,7 +56,8 @@ public class EndlessField : IFieldLogic
     public int GetAliveNeighborsCount(Coord coord)
     {
         var neighbors = coord.GetNeighbors();
-        return neighbors.Count(IsAlive);
+        var aliveNeighborsCount = neighbors.Count(IsAlive);
+        return aliveNeighborsCount;
     }
 
     public IFieldLogic Clone()

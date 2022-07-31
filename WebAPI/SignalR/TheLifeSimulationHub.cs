@@ -7,6 +7,7 @@ namespace WebAPI.SignalR;
 public class TheLifeSimulationHub : Hub<IFieldSimulationClient>
 {
     private readonly ISimulationService _simulationService;
+    private const int MaxTurnsRequest = 20;
 
     public TheLifeSimulationHub(ISimulationService simulationService)
     {
@@ -15,8 +16,6 @@ public class TheLifeSimulationHub : Hub<IFieldSimulationClient>
 
     public async Task SendFields(SimulatedFieldSignalRRequest simulatedFieldRequest)
     {
-        if (Context.ConnectionAborted.IsCancellationRequested) Context.Items["abort"] = true;
-        
         var isInProcess = Context.Items.TryAdd("inProcess", null);
         if (!isInProcess) return;
 
@@ -25,12 +24,12 @@ public class TheLifeSimulationHub : Hub<IFieldSimulationClient>
         
         Context.Items["turn"] = simulatedFieldRequest.ToTurn;
         
+        if (simulatedFieldRequest.ToTurn - currentTurn > MaxTurnsRequest) return;
+            
         for (var i = currentTurn; i < simulatedFieldRequest.ToTurn; i++)
         {
             var fields = _simulationService.MakeTurn(simulatedFieldRequest.Id);
             await Clients.Caller.FieldsRequest(fields??new List<FieldWithoutId>());
-            if (Context.Items.ContainsKey("abort")) 
-                return;
         };
         
         Context.Items.Remove("inProcess");

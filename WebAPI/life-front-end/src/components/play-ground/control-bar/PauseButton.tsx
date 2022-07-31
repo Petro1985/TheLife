@@ -18,7 +18,7 @@ export const PauseButton: React.FC<{intervalHandler: Function, connectionService
     const intervalId = useAppSelector(state => state.playGround.intervalId);
     const dispatch = useAppDispatch();
 
-    async function onPauseButtonClick() {
+    async function onPauseButtonClick(e: React.MouseEvent) {
         if (currentMode == SIMULATION_PAUSE_MODE) 
         {
             const connection = connectionService.getConnection();

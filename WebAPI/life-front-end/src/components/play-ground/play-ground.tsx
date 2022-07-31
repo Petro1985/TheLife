@@ -55,10 +55,10 @@ const PlayGround: React.FC = () => {
     }
     
     return (
-        <div className="flex-hor-container">
-            <ControlBar
-                enabled={!inMenu}
-            />
+        <div className="flex-hor-container" style={{userSelect: 'none'}}>
+            {/*<ControlBar*/}
+            {/*    enabled={!inMenu}*/}
+            {/*/>*/}
             <CanvasField
                 patternMode={isPattern}
                 enabled={!inMenu}

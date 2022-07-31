@@ -18,40 +18,16 @@ body {
 }
 
 .field {
-    margin: 20px 20px 0 0;
     padding: 0;
     
     width: 100%;
-    height: calc(90vh);
+    height: 100vh;
     display: flex;
     background-color: beige;
-    /*border-radius: 10px;*/
     border: solid 2px #58bd58;
     overflow:hidden;
-}
-
-.field-grid {
+    
     position: relative;
-    display: grid;
-    grid-column-gap: 0;
-    grid-row-gap: 0;
-    background-color: #282c34;
-}
-
-.dead-cell, .alive-cell {
-    display: inline-block;
-    /*border-radius: 10%;*/
-    cursor: pointer;
-    /*border: solid 2px #019f01;*/
-    box-sizing: border-box;
-}
-
-.dead-cell {
-    background-color: rgb(141, 126, 109);
-}
-
-.alive-cell {
-    background-color: #019f01;
 }
 
 .field-canvas 

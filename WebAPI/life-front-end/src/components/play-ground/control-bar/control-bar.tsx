@@ -16,9 +16,8 @@ import {store} from "../../../redux/Store";
 import {useNavigate} from "react-router-dom";
 
 export const simulationHubConnectionService: SimulationHubConnectionService = new SimulationHubConnectionService();
-// let currentTurn = 0;
 
-const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
+const ControlBar: React.FC<{enabled: boolean, centerView:Function}> = ({enabled, centerView}) =>
 {
     const dispatch = useAppDispatch();
     const currentSimulationMode = useAppSelector(state => state.playGround.mode);
@@ -75,7 +74,8 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
     }
     
     return (
-        <div className={"main-container"}>
+        <div className={"main-container"}
+            onMouseDown={e => e.stopPropagation()}>
             <StartButton
                 intervalHandler={intervalHandler}
                 connectionService={simulationHubConnectionService!}
@@ -89,7 +89,7 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
             />
             <button 
                 className={'green-button'}
-                onClick={() => {
+                onClick={(e) => {
                     dispatch(setSimulationMode(MENU_MODE));
                     if (intervalId)
                     {
@@ -104,6 +104,10 @@ const ControlBar: React.FC<{enabled: boolean}> = ({enabled}) =>
             <TurnTimeControl
                 resetInterval={resetInterval}
             />
+            <button
+                className={'green-button'}
+                onClick={e => centerView()}
+            >Center</button>
         </div>
     );
 }

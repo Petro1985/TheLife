@@ -4,6 +4,6 @@ namespace WebAPI.APIStruct;
 
 public class SetFieldRequest
 {
-    public List<Coord> Survivors { get; set; } = new List<Coord>();
+    public List<Coord> Survivors { get; set; }
     public string Name { get; set; }
 }

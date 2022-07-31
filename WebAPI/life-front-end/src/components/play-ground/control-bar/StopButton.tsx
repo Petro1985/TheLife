@@ -16,7 +16,7 @@ export const StopButton: React.FC<{connectionService: SimulationHubConnectionSer
     const intervalId = useAppSelector(state => state.playGround.intervalId);
     const dispatch = useAppDispatch();
 
-    async function OnStopButtonClick() 
+    async function OnStopButtonClick(e: React.MouseEvent) 
     {
         if (intervalId) {
             window.clearInterval(intervalId);

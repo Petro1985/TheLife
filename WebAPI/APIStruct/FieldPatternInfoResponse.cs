@@ -1,6 +1,4 @@
-﻿using TheLiveLogic.Fields;
-
-namespace WebAPI.APIStruct;
+﻿namespace WebAPI.APIStruct;
 
 public class FieldPatternInfoResponse
 {
@@ -9,10 +7,4 @@ public class FieldPatternInfoResponse
     public string Description { get; set; }
     public string PreviewBase64 { get; set; }
     public DateTime LastChange { get; set; }
-}
-
-public class FieldPatternResponse
-{
-    public long Id { get; set; }
-    public List<Coord> Survivors { get; set; }
 }
