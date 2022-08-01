@@ -25,7 +25,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(conf =>
     {
-        conf.WithOrigins("http://localhost:3000", "https://localhost:3000", "https://localhost:7129");
+        conf.WithOrigins("https://localhost:44447", "https://localhost:7129");
         conf.AllowAnyHeader();
         conf.AllowAnyMethod();
         conf.AllowCredentials();
@@ -81,6 +81,6 @@ app.UseAuthorization();
 
 app.MapHub<TheLifeSimulationHub>("/SimulationHub");
 app.MapControllers();
-
+app.MapFallbackToFile("index.html");
 app.Run();
 
