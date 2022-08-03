@@ -29,7 +29,6 @@ public class UserController : ControllerBase
         
         return Ok();
     }
-
     
     [HttpGet("WhoAmI")]
     public IActionResult WhoTheyAre()

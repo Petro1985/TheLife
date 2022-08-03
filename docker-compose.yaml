@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "7129:7129"
+      - "443:443"
+      - "44447:44447"
+    volumes:
+      - "type": volume
+      - "target": /https
+      - "source": /USERPROFILE/.aspnet/https
+    environment:
+      ConnectionString: "Server=db;Port=5432;Database=TheLife;User Id=postgres;password=123qwe!@#QWE;"
+      ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_HTTPS_PORT: 7129
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+    depends_on:
+      - db
+  db:
+    image: "postgres:14.4-alpine"
+    environment:
+      POSTGRES_PASSWORD: "123qwe!@#QWE"
+    volumes:
+      - "./LifeDataBase/DataBaseScripts/:/docker-entrypoint-initdb.d/"
+

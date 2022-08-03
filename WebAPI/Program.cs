@@ -26,6 +26,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(conf =>
     {
         conf.WithOrigins("https://localhost:44447", "https://localhost:7129");
+        //conf.AllowAnyOrigin();
         conf.AllowAnyHeader();
         conf.AllowAnyMethod();
         conf.AllowCredentials();
@@ -50,8 +51,9 @@ builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
 
 builder.Services.AddDbContext<FieldContext>(options =>
 {
-    var connectionString = builder.Configuration["DB_Settings:connectionstring"];
-    connectionString += $"password={builder.Configuration["DBPassword"]};";
+    var connectionString = builder.Configuration["connectionstring"];
+    Console.WriteLine("Connection string:" + connectionString);
+    //connectionString += $"password={builder.Configuration["DBPassword"]};";
     options.UseNpgsql(connectionString);
 });
 
@@ -66,11 +68,11 @@ builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+// }
 
 app.UseHttpsRedirection();
 
