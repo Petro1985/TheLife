@@ -1,10 +1,11 @@
-﻿
+﻿import {SERVER_ADDRESS} from "../../Utilities/serverAddress";
+
 export async function createNewFieldOnServer() : Promise<number>
 {
     try {
         const bodyContent =  JSON.stringify({"survivors": [], "name": ""});
         
-        const result = await fetch('https://localhost:7129/Map/',
+        const result = await fetch(SERVER_ADDRESS + '/Map/',
             {
                 mode: "cors",
                 credentials: "include",

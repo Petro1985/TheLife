@@ -3,8 +3,9 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 EXPOSE 7129
+EXPOSE 5129
 EXPOSE 44447
-ENV ASPNETCORE_URLS="https://*:443"
+ENV ASPNETCORE_URLS="http://0.0.0.0:5129"
 #ENV DOTNET_GENERATE_ASPNET_CERTIFICATE=false
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
@@ -23,8 +24,8 @@ COPY ["TheLifeLogic/TheLifeLogic.csproj", "TheLifeLogic/"]
 COPY ["TheLifeServices/TheLifeServices.csproj", "TheLifeServices/"]
 RUN dotnet restore "WebAPI/WebAPI.csproj"
 
-RUN dotnet dev-certs https --clean
-RUN dotnet dev-certs https --trust
+#RUN dotnet dev-certs https --clean
+#RUN dotnet dev-certs https --trust
 
 COPY . .
 WORKDIR "/src/WebAPI"
