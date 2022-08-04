@@ -9,11 +9,9 @@ services:
       - "443:443"
       - "44447:44447"
     environment:
-      ConnectionString: "Server=db;Port=5432;Database=TheLife;User Id=postgres;password=123qwe!@#QWE;"
-#      ASPNETCORE_URLS: "https://+;http://+"
-#      ASPNETCORE_HTTPS_PORT: 7129
-#      ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
-#      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+      DB_Settings:connectionString: "Server=db;Port=5432;Database=TheLife;User Id=postgres;password=123qwe!@#QWE;"
+      URLS: "http://+:5129"
+      ASPNETCORE_URLS: "http://+:5129"
     depends_on:
       - db
   db:

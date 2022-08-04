@@ -11,13 +11,17 @@ using WebAPI.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureAppConfiguration(conf =>
+{
+    conf.AddEnvironmentVariables();
+});
+
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt => 
 {
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-    
 });
 
 builder.Services.AddControllers();
@@ -26,7 +30,6 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(conf =>
     {
         conf.WithOrigins("http://localhost:44447", "http://localhost:5129");
-        //conf.AllowAnyOrigin();
         conf.AllowAnyHeader();
         conf.AllowAnyMethod();
         conf.AllowCredentials();
@@ -51,9 +54,7 @@ builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
 
 builder.Services.AddDbContext<FieldContext>(options =>
 {
-    var connectionString = builder.Configuration["DB_Settings:connectionstring"];
-    // Console.WriteLine("Connection string:" + connectionString);
-    // connectionString += $"password={builder.Configuration["DBPassword"]};";
+    var connectionString = builder.Configuration["DB_Settings:connectionString"];
     options.UseNpgsql(connectionString);
 });
 
@@ -68,11 +69,11 @@ builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
-    // app.UseSwagger();
-    // app.UseSwaggerUI();
-// }
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // app.UseHttpsRedirection();
 
@@ -83,6 +84,7 @@ app.UseAuthorization();
 
 app.MapHub<TheLifeSimulationHub>("/SimulationHub");
 app.MapControllers();
-// app.MapFallbackToFile("index.html");
+app.MapFallbackToFile("index.html");
+app.UseStaticFiles();
 app.Run();
 
