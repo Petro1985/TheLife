@@ -1,10 +1,6 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-EXPOSE 7129
 EXPOSE 5129
-EXPOSE 44447
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
@@ -30,5 +26,4 @@ RUN dotnet publish "WebAPI.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN apt-get update && apt-get --yes install libgdiplus
 ENTRYPOINT ["dotnet", "WebAPI.dll"]

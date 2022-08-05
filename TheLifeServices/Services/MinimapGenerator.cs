@@ -1,8 +1,12 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Processing.Processors.Transforms;
 using TheLiveLogic.Fields;
 using TheLiveLogic.Interfaces;
+
 
 namespace TheLifeServices.Services;
 
@@ -11,9 +15,9 @@ public class MinimapGenerator : IMinimapGenerator
     const int DefaultMinimapSize = 140;
     private const int Paddings = 5;        // paddings in percents from fieldSize
     private const int MinPaddings = 2;     // minimal paddings from each side
-    public Bitmap Generate(List<Coord> field, int minimapSize)
+    public MemoryStream Generate(List<Coord> field, int minimapSize)
     {
-        if (field.Count == 0) return new Bitmap(DefaultMinimapSize, DefaultMinimapSize);
+        //if (field.Count == 0) return new Bitmap(DefaultMinimapSize, DefaultMinimapSize);
         
         var maxX = field[0].X;
         var maxY = field[0].Y;
@@ -49,44 +53,21 @@ public class MinimapGenerator : IMinimapGenerator
             mapOffsetY = (size - height) / 2;
         }
         
-        var minimap = new Bitmap(size, size);
+        //var minimap = new Bitmap(size, size);
 
-        using var g = Graphics.FromImage(minimap);
-        g.FillRectangle(new SolidBrush(Color.Gray),0, 0, size, size);
-        g.Flush();
-        
+        Image image = new Image<Rgb24>(size, size);
+        image.Mutate(x => x.BackgroundColor(Color.Gray));
+
         foreach (var coord in field)
         {
-            minimap.SetPixel(coord.X - minX + mapOffsetX, coord.Y - minY + mapOffsetY, Color.Chartreuse);
+            image.Mutate(x => x.Draw(new Pen(Color.Chartreuse, 1), 
+                new RectangleF(coord.X - minX + mapOffsetX, coord.Y - minY + mapOffsetY,0,0)));
         }
+        
+        image.Mutate(x => x.Resize(minimapSize, minimapSize, new NearestNeighborResampler()));
+        var stream = new MemoryStream();
+        image.Save(stream, new PngEncoder());
 
-        minimap = ResizeImage(minimap, minimapSize, minimapSize);
-
-        return minimap;
-    }
-    
-    private Bitmap ResizeImage(Image image, int width, int height)
-    {
-        var destRect = new Rectangle(0, 0, width, height);
-        var destImage = new Bitmap(width, height);
-
-        destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-
-        using (var graphics = Graphics.FromImage(destImage))
-        {
-            graphics.CompositingMode = CompositingMode.SourceCopy;
-            graphics.CompositingQuality = CompositingQuality.HighQuality;
-            graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            graphics.SmoothingMode = SmoothingMode.HighQuality;
-            graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-            using (var wrapMode = new ImageAttributes())
-            {
-                wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                graphics.DrawImage(image, destRect, 0, 0, image.Width,image.Height, GraphicsUnit.Pixel, wrapMode);
-            }
-        }
-
-        return destImage;
+        return stream;
     }
 }

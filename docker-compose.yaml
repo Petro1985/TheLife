@@ -3,11 +3,7 @@ services:
   web:
     build: .
     ports:
-      - "80:80"
       - "5129:5129"
-      - "7129:7129"
-      - "443:443"
-      - "44447:44447"
     environment:
       DB_Settings:connectionString: "Server=db;Port=5432;Database=TheLife;User Id=postgres;password=123qwe!@#QWE;"
       URLS: "http://+:5129"

@@ -65,12 +65,11 @@ public class PatternController : ControllerBase
     {
         var mappedPattern = _mapper.Map<FieldPattern>(newPattern);
 
-        using var stream = new MemoryStream();
-        _minimapGenerator.Generate(newPattern.Survivors, 300).Save(stream,  ImageFormat.Png);
+        using var stream = _minimapGenerator.Generate(newPattern.Survivors, 300);
         stream.Position = 0;
+        
         mappedPattern.PreviewBase64 = Convert.ToBase64String(stream.ToArray());
         
-       
         var patternId = await _patternService.AddPattern(mappedPattern);
         
         return Ok(patternId);
