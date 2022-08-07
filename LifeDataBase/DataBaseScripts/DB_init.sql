@@ -35,8 +35,8 @@ create table "Patterns"
             primary key,
     "Name"               text                     not null,
     "Description"        text                     not null,
-    "PreviewImageBase64" text                     not null,
-    "LastUpdate"         timestamp with time zone not null,
+    "PreviewBase64"      text                     not null,
+    "LastChange"         timestamp with time zone not null,
     "Survivors"          text                     not null
 );
 

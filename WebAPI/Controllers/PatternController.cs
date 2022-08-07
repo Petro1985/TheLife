@@ -74,38 +74,4 @@ public class PatternController : ControllerBase
         
         return Ok(patternId);
     }
-    
-    // /// <summary>
-    // /// Updates field information in database
-    // /// </summary>
-    // /// <param name="field"></param>
-    // /// <param name="fieldId">id of field to update</param>
-    // [Authorize]
-    // [HttpPut("Map/{fieldId}")]
-    // [ProducesResponseType(StatusCodes.Status200OK)]
-    // [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    // public async Task<IActionResult> SaveMap([FromBody] SetFieldRequest field, [FromRoute] int fieldId)
-    // {
-    //     var mappedState = _mapper.Map<Field>(field);
-    //     var result = await _fieldService.UpdateField(mappedState, fieldId);
-    //     if (!result) return BadRequest($"There is no field with id {fieldId}"); 
-    //     
-    //     return Ok();
-    // }
-    
-    
-    // /// <summary>
-    // /// Delete specific field from database 
-    // /// </summary>
-    // [Authorize]
-    // [HttpDelete("Map/{fieldId}")]
-    // [ProducesResponseType(StatusCodes.Status200OK)]
-    // [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    // public async Task<IActionResult> DeleteField(int fieldId)
-    // {
-    //     var field = await _fieldService.DeleteField(fieldId);
-    //     if (!field) return BadRequest($"Couldn't delete field id={field} by some reason");
-    //     
-    //     return Ok();
-    // }
 }

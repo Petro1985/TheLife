@@ -17,8 +17,6 @@ public class MinimapGenerator : IMinimapGenerator
     private const int MinPaddings = 2;     // minimal paddings from each side
     public MemoryStream Generate(List<Coord> field, int minimapSize)
     {
-        //if (field.Count == 0) return new Bitmap(DefaultMinimapSize, DefaultMinimapSize);
-        
         var maxX = field[0].X;
         var maxY = field[0].Y;
         var minX = field[0].X;

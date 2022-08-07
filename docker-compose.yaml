@@ -1,5 +1,13 @@
 version: "3.9"
 services:
+  loader:
+    build:
+      context: .
+      dockerfile: PatternsLoader.Dockerfile
+    environment:
+      DB_Settings:connectionString: "Server=db;Port=5432;Database=TheLife;User Id=postgres;password=123qwe!@#QWE;"
+    depends_on:
+      - db
   web:
     build: .
     ports:
@@ -10,10 +18,10 @@ services:
       ASPNETCORE_URLS: "http://+:5129"
     depends_on:
       - db
+      - loader
   db:
     image: "postgres:14.4-alpine"
     environment:
       POSTGRES_PASSWORD: "123qwe!@#QWE"
     volumes:
       - "./LifeDataBase/DataBaseScripts/:/docker-entrypoint-initdb.d/"
-

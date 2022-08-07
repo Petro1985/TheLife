@@ -15,7 +15,7 @@ public class FieldContext : DbContext
     {
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new ())
     {
         // auto-filling LastChange column with DateTime.UtcNow
         var objectStateEntries = ChangeTracker.Entries()
@@ -26,9 +26,6 @@ public class FieldContext : DbContext
         foreach (var entry in objectStateEntries)
         {
             entry.Property("LastChange").CurrentValue = currentTime;
-            // var entityBase = entry.Entity as FieldEntity;
-            // if (entityBase == null) continue;
-            // entityBase.LastChange = currentTime;
         }
 
         return base.SaveChangesAsync(cancellationToken);
