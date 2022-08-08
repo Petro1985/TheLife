@@ -7,6 +7,7 @@ using TheLifeServices.Services;
 using TheLiveLogic.ExtensionMethods;
 using TheLiveLogic.Interfaces;
 using WebAPI.Auth;
+using WebAPI.Middleware;
 using WebAPI.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -66,6 +67,7 @@ builder.Services.AddSignalR();
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -86,5 +88,6 @@ app.MapHub<TheLifeSimulationHub>("/SimulationHub");
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 app.UseStaticFiles();
+app.UseMiddleware<RouteLoggerMiddleware>();
 app.Run();
 
