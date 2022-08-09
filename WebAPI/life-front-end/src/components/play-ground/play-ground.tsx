@@ -6,6 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
 import {CanvasField} from "./CanvasField/CanvasField";
 import {Field} from "../../Types/Field";
 import {getPatternFromServer} from "../../ServerApiHandlers/Field/GetPatternFromServer";
+import {BASE_PATH} from "../../Utilities/BasePath";
 
 const PlayGround: React.FC = () => {
     const location = useLocation();
@@ -15,8 +16,8 @@ const PlayGround: React.FC = () => {
     // getting field id from query
     const params = new URLSearchParams(location.search);
 
-    const inMenu = location.pathname === '/menu';
-    const isPattern = location.pathname === '/pattern';
+    const inMenu = location.pathname === BASE_PATH+'/menu';
+    const isPattern = location.pathname === BASE_PATH+'/pattern';
     
     if (!inMenu)
     {
@@ -48,7 +49,7 @@ const PlayGround: React.FC = () => {
                             dispatch(setField(field))
                         });
                 } else {
-                    return <Navigate to={"/menu"}/>;
+                    return <Navigate to={BASE_PATH+"/menu"}/>;
                 }
             }
         }
@@ -56,9 +57,6 @@ const PlayGround: React.FC = () => {
     
     return (
         <div className="flex-hor-container" style={{userSelect: 'none'}}>
-            {/*<ControlBar*/}
-            {/*    enabled={!inMenu}*/}
-            {/*/>*/}
             <CanvasField
                 patternMode={isPattern}
                 enabled={!inMenu}

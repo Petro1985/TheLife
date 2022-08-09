@@ -1,4 +1,5 @@
-﻿using SixLabors.ImageSharp;
+﻿using System.Reflection.Metadata;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Png;
@@ -12,11 +13,19 @@ namespace TheLifeServices.Services;
 
 public class MinimapGenerator : IMinimapGenerator
 {
-    const int DefaultMinimapSize = 140;
     private const int Paddings = 5;        // paddings in percents from fieldSize
     private const int MinPaddings = 2;     // minimal paddings from each side
     public MemoryStream Generate(List<Coord> field, int minimapSize)
     {
+        if (field.Count == 0)
+        {
+            Image emptyImage = new Image<Rgb24>(minimapSize, minimapSize);
+            emptyImage.Mutate(x => x.Fill(Color.Gray));
+            var emptyStream = new MemoryStream();
+            emptyImage.Save(emptyStream, new PngEncoder());
+            return emptyStream;
+        }
+            
         var maxX = field[0].X;
         var maxY = field[0].Y;
         var minX = field[0].X;
@@ -51,10 +60,9 @@ public class MinimapGenerator : IMinimapGenerator
             mapOffsetY = (size - height) / 2;
         }
         
-        //var minimap = new Bitmap(size, size);
-
         Image image = new Image<Rgb24>(size, size);
-        image.Mutate(x => x.BackgroundColor(Color.Gray));
+        
+        image.Mutate(x => x.Fill(Color.Gray));
 
         foreach (var coord in field)
         {

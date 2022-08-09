@@ -14,6 +14,7 @@ import {SimulationHubConnectionService} from "../../../Services/WebSocketConnect
 import {TurnTimeControl} from "./TurnTimeControl";
 import {store} from "../../../redux/Store";
 import {useNavigate} from "react-router-dom";
+import {BASE_PATH} from "../../../Utilities/BasePath";
 
 export const simulationHubConnectionService: SimulationHubConnectionService = new SimulationHubConnectionService();
 
@@ -100,7 +101,7 @@ const ControlBar: React.FC<{enabled: boolean, centerView:Function}> = ({enabled,
                         dispatch(setIntervalId(0));
                         simulationHubConnectionService?.stopConnection().then();
                     }                    
-                    navigate('/menu');
+                    navigate(BASE_PATH+'/menu');
                 }}
             >Menu</button>
 

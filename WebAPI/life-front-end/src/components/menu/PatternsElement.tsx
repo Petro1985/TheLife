@@ -6,6 +6,7 @@ import {EDIT_MODE, setSimulationMode} from "../../redux/playGroundSlice";
 import {getPatternFromServer} from "../../ServerApiHandlers/Field/GetPatternFromServer";
 import {Field} from "../../Types/Field";
 import {setField} from "../../redux/fieldSlice";
+import {BASE_PATH} from "../../Utilities/BasePath";
 
 export const PatternsElement: React.FC = () =>
 {
@@ -24,7 +25,7 @@ export const PatternsElement: React.FC = () =>
         const field:Field = {id: patterns[ind].id, name:'', survivors: fieldWithoutId.survivors};
         dispatch(setField(field));
         dispatch(setSimulationMode(EDIT_MODE));
-        navigate('/pattern?id=' + field.id);
+        navigate(BASE_PATH+'/pattern?id=' + field.id);
     }
 
     const patternItems = patterns.map((pattern, ind) =>

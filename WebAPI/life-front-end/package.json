@@ -49,5 +49,6 @@
   },
   "devDependencies": {
     "remote-redux-devtools": "^0.5.16"
-  }
+  },
+  "homepage": "http://localhost:44447/life"
 }

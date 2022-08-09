@@ -25,7 +25,6 @@ public class FieldController : ControllerBase
         _userIdAccessor = userIdAccessor;
     }
 
-    
     /// <summary>
     /// Returns minimap of specific field
     /// </summary>

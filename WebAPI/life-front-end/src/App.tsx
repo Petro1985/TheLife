@@ -5,9 +5,8 @@ import {GetUserInfoFromServer} from "./ServerApiHandlers/GetUserInfoFromServer";
 import {Routes, Route, Navigate, useLocation, useNavigate} from "react-router-dom";
 import PlayGround from "./components/play-ground/play-ground";
 import {useAppDispatch} from "./Hooks/reduxHooks";
-import {EDIT_MODE, MENU_MODE, setIntervalId, setSimulationMode} from "./redux/playGroundSlice";
-import {store} from "./redux/Store";
-import {simulationHubConnectionService} from "./components/play-ground/control-bar/control-bar";
+import {EDIT_MODE, MENU_MODE, setSimulationMode} from "./redux/playGroundSlice";
+import {BASE_PATH} from "./Utilities/BasePath";
 
 const App: React.FC = () => 
 {
@@ -16,7 +15,7 @@ const App: React.FC = () =>
             .then();
         
         // set current game mode based on location
-        dispatch(setSimulationMode(location.pathname === '/menu' || location.pathname === '/' ? MENU_MODE : EDIT_MODE));
+        dispatch(setSimulationMode(location.pathname === BASE_PATH+'/menu' || location.pathname === '/' ? MENU_MODE : EDIT_MODE));
     },[]);
     
     const dispatch = useAppDispatch();
@@ -24,25 +23,27 @@ const App: React.FC = () =>
     const location = useLocation();
     const navigate = useNavigate();
     
+    console.log('Current path: ' + location.pathname);
+    
     return (
         <>
             <Routes>
-                <Route path={"/menu"} element={
+                <Route path={BASE_PATH+"/menu"} element={
                     <>
                         <PlayGround />
                         <Menu />
                     </>
                 } />
 
-                <Route path={"/field"} element={
+                <Route path={BASE_PATH+"/field"} element={
                     <PlayGround />
                 }/>
-                <Route path={"/pattern"} element={
+                <Route path={BASE_PATH+"/pattern"} element={
                     <PlayGround />
                 }/>
 
-                <Route path={"/"} element={
-                    <Navigate replace to={'/menu'}></Navigate>
+                <Route path={BASE_PATH+"/"} element={
+                    <Navigate replace to={BASE_PATH+'/menu'}></Navigate>
                 }/>
             </Routes>
         </>

@@ -8,6 +8,7 @@ import {addPattern} from "../../redux/menuSlice";
 import {PatternInfo} from "../../Types/PatternInfo";
 import {AddNewPattern} from "../../ServerApiHandlers/Menu/PostAddNewPattern";
 import {Pattern} from "../../Types/Pattern";
+import {BASE_PATH} from "../../Utilities/BasePath";
 
 
 export const TopMenuButtons: React.FC<{patternButtons: boolean, onPatternClick: MouseEventHandler}> = ({onPatternClick, patternButtons}) =>
@@ -22,7 +23,7 @@ export const TopMenuButtons: React.FC<{patternButtons: boolean, onPatternClick: 
             if (field)
             {
                 dispatch(setSimulationMode(EDIT_MODE));
-                navigate('/field?id='+field.id);
+                navigate(BASE_PATH+'/field?id='+field.id);
             }
             else
             {
@@ -101,41 +102,4 @@ export const TopMenuButtons: React.FC<{patternButtons: boolean, onPatternClick: 
         </div>
     )
 }
-
-
-
-// {/*<div>*/}
-// {/*    <button*/}
-// {/*        onClick={() =>*/}
-// {/*        {*/}
-// {/*            fetch('exampleTxt.txt')*/}
-// {/*                .then(t => t.text()).then(text => {*/}
-// {/*                console.log('you text', text)*/}
-// {/*            })*/}
-// {/*        }}*/}
-// {/*    >!Import field!</button>*/}
-// {/*    <input type={'file'}*/}
-// {/*        onChange={(e) =>*/}
-// {/*        {*/}
-// {/*            e.preventDefault()*/}
-// {/*            const exampleFileReader = new FileReader()*/}
-// {/*            exampleFileReader.onload = async (e) => {*/}
-// {/*                if (e.target) {*/}
-// {/*                    const text = (e.target.result)*/}
-// {/*                    console.log(text)*/}
-// {/*                    const newField = convertImportedFileToField(text as string);*/}
-// {/*                    dispatch(createNewField()).unwrap().then((field) => {*/}
-// {/*                        if (field)*/}
-// {/*                        {*/}
-// {/*                            dispatch(setField({id: field.id, name: field.name, survivors: newField.survivors}))*/}
-// {/*                            dispatch(updateFieldOnServer());*/}
-// {/*                            navigate('/field?id='+field.id);*/}
-// {/*                        }*/}
-// {/*                    });*/}
-// {/*                }*/}
-// {/*            };*/}
-// {/*            exampleFileReader.readAsText(e.target.files![0]);*/}
-// {/*        }}*/}
-// {/*    ></input>*/}
-// {/*</div>*/}
 
