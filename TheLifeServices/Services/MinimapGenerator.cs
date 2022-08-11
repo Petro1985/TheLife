@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using SixLabors.ImageSharp;
+﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Png;
@@ -7,7 +6,6 @@ using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Processing.Processors.Transforms;
 using TheLiveLogic.Fields;
 using TheLiveLogic.Interfaces;
-
 
 namespace TheLifeServices.Services;
 

@@ -1,0 +1,80 @@
+﻿
+
+
+.mini-menu
+{
+    width: 60px;
+    height: 100vh;
+    
+    position: absolute;
+    background: #7cd927;
+    left: 0;
+    top: 0;
+    
+    transition: all 1s;
+    z-index: 1;
+    
+    justify-content: space-evenly;
+}
+
+.hidden-mini-menu
+{
+    transform: translateX(-60px);
+}
+
+.mini-menu--max-menu
+{
+    font-size: 24px;
+    height: 60px;
+}
+
+.mini-menu--play
+{
+    width: 100%;
+    height: 60px;
+    background-size: cover;
+    background-image: url("../../../../public/Images/Play-button.png");
+}
+
+.mini-menu--pause
+{
+    width: 100%;
+    height: 60px;
+    background-size: cover;
+    background-image: url("../../../../public/Images/pause-button.png");
+
+
+}
+
+.mini-menu--stop 
+{
+    width: 100%;
+    height: 60px;
+    background-size: cover;
+    background-image: url("../../../../public/Images/stop-button.png");
+}
+
+.slider-wrapper
+{
+    width: 60px;
+    height: 200px;
+}
+
+.slider-wrapper input
+{
+    width: 200px;
+    height: 60px;
+    transform: translateX(-73px) translateY(60px) rotateZ(-90deg);
+}
+
+.mini-menu--center
+{
+    width: 60px;
+    height: 60px;
+}
+
+.mini-menu--menu
+{
+    width: 60px;
+    height: 60px;
+}

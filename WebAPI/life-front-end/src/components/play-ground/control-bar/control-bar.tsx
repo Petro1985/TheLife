@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "./control-bar.css";
 import {
     addTurnsToBuffer, EDIT_MODE,
@@ -18,13 +18,14 @@ import {BASE_PATH} from "../../../Utilities/BasePath";
 
 export const simulationHubConnectionService: SimulationHubConnectionService = new SimulationHubConnectionService();
 
-const ControlBar: React.FC<{enabled: boolean, centerView:Function}> = ({enabled, centerView}) =>
+const ControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function, centerView:Function}> = ({isMiniMenu, toggleMenu, centerView}) =>
 {
     const dispatch = useAppDispatch();
     const currentSimulationMode = useAppSelector(state => state.playGround.mode);
     const intervalId = useAppSelector(state => state.playGround.intervalId);
     const simulationFiledId = useAppSelector(state => state.playGround.simulatedField.id);
-    
+    const [miniMenu, setMiniMenu] = useState<boolean>(false);
+
     const navigate = useNavigate();
 
     useEffect(() =>
@@ -73,10 +74,10 @@ const ControlBar: React.FC<{enabled: boolean, centerView:Function}> = ({enabled,
             console.log(e);
         }
     }
-    
+
     return (
         <div 
-            className={"main-container"}
+            className={"main-container " + (isMiniMenu ? "hidden-main-container" : "")}
             onMouseDown={e => e.stopPropagation()}
         >
             <StartButton
@@ -113,6 +114,11 @@ const ControlBar: React.FC<{enabled: boolean, centerView:Function}> = ({enabled,
                 className={'green-button'}
                 onClick={e => centerView()}
             >Center</button>
+
+            <button
+                className={'green-button'}
+                onClick={e => toggleMenu()}
+            >{'<<<'}</button>
         </div>
     );
 }

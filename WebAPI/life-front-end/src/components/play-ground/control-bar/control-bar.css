@@ -15,6 +15,12 @@
     
     padding: 30px 10px 10px 10px;
     z-index: 1;
+    transition: all 1s;
+}
+
+.hidden-main-container
+{
+    transform: translateX(-300px);
 }
 
 
@@ -69,6 +75,6 @@
 
 .simulationIntervalInput
 {
-    width: 170px;
-    
+    width: 170px;    
 }
+
