@@ -8,41 +8,15 @@ import {
 } from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
 import {SimulationHubConnectionService} from "../../../Services/WebSocketConnectionService";
+import {pauseSimulationHandler} from "../ControlBarHandlers/pauseSimulationHandler";
 
-export const PauseButton: React.FC<{intervalHandler: Function, connectionService: SimulationHubConnectionService}> = 
-    ({intervalHandler, connectionService}) =>
+export const PauseButton: React.FC = () =>
 {
     const currentMode = useAppSelector(state => state.playGround.mode);
-    const simulatedFieldId = useAppSelector(state => state.playGround.simulatedField.id);
-    const interval = useAppSelector(state => state.playGround.interval);
-    const intervalId = useAppSelector(state => state.playGround.intervalId);
-    const dispatch = useAppDispatch();
-
-    async function onPauseButtonClick(e: React.MouseEvent) {
-        if (currentMode == SIMULATION_PAUSE_MODE) 
-        {
-            const connection = connectionService.getConnection();
-            dispatch(setSimulationMode(SIMULATION_MODE))
-            
-            const intervalId = window.setInterval(() => intervalHandler(connection, simulatedFieldId), interval);
-            dispatch(setIntervalId(intervalId));
-        }
-        else if (currentMode === SIMULATION_MODE) 
-        {
-            if (intervalId)
-            {
-                //await connectionService.stopConnection();
-                window.clearInterval(intervalId);
-                dispatch(setIntervalId(0));
-            }
-            
-            dispatch(setSimulationMode(SIMULATION_PAUSE_MODE))
-        }
-    }
 
     return (
         <button
-            onClick={onPauseButtonClick}
+            onClick={pauseSimulationHandler}
             disabled={currentMode !== SIMULATION_MODE && currentMode !== SIMULATION_PAUSE_MODE}
             className={"control--button-pause green-button"}
             type={"button"}>

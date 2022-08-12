@@ -13,7 +13,7 @@ export const SIMULATION_FIELD_BUFFER_SIZE = 10;
 const initialState: PlayGround = {
     mode: EDIT_MODE,
     intervalId: 0,
-    interval: 300,
+    interval: 50,
     currentTurn: 0,
     simulatedField: {
         id: "",

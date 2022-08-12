@@ -7,7 +7,7 @@
     height: 100vh;
     
     position: absolute;
-    background: #7cd927;
+    background: darkgreen;
     left: 0;
     top: 0;
     
@@ -25,56 +25,67 @@
 .mini-menu--max-menu
 {
     font-size: 24px;
+    width: 55px;
+    height: 55px;
+}
+
+.mini-menu--max-menu, .mini-menu--play, .mini-menu--pause, .mini-menu--stop
+{
+    position: relative;
+    border-radius: 50%;
+    width: 100%;
     height: 60px;
+    background-size: cover;
+    border: none;
 }
 
 .mini-menu--play
 {
-    width: 100%;
-    height: 60px;
-    background-size: cover;
     background-image: url("../../../../public/Images/Play-button.png");
+    cursor: pointer;
 }
 
 .mini-menu--pause
 {
-    width: 100%;
-    height: 60px;
-    background-size: cover;
     background-image: url("../../../../public/Images/pause-button.png");
-
-
+    cursor: pointer;
 }
+
 
 .mini-menu--stop 
 {
-    width: 100%;
-    height: 60px;
-    background-size: cover;
     background-image: url("../../../../public/Images/stop-button.png");
+    cursor: pointer;
 }
 
-.slider-wrapper
+.mini-menu--max-menu:hover, .mini-menu--play:hover, .mini-menu--pause:hover, .mini-menu--stop:hover
 {
+    scale: 1.05;
+}
+
+.mini-menu--play:disabled::after, .mini-menu--pause:disabled::after, .mini-menu--stop:disabled::after
+{
+    content: "";
+    border-radius: 50%;
     width: 60px;
-    height: 200px;
+    height: 60px;
+    background-color: rgba(155,155,155,0.7);
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
-.slider-wrapper input
-{
-    width: 200px;
-    height: 60px;
-    transform: translateX(-73px) translateY(60px) rotateZ(-90deg);
-}
 
 .mini-menu--center
 {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
 }
 
 .mini-menu--menu
 {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
 }

@@ -1,9 +1,10 @@
 ﻿import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
 import {MENU_MODE, setSimulationInterval} from "../../../redux/playGroundSlice";
+import {resetInterval} from "../ControlBarHandlers/resetInterval";
 
 
-export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInterval}) => {
+export const TurnTimeControl: React.FC<{vertical: Boolean}> = ({vertical}) => {
     
     const turnTime = useAppSelector(state => state.playGround.interval);
     const [turnTimeInputValue, setTurnTimeInputValue] = useState<number>(turnTime);
@@ -12,6 +13,13 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
     
     const dispatch = useAppDispatch();
 
+    useEffect(()=>
+    {
+        setTurnTimeInputValue(1000 - turnTime);
+        console.log('new time our set ->', 1000 - turnTimeInputValue)
+    }
+    ,[])
+    
     useEffect(()=> 
     {
         dispatch(setSimulationInterval(1000 - turnTimeInputValue));
@@ -26,47 +34,20 @@ export const TurnTimeControl: React.FC<{resetInterval: Function}> = ({resetInter
         setTurnTimeInputValue(parseInt(e.target.value, 10));
     }
 
-    function OnTurnTimeInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) 
-    {
-        if (e.key < '0' || e.key > '9' && e.key.length === 1)
-        {
-            e.preventDefault();
-        }
-    }
-
     return (
         <span className={'intervalControl'}>
-            <button
-                className={'intervalControl--button'}
-                disabled={currentMode === MENU_MODE}
-                onClick={(e) => {
-                    setTurnTimeInputValue(old => old > 50 ? old - 50 : 0);
-                }}
-            >
-                -
-            </button>
-    
-            <input
-                id={'TimeRange'}
-                type={'range'}
-                min={0}
-                max={950}
-                step={25}
-                className={'simulationIntervalInput'}
-                value={turnTimeInputValue}
-                onChange={(e) => onTurnTimeInputChange(e)}
-                disabled={currentMode === MENU_MODE}
-            />
-               
-            <button
-                className={'intervalControl--button'}
-                disabled={currentMode === MENU_MODE}
-                onClick={(e) => {
-                    setTurnTimeInputValue(old => old < 950 ? old + 50 : 950);
-                }}
-            >
-                +
-            </button>
+            <div className={vertical ? 'slider-wrapper--vertical' : 'slider-wrapper'}>
+                <input
+                    id={'TimeRange'}
+                    type={'range'}
+                    min={0}
+                    max={950}
+                    step={25}
+                    value={turnTimeInputValue}
+                    onChange={(e) => onTurnTimeInputChange(e)}
+                    disabled={currentMode === MENU_MODE}
+                />
+            </div>
         </span>
     )
 }
