@@ -1,9 +1,9 @@
-﻿@media (orientation: portrait)
+﻿@media (orientation: portrait) or (min-width: 1400px)
 {
     :root 
     {
         --size: 6.5vh;
-        --hideSize: -7vh;
+        --hideSize: -8vh;
         --fontSize: 4vh;
     }
     
@@ -19,7 +19,7 @@
         transition: transform 1s, left 1s;
 
         z-index: 1;
-        margin-left: 2px;;
+        margin-left: 1vh;
 
         justify-content: space-evenly;
     }
@@ -85,11 +85,11 @@
     {
         width: 170px;
         height: 60px;
-        transform: translateX(-60px) translateY(60px) rotateZ(-90deg);
+        transform: translateX(-55px) translateY(60px) rotateZ(-90deg);
     }
 }
 
-@media (orientation: landscape)
+@media (orientation: landscape) and (max-width: 1400px)
 {
     :root
     {

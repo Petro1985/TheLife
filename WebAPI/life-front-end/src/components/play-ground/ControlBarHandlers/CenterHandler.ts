@@ -1,5 +1,5 @@
 ﻿import {store} from "../../../redux/Store";
-import {EDIT_MODE} from "../../../redux/playGroundSlice";
+import {EDIT_MODE, PATTERN_MODE} from "../../../redux/playGroundSlice";
 import {setCellSize, setStartCell} from "../../../redux/FieldDrawingSlice";
 
 
@@ -12,7 +12,7 @@ export function centerHandler(correctionX = 0, correctionY = 0) {
     if (!(fieldElement && canvasElement)) return;
 
     let field;
-    if (state.playGround.mode === EDIT_MODE)
+    if (state.playGround.mode !== EDIT_MODE && state.playGround.mode !== PATTERN_MODE)
     {
         field = state.playGround.simulatedField.field.survivors;
     }
