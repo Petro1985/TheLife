@@ -2,7 +2,7 @@
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
 import {fetchPatternsInfo} from "../../redux/menuSlice";
 import {useNavigate} from "react-router-dom";
-import {EDIT_MODE, setSimulationMode} from "../../redux/playGroundSlice";
+import {EDIT_MODE, PATTERN_MODE, setSimulationMode} from "../../redux/playGroundSlice";
 import {getPatternFromServer} from "../../ServerApiHandlers/Field/GetPatternFromServer";
 import {Field} from "../../Types/Field";
 import {setField} from "../../redux/fieldSlice";
@@ -24,7 +24,7 @@ export const PatternsElement: React.FC = () =>
         const fieldWithoutId = await getPatternFromServer(patterns[ind].id);
         const field:Field = {id: patterns[ind].id, name:'', survivors: fieldWithoutId.survivors};
         dispatch(setField(field));
-        dispatch(setSimulationMode(EDIT_MODE));
+        dispatch(setSimulationMode(PATTERN_MODE));
         navigate(BASE_PATH+'/pattern?id=' + field.id);
     }
 

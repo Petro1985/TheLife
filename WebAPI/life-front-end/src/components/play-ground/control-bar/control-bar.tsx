@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import "./control-bar.css";
 import {
     addTurnsToBuffer, EDIT_MODE,
-    MENU_MODE, setCurrentTurn, setIntervalId, setSimulationMode,
+    MENU_MODE, PATTERN_MODE, setCurrentTurn, setIntervalId, setSimulationMode,
 } from "../../../redux/playGroundSlice";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
 import {StartButton} from "./StartButton";
@@ -37,15 +37,6 @@ const ControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function}> = ({isMi
         }
     }, []);
 
-    useEffect(() =>
-    {
-        if (currentSimulationMode === EDIT_MODE)
-        {
-            dispatch(setCurrentTurn(0));
-        }
-    }, [currentSimulationMode])
-
- 
     return (
         <div 
             className={"main-container " + (isMiniMenu ? "hidden-main-container" : "")}

@@ -4,8 +4,6 @@ import {Coord} from "../Types/Coord";
 import {Field} from "../Types/Field";
 import {createNewFieldOnServer} from "../ServerApiHandlers/Field/createNewFieldOnServer";
 import {getFieldById} from "../ServerApiHandlers/Field/GetFieldById";
-import {getPatternFromServer} from "../ServerApiHandlers/Field/GetPatternFromServer";
-import {FieldWithoutId} from "../Types/SimulationFieldResponse";
 
 interface IField
 {
@@ -57,27 +55,6 @@ export const fetchFieldById = createAsyncThunk<
         rejectWithValue("Couldn't load field from server");
     }
 })
-
-// export const setFieldFromPattern = createAsyncThunk<
-//     FieldWithoutId,
-//     number,
-//     {
-//         dispatch: AppDispatch,
-//         state: RootState,
-//     }    
-//     >('field/setFieldFromPattern', async (patternId, {rejectWithValue}) => {
-//     try
-//     {
-//         return await getPatternFromServer(patternId);
-//     }
-//     catch (e)
-//     {
-//         rejectWithValue("Couldn't load pattern from server");
-//         return {survivors:[]}
-//     }
-// })
-
-
 
 export const fieldSlice = createSlice({
     name: 'field',
@@ -134,8 +111,7 @@ export const fieldSlice = createSlice({
         // });
         // builder.addCase(setFieldFromPattern.pending, (state, action) => {
         //     console.log("Request of creating new field is pending");
-        // });
-        
+        // });        
     }
 })
 

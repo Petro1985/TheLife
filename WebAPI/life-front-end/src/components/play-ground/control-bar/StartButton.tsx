@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import {
-    EDIT_MODE,
+    EDIT_MODE, PATTERN_MODE,
 } from "../../../redux/playGroundSlice";
 import {useAppSelector} from "../../../Hooks/reduxHooks";
 import {startSimulationHandler} from "../ControlBarHandlers/StartHandler";
@@ -11,7 +11,7 @@ export const StartButton: React.FC = () =>
 
     return ( 
         <button
-            disabled={currentMode !== EDIT_MODE}
+            disabled={currentMode !== EDIT_MODE && currentMode !== PATTERN_MODE}
             className={"control--button-play green-button"}
             type={"button"}
             onClick={startSimulationHandler}

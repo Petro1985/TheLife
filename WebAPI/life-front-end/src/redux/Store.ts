@@ -2,10 +2,12 @@
 import fieldReducer from "./fieldSlice";
 import menuReducer from "./menuSlice";
 import playGroundReducer from "./playGroundSlice";
+import fieldDrawingReducer from './FieldDrawingSlice'
 
 export const store = configureStore({
     reducer: {
         field: fieldReducer,
+        fieldDrawing: fieldDrawingReducer,
         menu: menuReducer,
         playGround: playGroundReducer,
     },

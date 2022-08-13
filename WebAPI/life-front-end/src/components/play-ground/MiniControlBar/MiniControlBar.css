@@ -1,25 +1,23 @@
-﻿
-
-
-.mini-menu
+﻿.mini-menu
 {
     width: 60px;
     height: 100vh;
     
     position: absolute;
-    background: darkgreen;
+    /*background: darkgreen;*/
     left: 0;
     top: 0;
     
     transition: all 1s;
     z-index: 1;
+    margin-left: 2px;;
     
     justify-content: space-evenly;
 }
 
 .hidden-mini-menu
 {
-    transform: translateX(-60px);
+    transform: translateX(-65px);
 }
 
 .mini-menu--max-menu
@@ -27,9 +25,10 @@
     font-size: 24px;
     width: 55px;
     height: 55px;
+    border-radius: 50%;
 }
 
-.mini-menu--max-menu, .mini-menu--play, .mini-menu--pause, .mini-menu--stop
+.mini-menu--play, .mini-menu--pause, .mini-menu--stop
 {
     position: relative;
     border-radius: 50%;
@@ -58,7 +57,7 @@
     cursor: pointer;
 }
 
-.mini-menu--max-menu:hover, .mini-menu--play:hover, .mini-menu--pause:hover, .mini-menu--stop:hover
+.mini-menu--max-menu:enabled:hover, .mini-menu--play:enabled:hover, .mini-menu--pause:enabled:hover, .mini-menu--stop:enabled:hover
 {
     scale: 1.05;
 }

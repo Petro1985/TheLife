@@ -5,7 +5,7 @@ import {GetUserInfoFromServer} from "./ServerApiHandlers/GetUserInfoFromServer";
 import {Routes, Route, Navigate, useLocation, useNavigate} from "react-router-dom";
 import PlayGround from "./components/play-ground/play-ground";
 import {useAppDispatch} from "./Hooks/reduxHooks";
-import {EDIT_MODE, MENU_MODE, setSimulationMode} from "./redux/playGroundSlice";
+import {EDIT_MODE, MENU_MODE, PATTERN_MODE, setSimulationMode} from "./redux/playGroundSlice";
 import {BASE_PATH} from "./Utilities/BasePath";
 
 const App: React.FC = () => 
@@ -13,9 +13,18 @@ const App: React.FC = () =>
     useEffect(() => {            // TODO: refactor this later
         GetUserInfoFromServer()
             .then();
-        
+
         // set current game mode based on location
-        dispatch(setSimulationMode(location.pathname === BASE_PATH+'/menu' || location.pathname === '/' ? MENU_MODE : EDIT_MODE));
+        let newMode = MENU_MODE;
+        if (location.pathname === BASE_PATH + '/field')
+        {
+            newMode = EDIT_MODE;
+        }
+        else if (location.pathname === BASE_PATH + '/pattern')
+        {
+            newMode = PATTERN_MODE;
+        }
+        dispatch(setSimulationMode(newMode));
     },[]);
     
     const dispatch = useAppDispatch();
