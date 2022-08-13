@@ -76,7 +76,18 @@ export const fieldSlice = createSlice({
             }
             state.field.survivors = newSurvivors;
         },
+        setCellAlive: (state, action : PayloadAction<Coord>) => {
+            const newSurvivors = state.field.survivors.filter(life => !(life.x === action.payload.x && life.y === action.payload.y));
 
+            if (newSurvivors.length === state.field.survivors.length)
+            {
+                newSurvivors.push(action.payload);
+                state.field.survivors = newSurvivors;
+            }
+        },        
+        setDeadAlive: (state, action : PayloadAction<Coord>) => {
+            state.field.survivors = state.field.survivors.filter(life => !(life.x === action.payload.x && life.y === action.payload.y));
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchFieldById.fulfilled, (state, action) => {
@@ -115,5 +126,5 @@ export const fieldSlice = createSlice({
     }
 })
 
-export const {setField, changeCell} = fieldSlice.actions;
+export const {setField, changeCell, setCellAlive, setDeadAlive} = fieldSlice.actions;
 export default fieldSlice.reducer;

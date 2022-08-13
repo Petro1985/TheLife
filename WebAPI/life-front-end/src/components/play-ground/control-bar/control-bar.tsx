@@ -14,6 +14,7 @@ import {store} from "../../../redux/Store";
 import {useNavigate} from "react-router-dom";
 import {BASE_PATH} from "../../../Utilities/BasePath";
 import {stopSimulationHandler} from "../ControlBarHandlers/StopSimulationHandler";
+import {centerHandler} from "../ControlBarHandlers/CenterHandler";
 
 
 const ControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function}> = ({isMiniMenu, toggleMenu}) =>
@@ -65,7 +66,7 @@ const ControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function}> = ({isMi
             <button
                 disabled={currentSimulationMode === MENU_MODE}
                 className={'green-button'}
-                onClick={e => 0}
+                onClick={_ => centerHandler()}
             >Center</button>
 
             <button

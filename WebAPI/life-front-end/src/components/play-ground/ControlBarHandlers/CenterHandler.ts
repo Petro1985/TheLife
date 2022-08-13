@@ -1,9 +1,15 @@
 ﻿import {store} from "../../../redux/Store";
 import {EDIT_MODE} from "../../../redux/playGroundSlice";
+import {setCellSize, setStartCell} from "../../../redux/FieldDrawingSlice";
 
 
-export function centerHandler() {
-    const state = store.getState()
+export function centerHandler(correctionX = 0, correctionY = 0) {
+    const state = store.getState();
+    const dispatch = store.dispatch;
+    const fieldElement = document.getElementById('FieldWrapper');
+    const canvasElement = document.getElementById('FieldCanvas');
+    
+    if (!(fieldElement && canvasElement)) return;
 
     let field;
     if (state.playGround.mode === EDIT_MODE)
@@ -47,29 +53,33 @@ export function centerHandler() {
     // console.log('width',width);
     // console.log('height',height);
 
-    // const newCellSize = Math.min(
-    //     fieldElement.current!.clientWidth / width,
-    //     fieldElement.current!.clientHeight / height) * 0.7;
-    //
-    // // console.log('newCellSize', newCellSize);
-    //
-    // const cellsInRow = Math.ceil(canvasElement.current!.clientWidth / newCellSize);
-    // const cellsInCol = Math.ceil(canvasElement.current!.clientHeight / newCellSize);
-    //
-    // // console.log('cellsInRow', cellsInRow);
-    // // console.log('cellsInCol', cellsInCol);
-    //
-    // const cellsOffsetX = Math.ceil(canvasElement.current!.offsetLeft / newCellSize);
-    // const cellsOffsetY = Math.ceil(canvasElement.current!.offsetTop / newCellSize);
-    //
-    // // console.log('cellsOffsetX', cellsOffsetX);
-    // // console.log('cellsOffsetY', cellsOffsetY);
-    //
-    // setStartCellX(minX + cellsOffsetX - Math.floor((cellsInRow - width) / 2.5));
-    // setStartCellY(minY + cellsOffsetY - Math.floor((cellsInCol-height) / 4));
-    //
-    // // console.log('new startX', minX + cellsOffsetX);
-    // // console.log('new startY', minY + cellsOffsetY);
-    //
-    // setCellSize(newCellSize);
+    const newCellSize = Math.min(
+        fieldElement.clientWidth / width,
+        fieldElement.clientHeight / height) * 0.7;
+
+    // console.log('newCellSize', newCellSize);
+
+    const cellsInRow = Math.ceil(canvasElement.clientWidth / newCellSize);
+    const cellsInCol = Math.ceil(canvasElement.clientHeight / newCellSize);
+
+    // console.log('cellsInRow', cellsInRow);
+    // console.log('cellsInCol', cellsInCol);
+
+    const cellsOffsetX = Math.ceil((canvasElement.offsetLeft + correctionX) / newCellSize);
+    const cellsOffsetY = Math.ceil((canvasElement.offsetTop + correctionY) / newCellSize);
+
+    // console.log('cellsOffsetX', cellsOffsetX);
+    // console.log('cellsOffsetY', cellsOffsetY);
+
+    dispatch(setStartCell(
+        {
+            x: minX + cellsOffsetX - Math.floor((cellsInRow - width) / 2.5),
+            y: minY + cellsOffsetY - Math.floor((cellsInCol - height) / 4)
+        }
+    ));
+
+    // console.log('new startX', minX + cellsOffsetX);
+    // console.log('new startY', minY + cellsOffsetY);
+
+    dispatch(setCellSize(newCellSize));
 }

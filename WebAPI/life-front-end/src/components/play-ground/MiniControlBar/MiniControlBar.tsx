@@ -5,7 +5,7 @@ import {pauseSimulationHandler} from "../ControlBarHandlers/pauseSimulationHandl
 import {stopSimulationHandler} from "../ControlBarHandlers/StopSimulationHandler";
 import {
     EDIT_MODE,
-    MENU_MODE,
+    MENU_MODE, PATTERN_MODE,
     setSimulationMode,
     SIMULATION_MODE,
     SIMULATION_PAUSE_MODE
@@ -14,6 +14,7 @@ import {BASE_PATH} from "../../../Utilities/BasePath";
 import {useAppDispatch, useAppSelector} from "../../../Hooks/reduxHooks";
 import {useNavigate} from "react-router-dom";
 import {TurnTimeControl} from "../control-bar/TurnTimeControl";
+import {centerHandler} from "../ControlBarHandlers/CenterHandler";
 
 
 export const MiniControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function}> = ({isMiniMenu, toggleMenu}) =>
@@ -25,12 +26,12 @@ export const MiniControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function
 
     return (
         <div className={'flex-vert-container mini-menu ' + (isMiniMenu? "" : "hidden-mini-menu")}>
-            <button className={'green-button mini-menu--max-menu'} onClick={() => toggleMenu()}>{'>>>'}</button>
+            <button className={'green-button mini-menu--max-menu'} onClick={() => toggleMenu()}>{'>>'}</button>
 
             <button
                 className={'mini-menu--play'}
                 onClick={startSimulationHandler}
-                disabled={currentMode !== EDIT_MODE}
+                disabled={currentMode !== EDIT_MODE && currentMode !== PATTERN_MODE}
             ></button>
             
             <button
@@ -49,7 +50,13 @@ export const MiniControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function
             
             <TurnTimeControl vertical={true}/>
             
-            <button className={'green-button mini-menu--center'}>C</button>
+            <button 
+                className={'green-button mini-menu--center'}
+                onClick={_ => centerHandler(100)}
+            >
+                C
+            </button>
+            
             <button 
                 className={'green-button mini-menu--menu'}
                 onClick={async () => {
