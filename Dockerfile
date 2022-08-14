@@ -4,6 +4,11 @@ EXPOSE 5129
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
+ARG REACT_APP_SERVER_ADDRESS="http://localhost:5129"
+ARG REACT_APP_BASE_PATH="/life"
+ENV REACT_APP_SERVER_ADDRESS=${REACT_APP_SERVER_ADDRESS}
+ENV REACT_APP_BASE_PATH=${REACT_APP_BASE_PATH}
+
 # Install Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
     && apt-get install -y \

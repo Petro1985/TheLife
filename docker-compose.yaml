@@ -9,7 +9,11 @@ services:
     depends_on:
       - db
   web:
-    build: .
+    build:
+      context: .
+      args:
+        REACT_APP_SERVER_ADDRESS: http://localhost:5129
+        REACT_APP_BASE_PATH: /life
     ports:
       - "5129:5129"
     environment:

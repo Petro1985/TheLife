@@ -70,12 +70,15 @@ builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
 
 var app = builder.Build();
 
+app.UsePathBase("/life");
+app.UseRouting();
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+// }
 
 // app.UseHttpsRedirection();
 
@@ -87,7 +90,9 @@ app.UseAuthorization();
 app.MapHub<TheLifeSimulationHub>("/SimulationHub");
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+
 app.UseStaticFiles();
+
 app.UseMiddleware<RouteLoggerMiddleware>();
 app.Run();
 

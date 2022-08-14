@@ -85,7 +85,7 @@ export const fieldSlice = createSlice({
                 state.field.survivors = newSurvivors;
             }
         },        
-        setDeadAlive: (state, action : PayloadAction<Coord>) => {
+        setCellDead: (state, action : PayloadAction<Coord>) => {
             state.field.survivors = state.field.survivors.filter(life => !(life.x === action.payload.x && life.y === action.payload.y));
         },
     },
@@ -126,5 +126,5 @@ export const fieldSlice = createSlice({
     }
 })
 
-export const {setField, changeCell, setCellAlive, setDeadAlive} = fieldSlice.actions;
+export const {setField, changeCell, setCellAlive, setCellDead} = fieldSlice.actions;
 export default fieldSlice.reducer;

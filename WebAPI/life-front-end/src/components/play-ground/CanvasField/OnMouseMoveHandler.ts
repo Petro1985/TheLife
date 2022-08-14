@@ -3,8 +3,7 @@ import {setCanvasPosition} from "../../../redux/FieldDrawingSlice";
 import {store} from "../../../redux/Store";
 import {normalizeFieldPosition} from "./NormalizeFieldPosition";
 import {Coord} from "../../../Types/Coord";
-import {changeCell, setCellAlive, setDeadAlive} from "../../../redux/fieldSlice";
-import {updateFieldOnServer} from "../../../ServerApiHandlers/Field/UpdateFieldOnServer";
+import {setCellAlive, setCellDead} from "../../../redux/fieldSlice";
 import {EDIT_MODE} from "../../../redux/playGroundSlice";
 
 export function onMouseMoveHandler(event: React.MouseEvent) {
@@ -31,19 +30,19 @@ export function onMouseMoveHandler(event: React.MouseEvent) {
     }
     else if (currentMode === EDIT_MODE)
     {
-        if (event.buttons % 2)
+        if (event.buttons % 2 && !event.ctrlKey)
         {
             const coord: Coord = {
                 x: Math.floor(startCell.x + (event.clientX - canvasElement!.offsetLeft) / cellSize),
                 y: Math.floor(startCell.y + (event.clientY - canvasElement!.offsetTop) / cellSize)};
             dispatch(setCellAlive(coord));
         }
-        else if ((event.buttons / 4) % 2)
+        else if ((event.buttons / 4) % 2 || event.buttons % 2 && event.ctrlKey)
         {
             const coord: Coord = {
                 x: Math.floor(startCell.x + (event.clientX - canvasElement!.offsetLeft) / cellSize),
                 y: Math.floor(startCell.y + (event.clientY - canvasElement!.offsetTop) / cellSize)};
-            dispatch(setDeadAlive(coord));
+            dispatch(setCellDead(coord));
         }
     }
 }

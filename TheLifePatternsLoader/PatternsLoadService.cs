@@ -94,7 +94,7 @@ public class PatternsLoadService
                 case >= '0' and <= '9':
                     lastNumber = lastNumber * 10 + int.Parse(c.ToString());
                     break;
-                default: throw new ArgumentException($"Unexpected symbol \'{c}\' (can be only [ab$0-9])");
+                default: break;// throw new ArgumentException($"Unexpected symbol \'{c}\' (can be only [ab$0-9])");
             }
         }
 

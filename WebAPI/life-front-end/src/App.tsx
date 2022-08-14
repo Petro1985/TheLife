@@ -7,6 +7,7 @@ import PlayGround from "./components/play-ground/play-ground";
 import {useAppDispatch} from "./Hooks/reduxHooks";
 import {EDIT_MODE, MENU_MODE, PATTERN_MODE, setSimulationMode} from "./redux/playGroundSlice";
 import {BASE_PATH} from "./Utilities/BasePath";
+import {SERVER_ADDRESS} from "./Utilities/serverAddress";
 
 const App: React.FC = () => 
 {
@@ -25,10 +26,15 @@ const App: React.FC = () =>
             newMode = PATTERN_MODE;
         }
         dispatch(setSimulationMode(newMode));
+
+        console.log('BasePath -> ', BASE_PATH);
+        console.log('ServerAddress -> ', SERVER_ADDRESS);
     },[]);
+
+    console.log('NODE_ENV:', process.env.NODE_ENV);
+    console.log('Env:', process.env);
     
     const dispatch = useAppDispatch();
-
     const location = useLocation();
     const navigate = useNavigate();
     

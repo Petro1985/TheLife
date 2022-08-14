@@ -18,6 +18,5 @@ RUN dotnet publish "TheLifePatternsLoader.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-#COPY PatternsLoader/Patterns /app/Patterns
 
 ENTRYPOINT ["dotnet", "TheLifePatternsLoader.dll"]
