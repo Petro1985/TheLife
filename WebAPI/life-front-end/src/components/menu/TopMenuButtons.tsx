@@ -9,10 +9,12 @@ import {PatternInfo} from "../../Types/PatternInfo";
 import {AddNewPattern} from "../../ServerApiHandlers/Menu/PostAddNewPattern";
 import {Pattern} from "../../Types/Pattern";
 import {BASE_PATH} from "../../Utilities/BasePath";
+import {useAuth} from "react-oidc-context";
 
 
 export const TopMenuButtons: React.FC<{patternButtons: boolean, onPatternClick: MouseEventHandler}> = ({onPatternClick, patternButtons}) =>
 {
+    const auth = useAuth();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -68,6 +70,8 @@ export const TopMenuButtons: React.FC<{patternButtons: boolean, onPatternClick: 
             inputFile.current.click();
         }
     }
+    console.log("User info -> ", auth.user);
+
 
     return (                
         <div className={"top-buttons-container"}>
@@ -82,6 +86,17 @@ export const TopMenuButtons: React.FC<{patternButtons: boolean, onPatternClick: 
                 onClick={onPatternClick}
                 className={"green-button"}>
                 {patternButtons ? `My fields` : `Patterns`}
+            </button>
+            
+            <button 
+                onClick={() => auth.removeUser()}>Log out</button>
+            <button 
+                onClick={async () => {
+                    await auth.signinRedirect();
+                    console.log("User info -> ", auth.user);
+                }}
+            >
+                Log in
             </button>
             {patternButtons &&
                 <button

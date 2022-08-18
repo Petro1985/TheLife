@@ -3,7 +3,6 @@ using LifeDataBase;
 using LifeDataBase.Entities;
 using Microsoft.EntityFrameworkCore;
 using TheLifeServices.Services;
-using TheLiveLogic.DataStruct;
 using TheLiveLogic.Fields;
 
 namespace TheLifePatternsLoader;
