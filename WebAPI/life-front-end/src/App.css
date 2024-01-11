@@ -6,19 +6,23 @@ body
   margin: 0;
 }
 
-.green-button 
+.green-button, .green-button:active 
 {
   align-self: center;
-  /*border-radius: 10px;*/
+  border-radius: 4px;
   box-shadow: 3px 3px 5px green;
   background-color: darkgreen;
+  border: solid 1px lawngreen;
   color: lawngreen;
-  font-weight: bold;
-  font-size: 2rem;
-  border: solid 2px lawngreen;
-  outline-offset: -5px;
-  outline-color: rgba(245, 245, 220, 0.32);
-  outline-style: solid;
+  font-weight: normal;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-wrap: avoid;
+  
+  /*min-width: 160px;*/
+  
+  font-size: 1.5rem;
+  line-height: 2.2rem;
   cursor: pointer;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: rgba(154, 183, 91, 0.5);

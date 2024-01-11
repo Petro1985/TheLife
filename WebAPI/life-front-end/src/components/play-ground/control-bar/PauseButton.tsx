@@ -18,7 +18,7 @@ export const PauseButton: React.FC = () =>
         <button
             onClick={pauseSimulationHandler}
             disabled={currentMode !== SIMULATION_MODE && currentMode !== SIMULATION_PAUSE_MODE}
-            className={"control--button-pause green-button"}
+            className={"control--button-pause control-button"}
             type={"button"}>
             {currentMode === SIMULATION_PAUSE_MODE ?"Play" : "Pause"}
         </button>

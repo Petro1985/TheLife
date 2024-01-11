@@ -13,13 +13,13 @@ type Props = {
 
 type EditMode = {
     active: boolean,
-    editedFieldId: number,
-    editedName: string
+    editingFieldId: number,
+    text: string
 }
 
 const MenuItem: React.FC<Props> = function ({ind}) 
 {
-    const EMPTY_EDIT_MODE: EditMode = {active:false, editedName: "", editedFieldId: 0};
+    const EMPTY_EDIT_MODE: EditMode = {active:false, text: "", editingFieldId: 0};
     
     const [editMode, setEditMode] = useState<EditMode>(EMPTY_EDIT_MODE)
     
@@ -33,13 +33,13 @@ const MenuItem: React.FC<Props> = function ({ind})
 
     function onEditFieldNameClick()
     {
-        setEditMode({active: true, editedFieldId: ind, editedName: fieldInfo.name});
+        setEditMode({active: true, editingFieldId: ind, text: fieldInfo.name});
     }
 
     function onFieldNameInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         setEditMode(old => {
                 const newValue = {...old};
-                newValue.editedName = event.target.value;
+                newValue.text = event.target.value;
                 return newValue;
             }
         );
@@ -70,7 +70,7 @@ const MenuItem: React.FC<Props> = function ({ind})
     function onFieldNameInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
         switch (event.key){
             case 'Enter':
-                dispatch(renameField({fieldId: fieldInfo.id, ind:ind, newName:editMode.editedName}));
+                dispatch(renameField({fieldId: fieldInfo.id, ind:ind, newName:editMode.text}));
             case 'Escape':
                 setEditMode(EMPTY_EDIT_MODE);
                 break;
@@ -92,14 +92,16 @@ const MenuItem: React.FC<Props> = function ({ind})
                                 id={"InputField"+ind}
                                 ref={inputRef}
                                 className={"menu--field-rename-input"}
-                                value={editMode.editedName}
+                                value={editMode.text}
                                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => onFieldNameInputChange(event)}
                                 onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => onFieldNameInputKeyDown(event)}
                                 onBlur={() => setEditMode(EMPTY_EDIT_MODE)}
                             /> 
                              :
                             (<label htmlFor={"edit"+ind} className={"pointer"}>{(fieldInfo.name ? fieldInfo.name : "Unnamed")}
-                                        <button id={"edit"+ind} onClick={() => onEditFieldNameClick()} className={"menu--field-rename-button"}></button>
+                                        <button id={"edit"+ind} onClick={() => onEditFieldNameClick()} className={"menu--field-rename-button"}>
+                                            <img width={22} alt="rename button" src={"Images/note-edit.svg"}/>
+                                        </button>
                             </label>)}
                             </span>
     
@@ -121,10 +123,8 @@ const MenuItem: React.FC<Props> = function ({ind})
                         className={"menu--delete-field-button"}
                     >
                     </button>
-                </div>
-    
-            </div>
-    
+                </div>    
+            </div>    
         </div>
     );
 }

@@ -39,11 +39,6 @@
       <Content Remove="$(SpaRoot)**" />
       <None Remove="$(SpaRoot)**" />
       <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-      <None Include="life-front-end\package-lock.json" />
-      <None Include="life-front-end\package.json" />
-      <None Include="life-front-end\public\manifest.json" />
-      <None Remove="Properties\launchSettings.json" />
-      <None Include="Properties\launchSettings.json" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

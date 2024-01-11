@@ -88,16 +88,16 @@ export const TopMenuButtons: React.FC<{patternButtons: boolean, onPatternClick: 
                 {patternButtons ? `My fields` : `Patterns`}
             </button>
             
-            <button 
-                onClick={() => auth.removeUser()}>Log out</button>
-            <button 
-                onClick={async () => {
-                    await auth.signinRedirect();
-                    console.log("User info -> ", auth.user);
-                }}
-            >
-                Log in
-            </button>
+            {/*<button */}
+            {/*    onClick={() => auth.removeUser()}>Log out</button>*/}
+            {/*<button */}
+            {/*    onClick={async () => {*/}
+            {/*        await auth.signinRedirect();*/}
+            {/*        console.log("User info -> ", auth.user);*/}
+            {/*    }}*/}
+            {/*>*/}
+            {/*    Log in*/}
+            {/*</button>*/}
             {patternButtons &&
                 <button
                     key={"Menu_PatternImportButton"}

@@ -15,7 +15,7 @@ export const StopButton: React.FC = () =>
         <button
             onClick={stopSimulationHandler}
             disabled={currentMode !== SIMULATION_MODE && currentMode !== SIMULATION_PAUSE_MODE}
-            className={"control--button-stop green-button"}
+            className={"control--button-stop control-button"}
             type={"button"}>
             Stop
         </button>

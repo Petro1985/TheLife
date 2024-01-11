@@ -50,7 +50,8 @@
     ]
   },
   "devDependencies": {
-    "remote-redux-devtools": "^0.5.16"
+    "remote-redux-devtools": "^0.5.16",
+    "sass": "^1.69.5"
   },
   "homepage": "http://localhost:44447/life"
 }

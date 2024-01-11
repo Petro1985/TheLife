@@ -38,7 +38,6 @@ const App: React.FC = () =>
     
     const dispatch = useAppDispatch();
     const location = useLocation();
-    const navigate = useNavigate();
     
     console.log('Current path: ' + location.pathname);
 

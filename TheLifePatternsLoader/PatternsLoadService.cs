@@ -19,9 +19,11 @@ public class PatternsLoadService
         var optBuilder = new DbContextOptionsBuilder<FieldContext>();
 
         var connectionString = Environment.GetEnvironmentVariable("DB_Settings:connectionString");
-        optBuilder.UseNpgsql(connectionString ?? @"Server=127.0.0.1;Port=5432;Database=TheLife;User Id=postgres;password=123qwe!@#QWE");
-        var context = new FieldContext(optBuilder.Options);
-        
+        optBuilder.UseNpgsql(connectionString ?? @"Server=127.0.0.1;Port=5444;Database=TheLife;User Id=postgres;password=123qwe!@#QWE");
+        Console.WriteLine($"connectionString: {connectionString}");
+        using var context = new FieldContext(optBuilder.Options);
+
+        Console.WriteLine($"Starting filling patterns");
         foreach (var file in files)
         {
             var pattern = new PatternEntity();

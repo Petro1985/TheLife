@@ -12,7 +12,7 @@ export const StartButton: React.FC = () =>
     return ( 
         <button
             disabled={currentMode !== EDIT_MODE && currentMode !== PATTERN_MODE}
-            className={"control--button-play green-button"}
+            className={"control--button-play control-button"}
             type={"button"}
             onClick={startSimulationHandler}
         >

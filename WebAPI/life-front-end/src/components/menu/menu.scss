@@ -1,4 +1,15 @@
-﻿
+﻿//.menu-container .wide
+//{
+//    width: 1000px;
+//    left: 400px;
+//}
+//
+//.menu-container .slim
+//{
+//    width: 550px;
+//    left: 400px;
+//}
+
 .menu-container
 {
     padding: 25px 5px;
@@ -6,11 +17,9 @@
     position: fixed;
     top: 3%;
     
-    background-color: #789653;
-
-    border: solid 4px #7cd927;
-    outline: solid 4px #9ed927 ;
-    outline-offset: -7px;
+    border-radius: 4px;
+    background-color: rgba(120, 150, 83, 0.9);
+    border: solid 1px #7cd927;
     
     display: flex;
     flex-flow: column;
@@ -26,116 +35,89 @@
     display: flex;
 }
 
-.menu
-{
-    min-width: 450px;
-    display: flex;
-    flex-flow: column;
-    
-    gap: 20px;
-
-    user-select: none;
-}
-
-
 .fixed
 {
     position: fixed;
 }
 
-.menu > div
+
+
+.menu
 {
-    display: flex;
-    flex-flow: row;
-    justify-content: start;
-}
+    button:hover
+    {
+        transform: scale(1.05);
+    }
 
-
-.menu > div > button
-{
-    margin: 0 auto;
-    width: 45%;
-    height: 60px;
-    font-size: 32px;
-}
-
-.menu > button:hover
- {
-    transform: scale(1.05);
- }
-
-.menu--item-container
-{
-    width: 400px;
-    margin: 0 auto;
-    display: flex;
-    flex-flow: row;
-}
-
-.menu--button-image
-{
-    border: double 5px green;
-}
-
-.menu--vertical-container
-{
-    width: 100%;
+    min-width: 450px;
     display: flex;
     flex-flow: column;
-    margin-left: 15px;
-}
+    gap: 20px;
+    user-select: none;
 
-.menu--field-name
-{
-    margin-top: 5px;
-    margin-bottom: 10px;
-    font-size: 1.5rem;
-}
+    .menu--item-container
+    {
+        width: 400px;
+        margin: 0 auto;
+        display: flex;
+        flex-flow: row;
 
-.menu--delete-field-button
-{
-    height: 100%;
-    width: 20%;
-    margin-left: auto;
-    background-image: url("../../../public/Images/delete-button.png");
+        .menu--choose-button
+        {
+            width: 75%;
+        }
+        
+        .menu--button-image
+        {
+            border: double 5px green;
+        }
 
-    background-size: cover;
-    border-color: brown;
-    border-radius: 10px;
-    box-shadow: 3px 3px 5px brown;
-    cursor: pointer;
-}
+        .menu--field-name
+        {
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
 
-.menu--delete-field-button:hover
-{
-    transform: scale(1.05);
-}
+            .menu--field-rename-button
+            {
+                margin-left: 5px;
+                background-color: inherit;
+                border: none;
+                cursor: pointer;
+            }
+        }
 
-.menu--choose-button
-{
-    width: 75%;
-}
+        .menu--delete-field-button
+        {
+            height: 100%;
+            width: 20%;
+            margin-left: auto;
+            background-image: url("../../../public/Images/delete.svg");
 
-.menu--choose-button:hover
-{
-    transform: scale(1.05);
-}
+            box-shadow: 3px 3px 5px green;
+            background-color: darkgreen;
+            border: solid 1px lawngreen;
+            color: lawngreen;
+            background-size: cover;
+            border-radius: 4px;
+             
+            cursor: pointer;
+        }
+        
+        .menu--vertical-container
+        {
+            width: 100%;
+            display: flex;
+            flex-flow: column;
+            margin-left: 15px;
+        }
+    }
 
-.menu--field--choose-delete-buttons {
-    display: flex;
-    margin-top: auto;
-}
+    .menu--field--choose-delete-buttons {
+        display: flex;
+        margin-top: auto;
+    }
 
-.menu--field-rename-button
-{
-    height: 1rem;
-    width: 1rem;
-    margin-left: 5px;
-    background-image: url("../../../public/Images/edit.png");
-    background-size: cover;
-    border: none;
-    border-radius: 10%;
-    cursor: pointer;
 }
 
 .menu--field-rename-input:focus

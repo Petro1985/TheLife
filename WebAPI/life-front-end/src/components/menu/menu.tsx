@@ -1,5 +1,5 @@
 ﻿import React, {useEffect, useRef, useState} from "react";
-import "./menu.css";
+import "./menu.scss";
 import {fetchFieldsInfo} from "../../redux/menuSlice";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
@@ -12,10 +12,8 @@ const Menu: React.FC = () =>
     const dispatch = useAppDispatch();
 
     const [isPatternShown, setIsPatternShown] = useState<boolean>(false);
-    const [menuPosition, setMenuPosition] = useState<{left:string, width: number}>({left: `calc(50vw - 235px)`, width: 470});
+    const [menuPosition, setMenuPosition] = useState<{left:string, width: number}>({left: `calc(50vw - 275px)`, width: 550});
     
-    const navigate = useNavigate();
-
     // effect for loading fieldsInfo from server
     useEffect(() => {
         dispatch(fetchFieldsInfo());
@@ -26,7 +24,7 @@ const Menu: React.FC = () =>
         setIsPatternShown(prev => !prev)
         if (isPatternShown)
         {
-            setMenuPosition({left: `calc(50vw - 235px)`, width: 470})
+            setMenuPosition({left: `calc(50vw - 275px)`, width: 550})
         }
         else
         {
