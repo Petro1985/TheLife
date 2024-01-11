@@ -14,7 +14,6 @@ const Menu: React.FC = () =>
     const [isPatternShown, setIsPatternShown] = useState<boolean>(false);
     const [menuPosition, setMenuPosition] = useState<{left:string, width: number}>({left: `calc(50vw - 275px)`, width: 550});
     
-    // effect for loading fieldsInfo from server
     useEffect(() => {
         dispatch(fetchFieldsInfo());
     }, []);
