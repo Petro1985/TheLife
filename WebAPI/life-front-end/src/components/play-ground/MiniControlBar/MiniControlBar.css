@@ -1,4 +1,27 @@
-﻿@media (orientation: portrait) or (min-width: 1400px)
+﻿.mini-menu-button
+{
+    align-self: center;
+    border-radius: 4px;
+    box-shadow: 3px 3px 5px green;
+    background-color: darkgreen;
+    border: solid 1px lawngreen;
+    color: lawngreen;
+    font-weight: normal;
+    text-wrap: avoid;
+    cursor: pointer;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: rgba(154, 183, 91, 0.5);
+    user-select: none;
+    position: relative;
+}
+
+.mini-menu-button:hover
+{
+    transform: scale(1.05);
+}
+
+
+@media (orientation: portrait) or (min-width: 1400px)
 {
     :root 
     {
@@ -93,7 +116,9 @@
 .mini-menu--max-menu
 {
     font-size: var(--fontSize);
-
+    background-image: url("../../../../public/Images/shrink-to-left.svg");
+    background-position: center;
+    background-repeat: no-repeat;
     width: var(--size);
     height: var(--size);
     border-radius: 50%;
@@ -118,6 +143,10 @@
     width: var(--size);
     height: var(--size);
     border-radius: 50%;
+
+    background-image: url("../../../../public/Images/four-converging-arrows-at-the-center.svg");
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .mini-menu--menu

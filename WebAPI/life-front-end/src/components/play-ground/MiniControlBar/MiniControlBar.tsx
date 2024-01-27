@@ -26,7 +26,7 @@ export const MiniControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function
 
     return (
         <div className={'flex-vert-container mini-menu ' + (isMiniMenu? "" : "hidden-mini-menu")}>
-            <button className={'green-button mini-menu--max-menu'} onClick={() => toggleMenu()}>{'>>'}</button>
+            <button className={'mini-menu-button mini-menu--max-menu'} onClick={() => toggleMenu()}>{''}</button>
 
             <button
                 className={'mini-menu--play'}
@@ -51,14 +51,13 @@ export const MiniControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function
             <TurnTimeControl vertical={true}/>
             
             <button 
-                className={'green-button mini-menu--center'}
+                className={'mini-menu-button mini-menu--center'}
                 onClick={_ => centerHandler(100)}
-            >
-                C
+            >                
             </button>
             
             <button 
-                className={'green-button mini-menu--menu'}
+                className={'mini-menu-button mini-menu--menu'}
                 onClick={async () => {
                     await stopSimulationHandler();
                     dispatch(setSimulationMode(MENU_MODE));

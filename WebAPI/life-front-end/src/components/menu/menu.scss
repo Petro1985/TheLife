@@ -10,6 +10,28 @@
 //    left: 400px;
 //}
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #3e8000;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #295200;
+}
+
 .menu-container
 {
     padding: 25px 5px;
@@ -24,7 +46,7 @@
     display: flex;
     flex-flow: column;
     
-    transition: all 0.5s ease;
+    //transition: all 5s ease;
     z-index: 2;
 }
 
@@ -167,6 +189,8 @@
     height: 700px;
     overflow: hidden auto;
 
+    scroll-margin: 10px;
+    
     -moz-animation: showIn05Animation 0s ease-in 0.5s forwards;
     /* Firefox */
     -webkit-animation: showIn05Animation 0s ease-in 0.5s forwards;
@@ -196,12 +220,11 @@
     flex-flow: column;
     gap: 10px;
     justify-content: space-evenly;
-
 }
 
 .patterns--item
 {
-    width: 100%;
+    width: 99%;
     height: 300px;
     outline: double 3px darkgreen;
     outline-offset: -3px;
@@ -209,10 +232,9 @@
 }
 
 .patterns--item:hover
-{
-    
-    outline: solid 10px darkgreen;
-    outline-offset: -10px;
+{   
+    outline: double 5px darkgreen;
+    outline-offset: -5px;
 }
 
 .pattern--image

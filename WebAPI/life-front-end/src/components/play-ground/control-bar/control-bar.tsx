@@ -68,14 +68,14 @@ const ControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function}> = ({isMi
                 className={'control-button'}
                 onClick={_ => centerHandler()}
             >
-                <img alt="center" src={"Images/four-converging-arrows-at-the-center.svg"}></img>
+                <img style={{marginTop: '6px'}} alt="center" src={"Images/four-converging-arrows-at-the-center.svg"}></img>
             </button>
 
             <button
                 className={'control-button'}
                 onClick={e => toggleMenu()}
             >
-                <img alt="shrink-to-left" src={"Images/shrink-to-left.svg"}></img>
+                <img style={{marginTop: '6px'}} alt="shrink-to-left" src={"Images/shrink-to-left.svg"}></img>
             </button>
         </div>
     );
