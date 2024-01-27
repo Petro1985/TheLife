@@ -53,6 +53,7 @@ export const MiniControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function
             <button 
                 className={'mini-menu-button mini-menu--center'}
                 onClick={_ => centerHandler(100)}
+                disabled={currentMode === MENU_MODE}
             >                
             </button>
             
@@ -63,6 +64,7 @@ export const MiniControlBar: React.FC<{isMiniMenu: boolean, toggleMenu: Function
                     dispatch(setSimulationMode(MENU_MODE));
                     navigate(BASE_PATH + '/menu');
                 }}
+                disabled={currentMode === MENU_MODE}
             >
                 M
             </button>

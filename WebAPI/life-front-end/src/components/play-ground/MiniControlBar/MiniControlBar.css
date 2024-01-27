@@ -15,11 +15,10 @@
     position: relative;
 }
 
-.mini-menu-button:hover
+.mini-menu-button:enabled:hover
 {
     transform: scale(1.05);
 }
-
 
 @media (orientation: portrait) or (min-width: 1400px)
 {
@@ -124,7 +123,7 @@
     border-radius: 50%;
 }
 
-.mini-menu--play:disabled::after, .mini-menu--pause:disabled::after, .mini-menu--stop:disabled::after
+.mini-menu-button:disabled::after, .mini-menu--play:disabled::after, .mini-menu--pause:disabled::after, .mini-menu--stop:disabled::after
 {
     content: "";
     border-radius: 50%;
