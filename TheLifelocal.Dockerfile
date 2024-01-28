@@ -1,12 +1,12 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 5129
+EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
-ARG REACT_APP_SERVER_ADDRESS="https://petr-prozorov.ru"
-#ARG REACT_APP_SERVER_ADDRESS="http://localhost:5129"
-ARG REACT_APP_BASE_PATH="/life"
+ARG REACT_APP_SERVER_ADDRESS="http://localhost:5129"
+ARG REACT_APP_BASE_PATH="http://localhost:5129"
 ENV REACT_APP_SERVER_ADDRESS=${REACT_APP_SERVER_ADDRESS}
 ENV REACT_APP_BASE_PATH=${REACT_APP_BASE_PATH}
 
